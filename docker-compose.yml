@@ -1,0 +1,19 @@
+api:
+  build: ./api
+  expose:
+    - "3000"
+  environment:
+    ENV: DEV
+  volumes:
+    - ./api/src:/var/www/api/src/
+    - ./api/node_modules:/var/www/api/node_modules/
+
+web:
+  image: nginx:latest
+  ports:
+    - "8080:80"
+  volumes:
+    - ./web/src/:/usr/share/nginx/html/
+    - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  links:
+    - api:api

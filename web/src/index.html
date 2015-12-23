@@ -1,0 +1,18 @@
+<html>
+  <head>
+    <title>Hello!</title>
+  </head>
+  <body>
+    <h1 id="title">HELLO, FUCKHOLES!</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript">
+      var $title = $('#title');
+      $.getJSON('/api/names/last/roosevelt', function( data ) {
+        console.log(data);
+        $title.text('Hello, ' + data.user.last + '!');
+      });
+    </script>
+  </body>
+</html>
+
+
