@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>Hello!</title>
+    <link rel="stylesheet" href="main.css">
   </head>
   <body>
     <h1 id="title">HELLO, FUCKHOLES!</h1>
@@ -8,10 +9,10 @@
     <script type="text/javascript">
       var $title = $('#title');
       $.getJSON('/api/names/last/roosevelt', function( data ) {
-        console.log(data);
         $title.text('Hello, ' + data.user.last + '!');
       });
     </script>
+    <script src="main.js"></script>
   </body>
 </html>
 
