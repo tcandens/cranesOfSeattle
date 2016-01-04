@@ -9,8 +9,6 @@ api:
     - ./api/node_modules:/var/www/api/node_modules/
 
 web:
-  #command: webpack-dev-server
-  #environment: set development variables
   image: nginx:latest
   ports:
     - "8080:80"

@@ -1,12 +1,6 @@
 import React from 'react';
-import * as DOM from 'react-dom';
+import ReactDOM from 'react-dom';
 
-class Main extends React.Component {
-  render() {
-    return (
-      <h1>Hello!</h1>
-    )
-  }
-}
+import Test from './tester';
 
-DOM.render(<Main />, document.querySelector('#root'));
+ReactDOM.render(<Test />, document.querySelector('#root'));
