@@ -3,4 +3,15 @@ import ReactDOM from 'react-dom';
 
 import Test from './tester';
 
-ReactDOM.render(<Test />, document.querySelector('#root'));
+class Main extends React.Component {
+  render() {
+    return (
+      <div>
+        <h2>Suck about it!</h2>
+        <Test></Test>
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<Main />, document.querySelector('#root'));

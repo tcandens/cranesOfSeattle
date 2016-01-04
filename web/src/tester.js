@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class Test extends Component {
   render() {
     return (
-      <h1>Butts!</h1>
+      <h1>Turds!</h1>
     )
   }
 }
