@@ -7,7 +7,7 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h2>Suck about it!</h2>
+        <h2>Stuff</h2>
         <Test></Test>
       </div>
     )
