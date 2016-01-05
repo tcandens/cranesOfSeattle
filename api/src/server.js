@@ -22,7 +22,7 @@ router.get('/names/last/:name', function *() {
     user: {
       last: this.params.name
     }
-  }
+  };
 });
 
 app

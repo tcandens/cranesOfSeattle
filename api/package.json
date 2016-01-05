@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "main": "src/server.js",
-  "scripts": "",
+  "scripts": {
+    "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,6 +17,8 @@
     "koa-router": "^5.3.0"
   },
   "devDependencies": {
+    "eslint": "^1.10.3",
+    "eslint-config-google": "^0.3.0",
     "nodemon": "^1.8.1"
   }
 }
