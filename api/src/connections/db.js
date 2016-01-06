@@ -1,9 +1,7 @@
-//import { info } from './db_info';
-//import { options } from './db_options';
-import info from './db_info';
+import info from './db_info'
+import options from './db_options'
+import pgp from 'pg-promise'
 
-console.log(info);
+const db = pgp(options)(info);
 
-export default {
-  info
-}
+export default db
