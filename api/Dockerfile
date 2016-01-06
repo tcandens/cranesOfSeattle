@@ -1,12 +1,12 @@
 FROM node:5.3
 
-COPY ./package.json /var/www/api/
-COPY ./entry.sh /var/www/api/
-COPY ./src/ /var/www/api/src/
 WORKDIR /var/www/api/
+COPY ./package.json package.json
 RUN npm install
+COPY ./entry.sh entry.sh
+COPY . ./
 
 EXPOSE 3000
 
-CMD ["/var/www/api/entry.sh"]
+CMD ["./entry.sh"]
 
