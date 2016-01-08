@@ -32,4 +32,4 @@ nginx:
     - "8080:80"
 
 db:
-  image: postgres:latest
+  image: mdillon/postgis:latest

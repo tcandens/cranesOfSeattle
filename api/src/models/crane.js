@@ -1,5 +1,5 @@
 import modelFactory from './default'
 
-const craneModel = modelFactory('cranes And stuff', {});
+const craneModel = modelFactory('cranes');
 
 export default craneModel

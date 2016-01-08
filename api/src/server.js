@@ -5,12 +5,6 @@ import parseJson from 'koa-parse-json'
 
 import cranes from './routers/cranes'
 
-// Create table
-//db.none('CREATE TABLE cranes (id serial, name varchar (12))')
-  //.catch(error => {
-    //console.log(error);
-  //})
-
 const PORT = process.env.PORT || 3000;
 
 const app = koa();
