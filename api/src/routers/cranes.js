@@ -1,5 +1,8 @@
 import Router from 'koa-router'
 import db from '../connections/db'
+import craneModel from '../models/crane'
+
+console.log(craneModel);
 
 export default Router()
   .get('/', function *() {
