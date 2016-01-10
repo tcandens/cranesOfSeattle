@@ -6,11 +6,11 @@ export default Router()
     this.body = { message: 'Hello there!' };
   })
   .get('/cranes', function *() {
-    let cranes = yield craneModel.addCrane({latitude: '144', longitude: '22'});
+    let cranes = yield craneModel.fetchAll();
     this.body = cranes;
   })
   .post('/cranes', function *() {
     let crane = this.request.body;
-    let id = yield db.one('INSERT into cranes(name) values($1) returning id', [crane.name]);
+    let id = yield craneModel.report(crane);
     this.body = id;
   })

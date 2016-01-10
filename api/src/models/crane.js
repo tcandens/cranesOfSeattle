@@ -1,18 +1,17 @@
 import modelFactory from './base'
-import { create } from 'lodash'
+import { keys } from 'lodash'
 
 const craneModel = modelFactory('cranes');
 
-create(craneModel, {
-  addCrane(location) {
-    this.location = location;
-    const db = this.database;
-    const name = this.name;
+craneModel.report = function(crane) {
 
-    return db.query(`INSERT INTO ${name} (name, location),
-      VALUES ('test crane', ST_GeogFromText('$1 $2'))`,
-      [location.latitude, location.longitude]);
-  }
-})
+  // Reformat location for PostGIS
+  crane.location = `POINT(${crane.location.latitude} ${crane.location.longitude})`;
+  const query = `INSERT INTO ${this.tableName}
+    ( name, location )
+    VALUES ( $1, ST_GeomFromText($2) )
+    RETURNING id`;
+  return this.database.one(query, [crane.name, crane.location]);
+};
 
 export default craneModel
