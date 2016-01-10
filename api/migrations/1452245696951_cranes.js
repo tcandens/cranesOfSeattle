@@ -5,10 +5,17 @@ exports.up = function(pgm) {
       type: 'geography(POINT, 4326)',
       notNull: true
     },
-    name: 'string'
+    name: {
+      type: 'varchar(40)',
+      notNull: true
+    },
+    permit: {
+      type: 'text',
+      notNull: false
+    }
   });
 };
 
 exports.down = function(pgm) {
-  pgm.droptable('cranes');
+  pgm.dropTable('cranes');
 };
