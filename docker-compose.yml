@@ -9,7 +9,7 @@ api:
     - PGUSER=postgres
     - PGPASSWORD=mysecretpassword
   volumes:
-    - ./api/src:/var/www/api/src/
+    - ./api:/var/www/api
     - ./api/node_modules:/var/www/api/node_modules/
   links:
     - db

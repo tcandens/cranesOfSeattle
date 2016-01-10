@@ -1,15 +1,12 @@
 import Router from 'koa-router'
-import db from '../connections/db'
 import craneModel from '../models/crane'
-
-console.log(craneModel);
 
 export default Router()
   .get('/', function *() {
     this.body = { message: 'Hello there!' };
   })
   .get('/cranes', function *() {
-    let cranes = yield db.any('SELECT name, id FROM cranes');
+    let cranes = yield craneModel.addCrane({latitude: '144', longitude: '22'});
     this.body = cranes;
   })
   .post('/cranes', function *() {
