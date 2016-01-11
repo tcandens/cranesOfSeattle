@@ -1,32 +1,20 @@
-var PORT = process.env.PORT || 3000;
-var koa = require('koa');
-var router = require('koa-router')();
-var logger = require('koa-logger');
-var json = require('koa-json');
+import koa from 'koa'
+import logger from 'koa-logger'
+import json from 'koa-json'
+import parseJson from 'koa-parse-json'
 
-var app = koa();
+import cranes from './routers/cranes'
 
+const PORT = process.env.PORT || 3000;
+
+const app = koa();
+
+app.use(parseJson());
 app.use(json());
 app.use(logger());
 
-router.get('/', function *() {
-  this.body = { message: 'Hello there!' };
-});
-
-router.get('/test', function *() {
-  this.body = { message: 'Testing!' };
-});
-
-router.get('/names/last/:name', function *() {
-  this.body = {
-    user: {
-      last: this.params.name
-    }
-  };
-});
-
 app
-  .use(router.routes())
-  .use(router.allowedMethods());
+  .use(cranes.routes())
+  .use(cranes.allowedMethods());
 
 app.listen(PORT);
