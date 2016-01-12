@@ -1,17 +1,13 @@
-const test = require('tape');
-const request = require('supertest');
-process.env.PORT = 3333;
-const app = require('../src/server');
+import test from 'tape'
+import { server } from '../src/server'
 
+const request = require('superagent').agent(server);
 
-test('First test!', assert => {
-  request(app)
-    .get('/test')
-    .expect('Content-Type', /json/)
-    .expect(200)
+test('First test!', function(assert) {
+  request
+    .get('/cranes')
     .end((err, res) => {
+      assert.ok(res);
       assert.end();
     });
-  console.log('Testing test setup.');
-  assert.end();
 });
