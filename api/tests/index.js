@@ -1,13 +1,13 @@
-import test from 'tape'
-import { server } from '../src/server'
+import test from 'tape-dispenser'
+import { app } from '../src/app'
+import supertest from 'co-supertest'
 
-const request = require('superagent').agent(server);
+const request = supertest.agent(app.listen());
 
-test('First test!', function(assert) {
-  request
-    .get('/cranes')
-    .end((err, res) => {
-      assert.ok(res);
-      assert.end();
-    });
+test('First test!', function *(assert) {
+  const res = yield request
+    .get('/')
+    .expect(200)
+    .end()
+  assert.equal(res.text, 'Hello there');
 });
