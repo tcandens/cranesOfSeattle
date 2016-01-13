@@ -5,22 +5,24 @@
 /**
  * Dependencies
  */
-import leaks from 'leaked-handles'
+// require('leaked-handles').set({
+//   fullStack: true
+// });
 import test from 'tape-dispenser'
 import supertest from 'co-supertest'
-// import db from '../connections/db'
-import { app } from '../src/app'
-
-// See TODO: API->testing
-// TODO: Run migrations on test database
+import { server } from '../src/server'
 
 const request = supertest.agent(server);
 
-test('First test!', {timeout: 2000}, function *(assert) {
+test('First test!', function *(assert) {
   const res = yield request
     .get('/cranes')
     .expect(200)
     .end()
   assert.ok(res, 'Response from /cranes');
   assert.timeoutAfter(2000);
+});
+
+test('Second test', function (assert) {
+  assert.pass('Hey there!');
 });

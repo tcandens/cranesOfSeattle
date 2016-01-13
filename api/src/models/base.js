@@ -1,5 +1,5 @@
 import { assign } from 'lodash'
-import db from '../../connections/db'
+import db from '../connections/db'
 
 // A parent that will hold default model behavior
 const prototype = {
