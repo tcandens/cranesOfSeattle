@@ -1,7 +1,11 @@
 const options = {
   connect: (client) => {
     var info = client.connectionParameters;
-    console.log('Connected to database:' + info.database);
+    console.log('Connected to database', info.database);
+  },
+  disconnect: (client) => {
+    var cp = client.connectionParameters;
+    console.log('Disconnecting from database', cp.database);
   },
   error: (err, e) => {
     console.log('Error:', err);

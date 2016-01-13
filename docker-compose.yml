@@ -33,3 +33,6 @@ nginx:
 
 db:
   image: mdillon/postgis:latest
+  ports:
+    # Expose database port for tests
+    - "5432:5432"
