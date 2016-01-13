@@ -1,18 +1,25 @@
 import { assign } from 'lodash'
 import db from '../connections/db'
 
+const __database = db.init();
+
 // A parent that will hold default model behavior
 const prototype = {
-  database: db(),
+  __database: __database,
+  db: __database.instance,
   tableName: 'default',
   fetchAll() {
-    return this.database.cn.manyOrNone(`SELECT * FROM ${this.tableName}`)
+    // Rewrite with bluebirds .finally to close connections
+    const res = this.db.manyOrNone(`SELECT * FROM ${this.tableName}`)
+      .finally(this.__database.factory.end())
+    return res;
   },
   __clean__() {
-    return this.database.cn.none(`DELETE FROM ${this.tableName}`)
+    // return this.database.cn.none(`DELETE FROM ${this.tableName}`)
   }
 }
 
+// Export factory
 export default function (name, options) {
   return assign(prototype, {
     tableName: name

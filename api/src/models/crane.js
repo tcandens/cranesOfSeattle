@@ -12,7 +12,7 @@ craneModel.report = function(crane) {
     ( name, location )
     VALUES ( $1, ST_GeomFromText($2) )
     RETURNING id`;
-  return this.database.one(query, [crane.name, crane.location]);
+  // return this.database.one(query, [crane.name, crane.location]);
 };
 
 export default craneModel

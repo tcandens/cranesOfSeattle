@@ -1,4 +1,7 @@
+import bluebird from 'bluebird'
+
 const options = {
+  promiseLib: bluebird,
   connect: (client) => {
     var info = client.connectionParameters;
     console.log('Connected to database', info.database);
