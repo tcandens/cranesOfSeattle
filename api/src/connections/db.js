@@ -4,6 +4,8 @@ import bluebird from 'bluebird'
 import pgp from 'pg-promise'
 import monitor from 'pg-monitor'
 
+console.log(info)
+
 monitor.attach(options);
 
 let singleton = null;

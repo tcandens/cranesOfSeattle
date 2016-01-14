@@ -1,7 +1,9 @@
 /**
  * Environmental Variables
  */
-// process.env.PGDATABASE = 'test'
+process.env.PGDATABASE = 'test';
+process.env.ENV = 'test'
+
 /**
  * Dependencies
  */
@@ -13,6 +15,21 @@ import supertest from 'co-supertest'
 import { server } from '../src/server'
 
 const request = supertest.agent(server);
+/**
+ * Setup
+ * 1. Migrations must be run for test database
+ */
+function before() {
+
+}
+
+/**
+ * Teardown
+ * 1. Database must be cleared.
+ */
+function after() {
+
+}
 
 test('Checking GET->/cranes', function *(assert) {
   const res = yield request

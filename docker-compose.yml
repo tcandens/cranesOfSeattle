@@ -4,7 +4,7 @@ api:
     - "3000"
   environment:
     - ENV=DEV
-    - PGHOST=db
+    # - PGHOST=db
     - PGDATABASE=postgres
     - PGUSER=postgres
     - PGPASSWORD=mysecretpassword
@@ -13,6 +13,7 @@ api:
     - ./api/node_modules:/var/www/api/node_modules/
   links:
     - db
+    - testdb
 
 webpack:
   build: ./web
@@ -33,6 +34,8 @@ nginx:
 
 db:
   image: mdillon/postgis:latest
-  ports:
-    # Expose database port for tests
-    - "5432:5432"
+
+testdb:
+  image: mdillon/postgis:latest
+  environment:
+    - POSTGRES_DB=test
