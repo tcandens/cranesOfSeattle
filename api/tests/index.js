@@ -1,10 +1,4 @@
 /**
- * Environmental Variables
- */
-process.env.PGDATABASE = 'test';
-process.env.ENV = 'test'
-
-/**
  * Dependencies
  */
 require('leaked-handles').set({

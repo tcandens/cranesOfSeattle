@@ -6,7 +6,7 @@ const __database = db.init();
 const prototype = {
   __database: __database,
   close: () => {
-    this.__database.factory.end();
+    __database.factory.end();
   },
   db: __database.instance,
   tableName: 'default',
