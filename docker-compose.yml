@@ -1,3 +1,6 @@
+db:
+  image: mdillon/postgis:latest
+
 api:
   build: ./api
   expose:
@@ -13,7 +16,6 @@ api:
     - ./api/node_modules:/var/www/api/node_modules/
   links:
     - db
-    - testdb
 
 webpack:
   build: ./web
@@ -31,11 +33,3 @@ nginx:
     - webpack:web
   ports:
     - "8080:80"
-
-db:
-  image: mdillon/postgis:latest
-
-testdb:
-  image: mdillon/postgis:latest
-  environment:
-    - POSTGRES_DB=test

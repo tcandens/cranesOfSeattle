@@ -6,7 +6,9 @@ RUN npm install
 COPY ./entry.sh entry.sh
 COPY . ./
 
+RUN apt-get update && apt-get install -y \
+  netcat
+
 EXPOSE 3000
 
 CMD ["./entry.sh"]
-
