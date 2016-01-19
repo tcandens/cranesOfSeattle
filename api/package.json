@@ -4,12 +4,10 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
+    "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node --debug --presets es2015,stage-1 -- src/server.js",
     "test": "./run-tests.sh",
     "watch-test": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-tape-runner tests/**",
     "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;",
-    "QA": "npm run lint && npm run test",
-    "start": "npm run build && node dist/app",
-    "dev": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node --debug --presets es2015 --presets stage-1 -- src/server.js",
     "build": "./node_modules/.bin/babel src -d dist"
   },
   "author": "",

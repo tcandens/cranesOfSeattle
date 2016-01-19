@@ -30,7 +30,7 @@ export DATABASE_URL=db://${PGUSER}:${PGPASSWORD}@${host}/${PGDATABASE}
 if [ "$ENV" = 'DEV' ]; then
   echo $'Running Development Server\n--------------------------'
   ./node_modules/.bin/pg-migrate up;
-  npm run dev;
+  npm start;
 elif [ "$ENV" = 'TEST' ]; then
   export PORT=3333
   echo $'Running Tests\n-------------';
