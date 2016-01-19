@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "./run-tests.sh",
-    "watch-test": "./node_modules/.bin/babel-tape-runner tests/**",
+    "watch-test": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-tape-runner tests/**",
     "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;",
     "QA": "npm run lint && npm run test",
     "start": "npm run build && node dist/app",

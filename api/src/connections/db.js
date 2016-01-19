@@ -1,6 +1,5 @@
 import info from './db_info'
 import options from './db_options'
-import bluebird from 'bluebird'
 import pgp from 'pg-promise'
 import monitor from 'pg-monitor'
 
