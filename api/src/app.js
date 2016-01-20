@@ -1,13 +1,13 @@
-import koa from 'koa'
+import Koa from 'koa'
 import logger from 'koa-logger'
-import json from 'koa-json'
-import parseJson from 'koa-parse-json'
+import json from './middleware/json_response'
+import jsonBody from 'koa-json-body'
 
 import cranes from './routers/cranes'
 
-const app = koa();
+const app = new Koa();
 
-app.use(parseJson());
+app.use(jsonBody());
 app.use(json());
 app.use(logger());
 

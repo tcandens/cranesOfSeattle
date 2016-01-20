@@ -2,15 +2,15 @@ import Router from 'koa-router'
 import craneModel from '../models/crane'
 
 export default Router()
-  .get('/', function *() {
-    this.body = { message: 'Hello there!' };
+  .get('/', (ctx) => {
+    ctx.body = { message: 'Hello there!' };
   })
-  .get('/cranes', function *() {
-    let cranes = yield craneModel.fetchAll();
-    this.body = cranes;
+  .get('/cranes', async (ctx) => {
+    let cranes = await craneModel.fetchAll();
+    ctx.body = cranes;
   })
-  .post('/cranes', function *() {
-    let crane = this.request.body;
-    let id = yield craneModel.report(crane);
-    this.body = id;
+  .post('/cranes', async (ctx) => {
+    let crane = ctx.request.body;
+    let id = await craneModel.report(crane);
+    ctx.body = id;
   })
