@@ -83,7 +83,8 @@ test('FETCHING ALL CRANES', function *(assert) {
     .expect(200)
     .expect('Content-Type', /json/)
     .end()
-  assert.ok((response.body.data instanceof Array), 'Response is an array.');
+
+  assert.ok((response.body.data instanceof Object), 'Response is an array.');
 });
 
 server.close();

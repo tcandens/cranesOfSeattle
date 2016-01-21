@@ -6,11 +6,16 @@ export default Router()
     ctx.body = { message: 'Hello there!' };
   })
   .get('/cranes', async (ctx) => {
-    let cranes = await craneModel.fetchAll();
-    ctx.body = cranes;
+    let response = await craneModel.fetchAll();
+    ctx.body = {
+      data: response
+    };
   })
   .post('/cranes', async (ctx) => {
     let crane = ctx.request.body;
-    let id = await craneModel.report(crane);
-    ctx.body = id;
+    let response = await craneModel.report(crane);
+    console.log(response)
+    ctx.body = {
+      data: response
+    };
   })
