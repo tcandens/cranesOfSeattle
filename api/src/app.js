@@ -15,4 +15,4 @@ app
 .use(cranes.routes())
   .use(cranes.allowedMethods());
 
-export { app }
+export default app
