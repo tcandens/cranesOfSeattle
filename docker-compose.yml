@@ -1,5 +1,7 @@
 db:
   image: mdillon/postgis:latest
+  ports:
+    - "5432:5432"
 
 api:
   build: ./api
@@ -7,7 +9,6 @@ api:
     - "3000"
   environment:
     - ENV=DEV
-    # - PGHOST=db
     - PGDATABASE=postgres
     - PGUSER=postgres
     - PGPASSWORD=mysecretpassword
