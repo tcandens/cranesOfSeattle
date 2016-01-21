@@ -12,7 +12,7 @@ i=0
 while ! exec 6<>/dev/tcp/${host}/${port};
 do
   i=`expr $i + 1`
-  if [ $i -ge 10 ]; then
+  if [ $i -ge 20 ]; then
     echo "Database unavailable. Giving up."
     exit 1
   fi
