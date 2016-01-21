@@ -5,13 +5,17 @@ exports.up = function(pgm) {
       type: 'geography(POINT, 4326)',
       notNull: true
     },
-    name: {
-      type: 'varchar(40)',
+    user_id: {
+      type: 'integer',
       notNull: true
     },
-    permit: {
-      type: 'text',
-      notNull: false
+    permit: 'integer',
+    expiration_date: {
+      type: 'date'
+    },
+    address: {
+      type: 'varchar(60)',
+      notNull: true
     }
   });
 };
