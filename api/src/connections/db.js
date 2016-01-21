@@ -3,7 +3,10 @@ import options from './db_options'
 import pgp from 'pg-promise'
 import monitor from 'pg-monitor'
 
-monitor.attach(options);
+/* Turn off database logging for tests */
+if (process.env.ENV !== 'TEST') {
+  monitor.attach(options);
+}
 
 let singleton = null;
 
