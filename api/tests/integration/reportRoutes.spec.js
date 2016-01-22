@@ -37,7 +37,7 @@ test('INSERTING A REPORT', function *(assert) {
     .post('/reports')
     .send(testReport)
     .expect('Content-Type', /json/)
-    .expect(200)
+    .expect(201)
     .end();
 
   assert.ok(
@@ -91,7 +91,7 @@ test('FETCHING ALL REPORTS', function *(assert) {
     );
 
     assert.ok(
-      (data.featureCollection.features.length >== 2),
+      (data.featureCollection.features.length >= 2),
       'Should have a length >=2.'
     );
 

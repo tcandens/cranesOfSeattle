@@ -40,7 +40,7 @@ test('INSERTING A CRANE', function *(assert) {
   const response = yield request
     .post('/cranes')
     .send(testCrane)
-    .expect(200)
+    .expect(201)
     .expect('Content-Type', /json/)
     .end();
 

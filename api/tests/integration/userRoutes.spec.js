@@ -28,7 +28,7 @@ test('INSERTING A USER', function *(assert) {
   const response = yield request
     .post('/users')
     .send(testUser)
-    .expect(200)
+    .expect(201)
     .expect('Content-Type', /json/)
     .end();
 
