@@ -11,7 +11,7 @@ import packageJSON from '../../package.json'
 
 const request = supertest.agent(server);
 
-const currentVersion = JSON.parse(packageJSON).version;
+const currentVersion = packageJSON.version;
 
 test('CHECKING API VERSION IS IN RESPONSE HEADERS', function *(assert) {
   const response = request
@@ -24,7 +24,7 @@ test('CHECKING API VERSION IS IN RESPONSE HEADERS', function *(assert) {
     currentVersion,
     'Should return header field with version matching current version.'
   );
-  
+
 });
 
 server.close();
