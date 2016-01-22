@@ -10,12 +10,20 @@ const prototype = {
   },
   db: __database.instance,
   tableName: 'default',
-  fetchAll() {
+  create(model) {
+  },
+  read(id) {
+  },
+  readAll() {
     const res = this.db.manyOrNone(`SELECT * FROM ${this.tableName}`)
       .finally(this.close())
     return res;
   },
-  __clean__() {
+  update(fields) {
+  },
+  destroy(id) {
+  },
+  __destroyAll__() {
     // return this.database.cn.none(`DELETE FROM ${this.tableName}`)
     const res = this.db.query(`DELETE FROM ${this.tableName}`)
       .finally(this.close())
