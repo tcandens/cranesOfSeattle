@@ -20,17 +20,21 @@ craneModel.create = function(crane) {
 };
 
 craneModel.read = function(id) {
-  const query = `SELECT
-    ST_AsGeoJSON(location) AS geometry,
-    permit,
-    address,
-    expiration_date,
-    user_id
-  FROM ${this.tableName} WHERE id = $1;`;
+  const query = `
+      SELECT 'Feature' AS type,
+      ST_AsGeoJSON(location)::json AS geometry,
+      row_to_json(
+        (SELECT l FROM
+          (SELECT
+            permit,
+            address,
+            expiration_date,
+            user_id
+          ) AS l
+        )
+      ) AS properties
+      FROM ${this.tableName} AS l WHERE l.id = $1`;
   const response = this.db.one(query, id)
-    // .all(data => {
-    //   console.log('All promises:', data);
-    // })
     .finally(this.close());
   return response;
 }
