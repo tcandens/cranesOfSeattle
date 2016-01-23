@@ -16,8 +16,23 @@ craneModel.create = function(crane) {
   RETURNING ID`;
   const response = this.db.one(query, merge(crane, crane.properties))
     .finally(this.close());
-
   return response;
 };
+
+craneModel.read = function(id) {
+  const query = `SELECT
+    ST_AsGeoJSON(location) AS geometry,
+    permit,
+    address,
+    expiration_date,
+    user_id
+  FROM ${this.tableName} WHERE id = $1;`;
+  const response = this.db.one(query, id)
+    // .all(data => {
+    //   console.log('All promises:', data);
+    // })
+    .finally(this.close());
+  return response;
+}
 
 export default craneModel

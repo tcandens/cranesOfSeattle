@@ -9,6 +9,18 @@ export default Router()
       data: response
     };
   })
+  .get('/cranes/:id', async (ctx) => {
+    let response = craneModel.read(ctx.params.id);
+    await response
+      .then(data => {
+        ctx.status = 200;
+        ctx.body = data;
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
+  })
   .post('/cranes', async (ctx) => {
     let crane = ctx.request.body;
     let response = craneModel.create(crane);
@@ -20,10 +32,7 @@ export default Router()
       .catch(error => {
         ctx.status = 500;
         ctx.body = error.toString();
-      })
-  })
-  .put('/cranes/:id', async (ctx) => {
-    const params = ctx.params;
+      });
   })
   .del('/cranes/:id', async (ctx) => {
     const params = ctx.params;
