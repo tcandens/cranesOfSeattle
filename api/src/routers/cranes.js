@@ -14,7 +14,9 @@ export default Router()
     await response
       .then(data => {
         ctx.status = 200;
-        ctx.body = data;
+        ctx.body = {
+          data: data
+        };
       })
       .catch(error => {
         ctx.status = 500;
@@ -27,7 +29,9 @@ export default Router()
     await response
       .then(data => {
         ctx.status = 201;
-        ctx.body = data;
+        ctx.body = {
+          data: data
+        };
       })
       .catch(error => {
         ctx.status = 500;
