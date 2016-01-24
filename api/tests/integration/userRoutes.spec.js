@@ -22,7 +22,7 @@ function clearTables () {
  */
 const testUser = { }
 
-test('INSERTING A USER', function *(assert) {
+test.skip('INSERTING A USER', function *(assert) {
   clearTables();
 
   const response = yield request
@@ -42,7 +42,7 @@ test('INSERTING A USER', function *(assert) {
 
 });
 
-test('FETCHING A USER', function *(assert) {
+test.skip('FETCHING A USER', function *(assert) {
   const response = yield request
     .get('/users/' + testUser.id)
     .expect('Content-Type', /json/)
