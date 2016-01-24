@@ -31,7 +31,7 @@ const testReport = {
   }
 }
 
-test('INSERTING A REPORT', function *(assert) {
+test.skip('INSERTING A REPORT', function *(assert) {
   clearTables();
   const response = yield request
     .post('/reports')
@@ -50,7 +50,7 @@ test('INSERTING A REPORT', function *(assert) {
 
 });
 
-test('FETCHING REPORTS WITHIN RANGE', function *(assert) {
+test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
   // Insert another report that should be outside search radius
   const response = yield request
     .get('/reports')
@@ -76,7 +76,7 @@ test('FETCHING REPORTS WITHIN RANGE', function *(assert) {
 
 });
 
-test('FETCHING ALL REPORTS', function *(assert) {
+test.skip('FETCHING ALL REPORTS', function *(assert) {
   const response = yield request
     .get('/reports')
     .expect('Content-Type', /json/)

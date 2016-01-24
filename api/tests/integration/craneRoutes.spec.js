@@ -13,8 +13,8 @@ const request = supertest.agent(server);
 
 const db = database.init();
 
-function clearTables () {
-  db.instance.query('TRUNCATE cranes');
+async function clearTables () {
+  await db.instance.none('DELETE FROM cranes');
 }
 
 /**
@@ -23,14 +23,14 @@ function clearTables () {
 const testCrane = {
   type: 'Feature',
   geometry: {
-    type: 'POINT',
-    coordinates: [47.682961, -122.386444]
+    type: 'Point',
+    coordinates: [-122.386444, 47.682961]
   },
   properties: {
-    permit: '1337',
+    permit: 1337,
     address: '7349 Jones Ave NW',
-    expiration: '01/01/70',
-    user: '0001'
+    expiration_date: '1970-01-01',
+    user_id: 1
   }
 }
 
@@ -54,7 +54,22 @@ test('INSERTING A CRANE', function *(assert) {
 
 });
 
-test('FETCH CRANES WITHIN RANGE', function *(assert) {
+test('FETCHING A CRANE BY ID', function *(assert) {
+  const response = yield request
+    .get('/cranes/' + testCrane.properties.id)
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end();
+
+  assert.deepEqual(
+    response.body.data,
+    testCrane,
+    'Should return a crane that matches test crane.'
+  );
+
+});
+
+test.skip('FETCH CRANES WITHIN RANGE', function *(assert) {
   // Insert dummy crane outside of range
   const response = yield request
     .get('/cranes')
@@ -80,7 +95,7 @@ test('FETCH CRANES WITHIN RANGE', function *(assert) {
 
 });
 
-test('FETCHING ALL CRANES', function *(assert) {
+test.skip('FETCHING ALL CRANES', function *(assert) {
   const response = yield request
     .get('/cranes')
     .expect(200)
@@ -98,21 +113,6 @@ test('FETCHING ALL CRANES', function *(assert) {
       (data.featureCollection.features.length >= 2),
       'Should have a length >=2.'
     );
-
-});
-
-test.skip('FETCHING A CRANE BY ID', function *(assert) {
-  const response = yield request
-    .get('/cranes/' + testCrane.properties.id)
-    .expect(200)
-    .expect('Content-Type', /json/)
-    .end();
-
-  assert.deepEqual(
-    response.body.data,
-    testCrane,
-    'Should return a crane that matches test crane.'
-  );
 
 });
 
