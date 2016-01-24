@@ -95,7 +95,7 @@ test.skip('FETCH CRANES WITHIN RANGE', function *(assert) {
 
 });
 
-test.skip('FETCHING ALL CRANES', function *(assert) {
+test('FETCHING ALL CRANES', function *(assert) {
   const response = yield request
     .get('/cranes')
     .expect(200)

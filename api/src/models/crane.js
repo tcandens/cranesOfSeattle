@@ -41,4 +41,28 @@ craneModel.read = function(id) {
   return response;
 };
 
+craneModel.readAll = function() {
+  const query = `
+    SELECT row_to_json(fc) FROM
+      (SELECT 'FeatureCollection' AS type, array_to_json(array_agg(f)) AS features
+        FROM (SELECT 'Feature' AS type,
+          ST_AsGeoJSON(l.location)::json AS geometry,
+          row_to_json(
+            (SELECT r FROM
+              (SELECT
+                permit,
+                address,
+                expiration_date,
+                user_id,
+                id
+              ) AS r
+            )) AS properties FROM ${this.tableName} AS l
+        ) AS f
+      ) AS fc
+  `;
+  const response = this.db.manyOrNone(query)
+    .finally(this.close());
+  return response;
+}
+
 export default craneModel

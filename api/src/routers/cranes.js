@@ -3,11 +3,18 @@ import craneModel from '../models/crane'
 
 export default Router()
   .get('/cranes', async (ctx) => {
-    let response = await craneModel.readAll();
-    ctx.status = 200;
-    ctx.body = {
-      data: response
-    };
+    let response = craneModel.readAll();
+    await response
+      .then(data => {
+        ctx.status = 200;
+        ctx.body = {
+          data: data
+        }
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
   })
   .get('/cranes/:id', async (ctx) => {
     let response = craneModel.read(ctx.params.id);
