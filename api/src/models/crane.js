@@ -36,31 +36,22 @@ craneModel.read = function(id) {
       )
     ) AS properties
     FROM ${this.tableName} AS l WHERE l.id = $1`;
-  const response = this.db.one(query, id)
+  const response = this.db.oneOrNone(query, id)
     .finally(this.close());
   return response;
 };
 
 craneModel.readAll = function() {
   const query = `
-    SELECT row_to_json(fc) FROM
-      (SELECT 'FeatureCollection' AS type, array_to_json(array_agg(f)) AS features
-        FROM (SELECT 'Feature' AS type,
-          ST_AsGeoJSON(l.location)::json AS geometry,
-          row_to_json(
-            (SELECT r FROM
-              (SELECT
-                permit,
-                address,
-                expiration_date,
-                user_id,
-                id
-              ) AS r
-            )) AS properties FROM ${this.tableName} AS l
-        ) AS f
-      ) AS fc
+    SELECT 'FeatureCollection' as type,
+    array_to_json(array_agg(f)) as features FROM (
+      SELECT 'Feature' as type,
+      ST_AsGeoJSON(r.location)::json as geometry,
+      row_to_json((SELECT l FROM (SELECT id, permit) AS l)) AS properties
+      FROM ${this.tableName} AS r
+    ) AS f
   `;
-  const response = this.db.manyOrNone(query)
+  const response = this.db.one(query)
     .finally(this.close());
   return response;
 }
