@@ -45,6 +45,35 @@ export default Router()
         ctx.body = error.toString();
       });
   })
+  .put('/cranes/:id', async (ctx) => {
+    let crane = ctx.request.body;
+    let response = craneModel.update(crane);
+    await response
+      .then(data => {
+        ctx.status = 200;
+        ctx.body = {
+          data: data,
+          message: 'Crane updated.'
+        }
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
+  })
   .del('/cranes/:id', async (ctx) => {
-    const params = ctx.params;
+    let id = ctx.params.id;
+    let response = craneModel.destroy(id);
+    await response
+      .then(data => {
+        ctx.status = 200;
+        ctx.body = {
+          message: 'Crane destroyed.',
+          data: data
+        };
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
   })

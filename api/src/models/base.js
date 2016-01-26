@@ -13,18 +13,38 @@ const prototype = {
   create(model) {
   },
   read(id) {
+    const query = `
+      SELECT * FROM ${this.tableName} WHERE id = $1^
+    `;
+    const response = this.db.one(query, id)
+      .finally(this.close());
+    return response;
   },
   readAll() {
-    const res = this.db.manyOrNone(`SELECT * FROM ${this.tableName}`)
+    const query = `
+      SELECT * FROM ${this.tableName}
+    `;
+    const response = this.db.manyOrNone(query)
       .finally(this.close())
-    return res;
+    return response;
   },
-  update(fields) {
+  update(fieldObject) {
+    const query = `
+      UPDATE ${this.tableName} SET $/key/ = $/value/ WHERE id = $/id/
+    `;
+    const response = this.db.none(query, fieldObject)
+      .finally(this.close());
+    return response;
   },
   destroy(id) {
+    const query = `
+      DELETE FROM ${this.tableName} WHERE id = $1^
+    `;
+    const response = this.db.none(query, id)
+      .finally(this.close());
+    return response;
   },
   __destroyAll__() {
-    // return this.database.cn.none(`DELETE FROM ${this.tableName}`)
     const res = this.db.query(`DELETE FROM ${this.tableName}`)
       .finally(this.close())
   }

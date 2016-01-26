@@ -35,7 +35,8 @@ craneModel.read = function(id) {
         ) AS l
       )
     ) AS properties
-    FROM ${this.tableName} AS l WHERE l.id = $1`;
+    FROM ${this.tableName} AS l WHERE l.id = $1
+  `;
   const response = this.db.oneOrNone(query, id)
     .finally(this.close());
   return response;

@@ -104,20 +104,25 @@ test('FETCHING ALL CRANES', function *(assert) {
 
     const data = response.body.data;
 
-    assert.ok(
-      (data.featureCollection.features instanceof Array),
-      'Should return data as an array.'
+    assert.equal(
+      data.type,
+      'FeatureCollection',
+      'Should return geoJSON featureCollections'
     );
 
     assert.ok(
-      (data.featureCollection.features.length >= 2),
-      'Should have a length >=2.'
+      (data.features instanceof Array),
+      'Should return data as an array.'
     );
 
 });
 
 test.skip('UPDATING A CRANE', function *(assert) {
-  const updatedCrane = {};
+  const updatedCrane = {
+    key: 'permit',
+    value: 2323,
+    id: testCrane.properties.id
+  };
 
   const response = yield request
     .put('/cranes/' + testCrane.properties.id)
@@ -133,7 +138,7 @@ test.skip('UPDATING A CRANE', function *(assert) {
 
 });
 
-test.skip('DESTROYING A CRANE', function *(assert) {
+test('DESTROYING A CRANE', function *(assert) {
   const response = yield request
     .del('/cranes/' + testCrane.properties.id)
     .expect(200)
