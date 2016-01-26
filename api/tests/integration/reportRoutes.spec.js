@@ -66,6 +66,7 @@ test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
     .get('/reports')
     .query({lat: 47.682})
     .query({lng: -122.386})
+    .query({radius: 100})
     .expect('Content-Type', /json/)
     .expect(200)
     .end();
