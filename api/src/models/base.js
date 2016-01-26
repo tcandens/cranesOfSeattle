@@ -1,4 +1,4 @@
-import { assign } from 'lodash'
+import { create } from 'lodash'
 import db from '../connections/db'
 
 const __database = db.init();
@@ -30,7 +30,7 @@ const prototype = {
   },
   update(fieldObject) {
     const query = `
-      UPDATE ${this.tableName} SET $/key/ = $/value/ WHERE id = $/id/
+      UPDATE ${this.tableName} SET $/key^/ = $/value/ WHERE id = $/id/
     `;
     const response = this.db.none(query, fieldObject)
       .finally(this.close());
@@ -52,7 +52,7 @@ const prototype = {
 
 // Export factory
 export default function (name, options) {
-  return assign(prototype, {
+  return create(prototype, {
     tableName: name
   }, options);
 }
