@@ -15,15 +15,16 @@ const currentVersion = packageJSON.version;
 
 test('CHECKING API VERSION IS IN RESPONSE HEADERS', function *(assert) {
   const response = request
-    .get('/')
+    .get('/reports')
     .expect(200)
+    .expect('API-Version', '2')
     .end();
 
-  assert.equal(
-    response.header.version,
-    currentVersion,
-    'Should return header field with version matching current version.'
-  );
+  // assert.equal(
+  //   response.header,
+  //   currentVersion,
+  //   'Should return header field with version matching current version.'
+  // );
 
 });
 
