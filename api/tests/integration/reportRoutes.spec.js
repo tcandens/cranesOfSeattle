@@ -23,11 +23,11 @@ function clearTables () {
 const testReport = {
   type: 'Feature',
   geometry: {
-    type: 'POINT',
-    coordinates: [47.682961, -122.386444]
+    type: 'Point',
+    coordinates: [-122.386444, 47.682961]
   },
   properties: {
-    user_id: '0001'
+    user_id: 1
   }
 }
 
@@ -37,7 +37,7 @@ test('INSERTING A REPORT', function *(assert) {
     .post('/reports')
     .send(testReport)
     .expect('Content-Type', /json/)
-    .expect(200)
+    .expect(201)
     .end();
 
   assert.ok(
@@ -50,12 +50,23 @@ test('INSERTING A REPORT', function *(assert) {
 
 });
 
-test('FETCHING REPORTS WITHIN RANGE', function *(assert) {
+test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
   // Insert another report that should be outside search radius
+  request
+    .post('/reports')
+    .send(Object.create(testReport, {
+      geometry: {
+        type: 'Point',
+        coordinates: [22, 44]
+      }
+    }))
+    .end();
+
   const response = yield request
     .get('/reports')
     .query({lat: 47.682})
     .query({lng: -122.386})
+    .query({radius: 100})
     .expect('Content-Type', /json/)
     .expect(200)
     .end();
@@ -85,19 +96,20 @@ test('FETCHING ALL REPORTS', function *(assert) {
 
     const data = response.body.data;
 
-    assert.ok(
-      (data.featureCollection.features instanceof Array),
-      'Should return data as an array.'
+    assert.equal(
+      data.type,
+      'FeatureCollection',
+      'Should return geoJSON featureCollections'
     );
 
     assert.ok(
-      (data.featureCollection.features.length >== 2),
-      'Should have a length >=2.'
+      (data.features instanceof Array),
+      'Should return features as an array.'
     );
 
 });
 
-test.skip('FETCHING A REPORT BY ID', function *(assert) {
+test('FETCHING A REPORT BY ID', function *(assert) {
   const response = yield request
     .get('/reports/' + testReport.properties.id)
     .expect('Content-Type', /json/)
@@ -112,8 +124,12 @@ test.skip('FETCHING A REPORT BY ID', function *(assert) {
 
 });
 
-test.skip('UPDATING A REPORT', function *(assert) {
-  const updatedReport = {};
+test('UPDATING A REPORT', function *(assert) {
+  const updatedReport = {
+    key: 'user_id',
+    value: 9999,
+    id: testReport.properties.id
+  };
 
   const response = yield request
     .put('/reports/' + testReport.properties.id)
@@ -127,9 +143,19 @@ test.skip('UPDATING A REPORT', function *(assert) {
     'Should return a message with status.'
   );
 
+  const doubleCheck = yield request
+    .get('/reports/' + testReport.properties.id)
+    .end();
+
+  assert.equal(
+    doubleCheck.body.data.properties.user_id,
+    updatedReport.value,
+    'Should now return with updated row.'
+  );
+
 });
 
-test.skip('DESTROYING A REPORT', function *(assert) {
+test('DESTROYING A REPORT', function *(assert) {
   const response = yield request
     .del('/reports/' + testReport.properties.id)
     .expect(200)

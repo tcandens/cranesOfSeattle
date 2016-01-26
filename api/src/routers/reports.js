@@ -1,23 +1,36 @@
 import Router from 'koa-router'
-import craneModel from '../models/crane'
+import reportModel from '../models/report'
 
 export default Router()
-  .get('/cranes', async (ctx) => {
-    let response = craneModel.readAll();
+  .get('/reports', async (ctx) => {
+    let response = reportModel.readAll();
     await response
       .then(data => {
-        ctx.status = 200;
         ctx.body = {
           data: data
-        }
+        };
       })
       .catch(error => {
         ctx.status = 500;
         ctx.body = error.toString();
       });
   })
-  .get('/cranes/:id', async (ctx) => {
-    let response = craneModel.read(ctx.params.id);
+  .get('/reports/within', async (ctx) => {
+    const response = reportModel.findWithin(ctx.query);
+    await response
+      .then(data => {
+        ctx.body = {
+          data: data
+        };
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
+  })
+  .get('/reports/:id', async (ctx) => {
+    let id = ctx.params.id;
+    let response = reportModel.read(id);
     await response
       .then(data => {
         ctx.status = 200;
@@ -30,9 +43,9 @@ export default Router()
         ctx.body = error.toString();
       });
   })
-  .post('/cranes', async (ctx) => {
-    let crane = ctx.request.body;
-    let response = craneModel.create(crane);
+  .post('/reports', async (ctx) => {
+    let report = ctx.request.body;
+    let response = reportModel.create(report);
     await response
       .then(data => {
         ctx.status = 201;
@@ -45,15 +58,15 @@ export default Router()
         ctx.body = error.toString();
       });
   })
-  .put('/cranes/:id', async (ctx) => {
-    let crane = ctx.request.body;
-    let response = craneModel.update(crane);
+  .put('/reports/:id', async (ctx) => {
+    let report = ctx.request.body;
+    let response = reportModel.update(report);
     await response
       .then(data => {
         ctx.status = 200;
         ctx.body = {
           data: data,
-          message: 'Crane updated.'
+          message: 'Report updated.'
         }
       })
       .catch(error => {
@@ -61,14 +74,14 @@ export default Router()
         ctx.body = error.toString();
       });
   })
-  .del('/cranes/:id', async (ctx) => {
+  .del('/reports/:id', async (ctx) => {
     let id = ctx.params.id;
-    let response = craneModel.destroy(id);
+    let response = reportModel.destroy(id);
     await response
       .then(data => {
         ctx.status = 200;
         ctx.body = {
-          message: 'Crane destroyed.',
+          message: 'Report destroyed.',
           data: data
         };
       })
