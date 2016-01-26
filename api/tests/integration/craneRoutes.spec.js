@@ -136,6 +136,16 @@ test.skip('UPDATING A CRANE', function *(assert) {
     'Should return a message with status.'
   );
 
+  const doubleCheck = yield request
+    .get('/cranes/' + testCrane.properties.id)
+    .end();
+
+  assert.equal(
+    doubleCheck.body.data.properties.permit,
+    updatedCrane.value,
+    'Should now return with updated row.'
+  );
+
 });
 
 test('DESTROYING A CRANE', function *(assert) {
