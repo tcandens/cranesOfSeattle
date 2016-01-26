@@ -6,10 +6,22 @@ export default Router()
     let response = reportModel.readAll();
     await response
       .then(data => {
-        ctx.status = 200;
         ctx.body = {
           data: data
-        }
+        };
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
+  })
+  .get('/reports/within', async (ctx) => {
+    const response = reportModel.findWithin(ctx.query);
+    await response
+      .then(data => {
+        ctx.body = {
+          data: data
+        };
       })
       .catch(error => {
         ctx.status = 500;
