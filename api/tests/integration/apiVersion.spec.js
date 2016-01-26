@@ -14,17 +14,16 @@ const request = supertest.agent(server);
 const currentVersion = packageJSON.version;
 
 test('CHECKING API VERSION IS IN RESPONSE HEADERS', function *(assert) {
-  const response = request
+  const response = yield request
     .get('/reports')
     .expect(200)
-    .expect('API-Version', '2')
     .end();
 
-  // assert.equal(
-  //   response.header,
-  //   currentVersion,
-  //   'Should return header field with version matching current version.'
-  // );
+  assert.equal(
+    response.headers['api-version'],
+    currentVersion,
+    'Should return header field with version matching current version.'
+  );
 
 });
 
