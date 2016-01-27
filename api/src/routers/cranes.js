@@ -3,8 +3,7 @@ import craneModel from '../models/crane'
 
 export default Router()
   .get('/cranes', async (ctx) => {
-    let response = craneModel.readAll();
-    await response
+    await craneModel.readAll()
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
@@ -26,8 +25,7 @@ export default Router()
       });
   })
   .get('/cranes/:id', async (ctx) => {
-    let response = craneModel.read(ctx.params.id);
-    await response
+    await craneModel.read(ctx.params.id)
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
@@ -38,9 +36,7 @@ export default Router()
       });
   })
   .post('/cranes', async (ctx) => {
-    let crane = ctx.request.body;
-    let response = craneModel.create(crane);
-    await response
+    await craneModel.create(ctx.request.body)
       .then(data => {
         ctx.status = 201;
         ctx.body = data;
@@ -53,8 +49,7 @@ export default Router()
   .put('/cranes/:id', async (ctx) => {
     let crane = ctx.request.body;
     crane.id = ctx.params.id;
-    let response = craneModel.update(crane);
-    await response
+    await craneModel.update(crane)
       .then(data => {
         ctx.body = data;
       })
@@ -64,9 +59,7 @@ export default Router()
       });
   })
   .del('/cranes/:id', async (ctx) => {
-    let id = ctx.params.id;
-    let response = craneModel.destroy(id);
-    await response
+    await craneModel.destroy(ctx.params.id)
       .then(data => {
         ctx.body = data;
       })

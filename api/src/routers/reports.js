@@ -3,8 +3,7 @@ import reportModel from '../models/report'
 
 export default Router()
   .get('/reports', async (ctx) => {
-    let response = reportModel.readAll();
-    await response
+    await reportModel.readAll()
       .then(data => {
         ctx.body = data;
       })
@@ -14,8 +13,7 @@ export default Router()
       });
   })
   .get('/reports/within', async (ctx) => {
-    const response = reportModel.findWithin(ctx.query);
-    await response
+    await reportModel.findWithin(ctx.query)
       .then(data => {
         ctx.body = data;
       })
@@ -25,9 +23,7 @@ export default Router()
       });
   })
   .get('/reports/:id', async (ctx) => {
-    let id = ctx.params.id;
-    let response = reportModel.read(id);
-    await response
+    await reportModel.read(ctx.params.id)
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
@@ -38,9 +34,7 @@ export default Router()
       });
   })
   .post('/reports', async (ctx) => {
-    let report = ctx.request.body;
-    let response = reportModel.create(report);
-    await response
+    await reportModel.create(ctx.request.body)
       .then(data => {
         ctx.status = 201;
         ctx.body = data;
@@ -53,8 +47,7 @@ export default Router()
   .put('/reports/:id', async (ctx) => {
     let report = ctx.request.body;
     report.id = ctx.params.id;
-    let response = reportModel.update(report);
-    await response
+    await reportModel.update(report)
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
@@ -65,9 +58,7 @@ export default Router()
       });
   })
   .del('/reports/:id', async (ctx) => {
-    let id = ctx.params.id;
-    let response = reportModel.destroy(id);
-    await response
+    await reportModel.destroy(ctx.params.id)
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
