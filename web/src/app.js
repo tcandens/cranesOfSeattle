@@ -1,17 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Test from './tester';
+import helloFactory from './tester'
 
-class Main extends React.Component {
-  render() {
-    return (
-      <div>
-        <h2>Stuff</h2>
-        <Test></Test>
-      </div>
-    )
-  }
-}
+const Hello = helloFactory({React});
 
-ReactDOM.render(<Main />, document.querySelector('#root'));
+let word = 'world';
+
+ReactDOM.render(<Hello word={word} />, document.getElementById('root'));
