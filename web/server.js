@@ -1,16 +1,26 @@
+const path = require('path');
+const app = require('express')();
 const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.development.js');
 
-const PORT = 9000;
+var compiler = webpack(config);
 
-new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
-  hot: true,
-  historyApiFallback: true
-}).listen(PORT, '0.0.0.0', (error, result) => {
-    if (error) {
-      console.log(error);
-    }
-    console.log('Listening to Webpack-Dev-Server at localhost:' + PORT);
-  });
+app.use(require('webpack-dev-middleware')(compiler, {
+  noInfo: true,
+  publicPath: config.output.publicPath
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+
+app.get('*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(9000, '0.0.0.0', function(err) {
+  if (err) {
+    console.log(err);
+    return;
+  }
+
+  console.log('Listening with webpack compiler.');
+});
