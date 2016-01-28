@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 class helloComponent extends Component {
   render() {
+    const {word} = this.props;
     return (
-      <h1>Fuck off, world</h1>
+      <h1>Love you, {word}</h1>
     )
   }
 }
