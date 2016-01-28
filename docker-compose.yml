@@ -23,7 +23,7 @@ webpack:
   expose:
     - "9000"
   volumes:
-    - ./web/src:/usr/src/src
+    - ./web:/usr/src
 
 nginx:
   image: nginx:latest
