@@ -1,14 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const PORT = 9000;
-
 module.exports = {
-  devtool: 'eval',
+  devtool: 'cheap-module-eval-source-map',
   entry: [
-    'webpack-dev-server/client?localhost:8080/sockjs-node/',
-    'webpack/hot/only-dev-server',
-    './src/app.js'
+    'webpack-hot-middleware/client',
+    './src/app.jsx'
   ],
   output: {
     path: path.join(__dirname, 'dist/js'),
@@ -16,12 +13,13 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ],
   module: {
     loaders: [{
-      test: /\.js$/,
-      loaders: ['react-hot', 'babel'],
+      test: /\.jsx$/,
+      loaders: ['babel'],
       include: path.join(__dirname, 'src')
     }]
   }
