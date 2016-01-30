@@ -1,6 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
 
-import Hello from './tester.jsx'
+import Map from './components/map.jsx'
 
-ReactDOM.render(<Hello word='Albert'/>, document.getElementById('root'));
+export default class App extends React.Component {
+  render() {
+    const center = {
+      lat: '22',
+      lng: '-144'
+    };
+    return (
+      <Map center={center} zoom='6'></Map>
+    )
+  }
+}
