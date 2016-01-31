@@ -1,10 +1,9 @@
 import React from 'react'
 import Mapbox from 'mapbox-gl'
+import {MAPBOX_KEY} from 'protected'
 
 import './map.styl'
 import 'mapbox-gl/css'
-
-const mapboxKey = process.env.mapbox_key || 'pk.eyJ1IjoidGNhbmRlbnMiLCJhIjoiZDEzOTJmYTdkZWNjYzc3ZDA1OWE0ODJmMmRmMmFjODUifQ.6m8N0DXRDsDugoXMcGXfhQ';
 
 const {PropTypes, Component} = React;
 
@@ -21,6 +20,7 @@ export default class Map extends Component {
     zoom: PropTypes.number.isRequired,
     pitch: PropTypes.number,
     rotate: PropTypes.number,
+    markers: PropTypes.object,
     actions: PropTypes.shape({
       onMove: PropTypes.func
     })
@@ -37,9 +37,14 @@ export default class Map extends Component {
   shouldComponentUpdate() {
     return false;
   }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.markers) {
+      this.addMarkers(nextProps.markers);
+    }
+  }
   componentDidMount() {
-    Mapbox.accessToken = mapboxKey;
-    const {center, zoom, pitch} = this.props;
+    Mapbox.accessToken = MAPBOX_KEY;
+    const {center, zoom, pitch, markers} = this.props;
     const map = new Mapbox.Map({
       container: this._mapContainer,
       center: new Mapbox.LngLat(center[0], center[1]),
@@ -63,10 +68,31 @@ export default class Map extends Component {
       window.console.log(coords);
     });
     this.setState({map: map});
+
+    if (markers) {
+      this.addMarkers(markers);
+    }
   }
   render() {
     return (
       <div ref={(c) => this._mapContainer = c} className='map-container'></div>
     )
+  }
+  addMarkers = (geojson) => {
+    const {map} = this.state;
+    const source = new Mapbox.GeoJSONSource({
+      data: geojson
+    });
+    map.on('style.load', () => {
+      map.addSource('reports', source);
+      map.addLayer({
+        'id': 'reports_layer',
+        'type': 'symbol',
+        'source': 'reports',
+        'layout': {
+          'icon-image': 'monument-13'
+        }
+      });
+    });
   }
 }
