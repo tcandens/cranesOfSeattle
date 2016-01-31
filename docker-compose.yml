@@ -24,6 +24,8 @@ webpack:
     - "9000"
   volumes:
     - ./web:/usr/src
+  env_file:
+    - ./web/.env
 
 nginx:
   image: nginx:latest
