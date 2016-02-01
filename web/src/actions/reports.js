@@ -1,9 +1,6 @@
 import axios from 'axios';
 
 export const REQUEST_REPORTS = 'REQUEST_REPORTS';
-export const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
-export const ADD_REPORT = 'ADD_REPORT'
-
 export function requestReports() {
   return {
     type: REQUEST_REPORTS,
@@ -11,6 +8,7 @@ export function requestReports() {
   };
 }
 
+export const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
 export function receiveReports(geojson) {
   return {
     type: RECEIVE_REPORTS,
@@ -35,6 +33,7 @@ export function fetchReports() {
   };
 }
 
+export const ADD_REPORT = 'ADD_REPORT';
 export function addReport(report) {
   return {
     type: ADD_REPORT,
@@ -54,15 +53,5 @@ export function saveReport(report) {
         // dispatch(registerError(error));
         window.console.log(error);
       });
-  };
-}
-
-
-export const MOVE_MAP = 'MOVE_MAP';
-
-export function moveMap(position) {
-  return {
-    type: MOVE_MAP,
-    position: position
   };
 }
