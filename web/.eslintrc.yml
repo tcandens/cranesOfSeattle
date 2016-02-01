@@ -1,8 +1,17 @@
+extends: eslint:recommended
 parser: babel-eslint
-rules:
-  strict: 0
+ecmaFeatures:
+  jsx: true
+plugins:
+  - react
 env:
   es6: true
   node: true
   browser: true
-extends: 'eslint:recommended'
+rules:
+  comma-style:
+    - 2
+    - last
+  semi:
+    - 2
+    - always
