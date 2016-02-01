@@ -3,8 +3,10 @@ import {connect} from 'react-redux';
 import {
   fetchReports,
   saveReport,
-  moveMap
 } from '../actions/reports';
+import {
+  moveMap
+} from '../actions/map';
 
 import MapViewport from './mapviewport.jsx';
 
