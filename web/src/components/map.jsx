@@ -1,11 +1,11 @@
 import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
-import assign from 'lodash/object/assign';
-import isEmpty from 'lodash/object/isempty';
 import {MAPBOX_KEY} from 'protected';
 
 import './map.styl';
 import 'mapbox-gl/css';
+
+const assign = Object.assign;
 
 export default class Map extends Component {
   constructor(props) {
@@ -27,8 +27,12 @@ export default class Map extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const map = this.getMap();
+    if (this.source) {
+      console.log('the source', this.source);
+      this.source.setData(nextProps.geojson);
+    }
     const {geojson} = nextProps;
-    if (!isEmpty(geojson)) {
+    if (Object.keys(geojson).length) {
       if (!map.loaded()) {
         map.on('load', () => {
           this.addGeoJSON(geojson);
@@ -81,9 +85,10 @@ export default class Map extends Component {
   }
   onMoveEnd = () => {
     const map = this.getMap();
+    const {onMapMove} = this.props;
     const changedCenter = map.getCenter();
+    onMapMove(changedCenter);
     this.setState({center: changedCenter});
-    window.console.log(this.state.center);
   }
   addGeoJSON = (geojson) => {
     const map = this.getMap();
@@ -91,6 +96,7 @@ export default class Map extends Component {
     const source = new Mapbox.GeoJSONSource({
       data: geojson
     });
+    this.source = source;
     map.addSource(sourceName, source);
     map.addLayer({
       'id': sourceName,
@@ -111,9 +117,7 @@ Map.propTypes = {
   pitch: PropTypes.number,
   rotate: PropTypes.number,
   geojson: PropTypes.object,
-  actions: PropTypes.shape({
-    onMove: PropTypes.func
-  })
+  onMoveMap: PropTypes.func
 };
 Map.defaultProps = {
   center: [
