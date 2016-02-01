@@ -1,50 +1,45 @@
-import React from 'react'
-import Mapbox from 'mapbox-gl'
-import {MAPBOX_KEY} from 'protected'
+import React, {Component, PropTypes} from 'react';
+import Mapbox from 'mapbox-gl';
+import {assign} from 'lodash/assign';
+import {MAPBOX_KEY} from 'protected';
 
-import './map.styl'
-import 'mapbox-gl/css'
-
-const {PropTypes, Component} = React;
+import './map.styl';
+import 'mapbox-gl/css';
 
 export default class Map extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.state = {
-      map: {}
-    }
-  }
-  static propTypes = {
-    center: PropTypes.array.isRequired,
-    zoom: PropTypes.number.isRequired,
-    pitch: PropTypes.number,
-    rotate: PropTypes.number,
-    markers: PropTypes.object,
-    actions: PropTypes.shape({
-      onMove: PropTypes.func
-    })
-  }
-  static defaultProps = {
-    center: [
-      -122.3393288,
-      47.6087215
-    ],
-    zoom: 15,
-    pitch: 45,
-    rotate: 0
+    const stateFromProps = this.getStateFromProps({}, props);
+    this.state = assign({}, stateFromProps);
   }
   shouldComponentUpdate() {
     return false;
   }
+  getStateFromProps = (state, props) => {
+    const stateChanges = {
+      center: props.center,
+      zoom: props.zoom,
+      pitch: props.pitch
+    };
+    return stateChanges;
+  }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.markers) {
-      this.addMarkers(nextProps.markers);
+    const map = this.getMap();
+    const {geojson} = nextProps;
+    if (Object.keys(geojson).length) {
+      if (!map.loaded()) {
+        map.on('load', () => {
+          this.addGeoJSON(geojson);
+        });
+        return;
+      }
+      this.addGeoJSON(geojson);
     }
   }
   componentDidMount() {
     Mapbox.accessToken = MAPBOX_KEY;
-    const {center, zoom, pitch, markers} = this.props;
+    const {center, zoom, pitch} = this.props;
     const map = new Mapbox.Map({
       container: this._mapContainer,
       center: new Mapbox.LngLat(center[0], center[1]),
@@ -58,41 +53,73 @@ export default class Map extends Component {
       style: 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3',
       hash: false
     });
-    map.on('click', (e) => {
-      const priorPitch = map.getPitch();
-      const togglePitch = priorPitch === 0 ? pitch : 0;
-      map.easeTo({pitch: togglePitch});
-    });
-    map.on('moveend', (e) => {
-      const coords = map.getCenter();
-      window.console.log(coords);
-    });
-    this.setState({map: map});
+    this.map = map;
 
-    if (markers) {
-      this.addMarkers(markers);
-    }
+    map.on('click', () => {
+      this.togglePitch();
+    });
+    map.on('moveend', () => {
+      this.onMoveEnd();
+    });
   }
   render() {
     return (
       <div ref={(c) => this._mapContainer = c} className='map-container'></div>
-    )
+    );
   }
-  addMarkers = (geojson) => {
-    const {map} = this.state;
+  getMap = () => {
+    return this.map;
+  }
+  togglePitch = () => {
+    const map = this.getMap();
+    const {pitch} = this.props;
+    const priorPitch = map.getPitch();
+    const changedPitch = priorPitch === 0 ? pitch : 0;
+    this.setState({pitch: changedPitch});
+    map.easeTo({pitch: changedPitch});
+  }
+  onMoveEnd = () => {
+    const map = this.getMap();
+    const changedCenter = map.getCenter();
+    this.setState({center: changedCenter});
+    window.console.log(this.state.center);
+  }
+  addGeoJSON = (geojson) => {
+    const map = this.getMap();
+    const sourceName = 'geojson' + Date.now();
     const source = new Mapbox.GeoJSONSource({
       data: geojson
     });
-    map.on('style.load', () => {
-      map.addSource('reports', source);
-      map.addLayer({
-        'id': 'reports_layer',
-        'type': 'symbol',
-        'source': 'reports',
-        'layout': {
-          'icon-image': 'monument-13'
-        }
-      });
+    map.addSource(sourceName, source);
+    map.addLayer({
+      'id': sourceName,
+      'type': 'symbol',
+      'source': sourceName,
+      'layout': {
+        'icon-image': 'monument-15',
+        'text-field': 'Report!',
+        'text-anchor': 'top'
+      }
     });
   }
 }
+
+Map.propTypes = {
+  center: PropTypes.array.isRequired,
+  zoom: PropTypes.number.isRequired,
+  pitch: PropTypes.number,
+  rotate: PropTypes.number,
+  geojson: PropTypes.object,
+  actions: PropTypes.shape({
+    onMove: PropTypes.func
+  })
+};
+Map.defaultProps = {
+  center: [
+    -122.38733,
+    47.676994
+  ],
+  zoom: 15,
+  pitch: 45,
+  rotate: 0
+};
