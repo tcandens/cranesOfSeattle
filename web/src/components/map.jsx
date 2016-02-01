@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
-import {assign} from 'lodash/assign';
+import assign from 'lodash/object/assign';
+import isEmpty from 'lodash/object/isempty';
 import {MAPBOX_KEY} from 'protected';
 
 import './map.styl';
@@ -27,7 +28,7 @@ export default class Map extends Component {
   componentWillReceiveProps(nextProps) {
     const map = this.getMap();
     const {geojson} = nextProps;
-    if (Object.keys(geojson).length) {
+    if (!isEmpty(geojson)) {
       if (!map.loaded()) {
         map.on('load', () => {
           this.addGeoJSON(geojson);
@@ -96,7 +97,7 @@ export default class Map extends Component {
       'type': 'symbol',
       'source': sourceName,
       'layout': {
-        'icon-image': 'monument-15',
+        'icon-image': 'default_marker',
         'text-field': 'Report!',
         'text-anchor': 'top'
       }
