@@ -6,7 +6,7 @@ import {
   fetchReports
 } from '../actions/reports';
 
-import MapViewport from './containers/mapviewport.jsx';
+import MapViewport from './mapviewport.jsx';
 
 import './app.styl';
 
