@@ -1,4 +1,4 @@
-import Promise from 'native-promise-only'
+import Promise from 'bluebird'
 
 export const getUserLocation = function() {
   return new Promise(function(resolve, reject) {
