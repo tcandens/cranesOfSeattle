@@ -1,18 +1,18 @@
-import React, {Component, PropTypes} from 'react'
-import {connect} from 'react-redux'
+import React, {Component, PropTypes} from 'react';
+import {connect} from 'react-redux';
 import {
   requestReports,
   receiveReports,
   fetchReports
-} from '../actions/reports'
+} from '../actions/reports';
 
-import MapViewport from './containers/mapviewport.jsx'
+import MapViewport from './containers/mapviewport.jsx';
 
-import './app.styl'
+import './app.styl';
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   componentDidMount() {
     const {dispatch} = this.props;
@@ -24,7 +24,7 @@ class App extends Component {
       <MapViewport geojson={reports.geojson}>
         <div className='reticle' />
       </MapViewport>
-    )
+    );
   }
 }
 
