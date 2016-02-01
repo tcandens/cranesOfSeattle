@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const REQUEST_REPORTS = 'REQUEST_REPORTS';
 export const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
+export const ADD_REPORT = 'ADD_REPORT'
 
 export function requestReports() {
   return {
@@ -31,5 +32,37 @@ export function fetchReports() {
         // Dispatch an error action here
         window.console.log(error);
       });
+  };
+}
+
+export function addReport(report) {
+  return {
+    type: ADD_REPORT,
+    report: report
+  };
+}
+
+export function saveReport(report) {
+  return function (dispatch) {
+    dispatch(addReport(report));
+    return axios.post('/api/reports', report)
+      .then(response => {
+        // dispatch(completeAsync(response));
+        window.console.log(response);
+      })
+      .catch(error => {
+        // dispatch(registerError(error));
+        window.console.log(error);
+      });
+  };
+}
+
+
+export const MOVE_MAP = 'MOVE_MAP';
+
+export function moveMap(position) {
+  return {
+    type: MOVE_MAP,
+    position: position
   };
 }
