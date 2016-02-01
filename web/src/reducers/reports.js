@@ -1,9 +1,7 @@
-import {combineReducers} from 'redux';
 import {
   REQUEST_REPORTS,
   RECEIVE_REPORTS,
-  ADD_REPORT,
-  MOVE_MAP
+  ADD_REPORT
 } from  '../actions/reports';
 
 const assign = Object.assign;
@@ -34,22 +32,4 @@ function reports(state = {
   }
 }
 
-function map(state = {
-  mapPosition: []
-}, action) {
-  switch (action.type) {
-    case MOVE_MAP:
-      return assign({}, state, {
-        mapPosition: action.position
-      });
-    default:
-      return state;
-  }
-}
-
-const rootReducer = combineReducers({
-  reports,
-  map
-});
-
-export default rootReducer;
+export default reports;
