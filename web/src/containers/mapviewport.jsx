@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import Map from '../presenters/map.jsx';
+import Map from '../components/map.jsx';
 
 import './mapviewport.styl';
 
