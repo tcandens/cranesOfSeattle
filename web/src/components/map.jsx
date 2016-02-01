@@ -27,11 +27,11 @@ export default class Map extends Component {
   }
   componentWillReceiveProps(nextProps) {
     const map = this.getMap();
-    if (this.source) {
-      console.log('the source', this.source);
-      this.source.setData(nextProps.geojson);
-    }
     const {geojson} = nextProps;
+    if (this.source) {
+      this.source.setData(geojson);
+      return;
+    }
     if (Object.keys(geojson).length) {
       if (!map.loaded()) {
         map.on('load', () => {
@@ -69,7 +69,7 @@ export default class Map extends Component {
   }
   render() {
     return (
-      <div ref={(c) => this._mapContainer = c} className='map-container'></div>
+      <div ref={(c) => this._mapContainer = c} className='c-mapcontainer'></div>
     );
   }
   getMap = () => {
