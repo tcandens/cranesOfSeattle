@@ -41,6 +41,7 @@ export default class Map extends Component {
       }
       this.addGeoJSON(geojson);
     }
+    this.setState(this.getStateFromProps(this.state, nextProps));
   }
   componentDidMount() {
     Mapbox.accessToken = MAPBOX_KEY;
