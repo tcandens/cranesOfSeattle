@@ -12,6 +12,9 @@ import {
 
 import MapViewport from './mapviewport.jsx';
 import Reticle from '../components/reticle.jsx';
+import trackUserDecorator from '../decorators/trackUser.jsx';
+
+const UserLocationMapViewport = trackUserDecorator(MapViewport);
 
 import './app.styl';
 
@@ -38,9 +41,9 @@ class App extends Component {
     const {reports} = this.props;
     return (
       <div>
-        <MapViewport geojson={reports.geojson} onMapMove={this.handleOnMapMove}>
+        <UserLocationMapViewport geojson={reports.geojson} onMapMove={this.handleOnMapMove}>
           <Reticle />
-        </MapViewport>
+        </UserLocationMapViewport>
         <form className='drop-report'>
           <button onClick={this.handleSaveReport}>Report</button>
         </form>
