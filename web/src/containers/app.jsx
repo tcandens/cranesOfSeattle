@@ -7,14 +7,13 @@ import {
   saveReport
 } from '../actions/reports';
 import {
-  moveMap
+  moveMap,
+  setViewOnUser,
+  setView
 } from '../actions/map';
 
 import MapViewport from './mapviewport.jsx';
 import Reticle from '../components/reticle.jsx';
-import trackUserDecorator from '../decorators/trackUser.jsx';
-
-const UserLocationMapViewport = trackUserDecorator(MapViewport);
 
 import './app.styl';
 
@@ -25,25 +24,41 @@ class App extends Component {
   }
   componentDidMount = () => {
     const {dispatch} = this.props;
-    dispatch(fetchReports());
   }
   handleSaveReport = (event) => {
-    const {dispatch, map} = this.props;
     event.preventDefault();
-    const reportToSave = geojson.pointFromLngLat(map.mapPosition);
+    const {dispatch, map} = this.props;
+    const reportToSave = geojson.pointFromLngLat({
+      latitude: map.currentPosition.lat,
+      longitude: map.currentPosition.lng
+    });
     dispatch(saveReport(reportToSave));
   }
-  handleOnMapMove = (item) => {
+  handleOnMapMove = (view) => {
     const {dispatch} = this.props;
-    dispatch(moveMap(item));
+    dispatch(moveMap(view));
+  }
+  handleOnMapStyleLoaded = () => {
+    const {dispatch} = this.props;
+    dispatch(fetchReports());
+    dispatch(setViewOnUser());
+  }
+  handleOnMapLoadeed = () => {
+    const {dispatch} = this.props;
   }
   render = () => {
-    const {reports} = this.props;
+    const {reports, map} = this.props;
     return (
       <div>
-        <UserLocationMapViewport geojson={reports.geojson} onMapMove={this.handleOnMapMove}>
+        <MapViewport
+          geojson={reports.geojson}
+          view={map.view}
+          onMapMove={this.handleOnMapMove}
+          onMapLoaded={this.handleOnMapLoaded}
+          onStyleLoad={this.handleOnMapStyleLoaded}
+        >
           <Reticle />
-        </UserLocationMapViewport>
+        </MapViewport>
         <form className='drop-report'>
           <button onClick={this.handleSaveReport}>Report</button>
         </form>
