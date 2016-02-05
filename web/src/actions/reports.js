@@ -44,14 +44,15 @@ export function addReport(report) {
 export function saveReport(report) {
   return function (dispatch) {
     dispatch(addReport(report));
-    return axios.post('/api/reports', report)
-      .then(response => {
-        // dispatch(completeAsync(response));
-        window.console.log(response);
-      })
-      .catch(error => {
-        // dispatch(registerError(error));
-        window.console.log(error);
-      });
+    console.log(report);
+    // return axios.post('/api/reports', report)
+    //   .then(response => {
+    //     // dispatch(completeAsync(response));
+    //     window.console.log(response);
+    //   })
+    //   .catch(error => {
+    //     // dispatch(registerError(error));
+    //     window.console.log(error);
+    //   });
   };
 }

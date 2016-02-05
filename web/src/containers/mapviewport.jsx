@@ -9,10 +9,10 @@ export default class MapViewport extends Component {
     this.props = props;
   }
   render() {
-    const {geojson, ...other} = this.props;
+    const {geojson, view, ...other} = this.props;
     return (
       <div className='viewport'>
-        <Map geojson={geojson} {...other}/>
+        <Map geojson={geojson} view={view} {...other}/>
         {this.props.children}
       </div>
     );
