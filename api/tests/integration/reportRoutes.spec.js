@@ -107,6 +107,12 @@ test('FETCHING ALL REPORTS', function *(assert) {
       'Should return features as an array.'
     );
 
+    assert.equal(
+      data.properties.name,
+      'reports',
+      'Should have property of name "reports"'
+    )
+
 });
 
 test('FETCHING A REPORT BY ID', function *(assert) {
