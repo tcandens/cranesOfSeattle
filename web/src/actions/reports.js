@@ -23,7 +23,7 @@ export function fetchReports() {
     dispatch(requestReports());
     return axios.get('/api/reports')
       .then(response => {
-        const geojson = response.data.data;
+        const geojson = response.data;
         dispatch(receiveReports(geojson));
       })
       .catch(error => {
