@@ -5,4 +5,3 @@ export default {
   user: process.env.PGUSER || 'postgres',
   password: process.env.PGPASSWORD || 'mysecretpassword'
 };
-

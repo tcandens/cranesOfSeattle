@@ -1,15 +1,19 @@
+db:
+  image: mdillon/postgis:latest
+  ports:
+    - "5432:5432"
+
 api:
   build: ./api
   expose:
     - "3000"
   environment:
     - ENV=DEV
-    - PGHOST=db
     - PGDATABASE=postgres
     - PGUSER=postgres
     - PGPASSWORD=mysecretpassword
   volumes:
-    - ./api/src:/var/www/api/src/
+    - ./api:/var/www/api
     - ./api/node_modules:/var/www/api/node_modules/
   links:
     - db
@@ -30,6 +34,3 @@ nginx:
     - webpack:web
   ports:
     - "8080:80"
-
-db:
-  image: postgres:latest

@@ -1,0 +1,16 @@
+testdb:
+  image: mdillon/postgis:latest
+  environment:
+    - POSTGRES_DB=test
+
+testapi:
+  build: .
+  environment:
+    - ENV=TEST
+    - PGDATABASE=test
+    - PGUSER=postgres
+    - PGPASSWORD=mysecretpassword
+  volumes:
+    - ./:/var/www/api
+  links:
+    - testdb:db
