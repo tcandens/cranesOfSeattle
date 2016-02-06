@@ -45,6 +45,7 @@ craneModel.read = function(id) {
 craneModel.readAll = function() {
   const query = `
     SELECT 'FeatureCollection' as type,
+    json_build_object('name', '${this.tableName}') as properties,
     array_to_json(array_agg(f)) as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,

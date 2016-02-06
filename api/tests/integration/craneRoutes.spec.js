@@ -115,6 +115,12 @@ test('FETCHING ALL CRANES', function *(assert) {
       'Should return data as an array.'
     );
 
+    assert.equal(
+      data.properties.name,
+      'cranes',
+      'Should return property name with value "cranes"'
+    );
+
 });
 
 test.skip('UPDATING A CRANE', function *(assert) {
