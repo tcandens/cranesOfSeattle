@@ -5,9 +5,19 @@ export default Router()
   .get('/cranes', async (ctx) => {
     await craneModel.readAll()
       .then(data => {
-        ctx.body = {
-          data: data
-        }
+        ctx.status = 200;
+        ctx.body = data;
+      })
+      .catch(error => {
+        ctx.status = 500;
+        ctx.body = error.toString();
+      });
+  })
+  .get('/cranes/within', async (ctx) => {
+    const response = craneModel.findWithin(ctx.query);
+    await response
+      .then(data => {
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -17,9 +27,8 @@ export default Router()
   .get('/cranes/:id', async (ctx) => {
     await craneModel.read(ctx.params.id)
       .then(data => {
-        ctx.body = {
-          data: data
-        };
+        ctx.status = 200;
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -30,9 +39,7 @@ export default Router()
     await craneModel.create(ctx.request.body)
       .then(data => {
         ctx.status = 201;
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -40,12 +47,12 @@ export default Router()
       });
   })
   .put('/cranes/:id', async (ctx) => {
-    await craneModel.update(ctx.request.body)
+    let crane = ctx.request.body;
+    crane.id = ctx.params.id;
+    let response = craneModel.update(crane);
+    await response
       .then(data => {
-        ctx.body = {
-          data: data,
-          message: 'Crane updated.'
-        }
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -55,10 +62,7 @@ export default Router()
   .del('/cranes/:id', async (ctx) => {
     await craneModel.destroy(ctx.params.id)
       .then(data => {
-        ctx.body = {
-          message: 'Crane destroyed.',
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;

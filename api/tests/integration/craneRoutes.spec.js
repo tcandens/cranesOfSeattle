@@ -45,12 +45,12 @@ test('INSERTING A CRANE', function *(assert) {
     .end();
 
   assert.ok(
-    response.body.data.id,
+    response.body.id,
     'Should return the ID of new crane.'
   );
 
   // Stash returned ID to test later
-  testCrane.properties.id = response.body.data.id;
+  testCrane.properties.id = response.body.id;
 
 });
 
@@ -62,7 +62,7 @@ test('FETCHING A CRANE BY ID', function *(assert) {
     .end();
 
   assert.deepEqual(
-    response.body.data,
+    response.body,
     testCrane,
     'Should return a crane that matches test crane.'
   );
@@ -75,11 +75,9 @@ test.skip('FETCH CRANES WITHIN RANGE', function *(assert) {
     .get('/cranes')
     .query({lat: 47.68})
     .query({lng: -122.38})
-    .exect(200)
-    .expect('Content-Type', /json/)
     .end();
 
-  const data = response.body.data;
+  const data = response.body;
 
   assert.equal(
     data.featureCollection.features.length,
@@ -102,7 +100,7 @@ test('FETCHING ALL CRANES', function *(assert) {
     .expect('Content-Type', /json/)
     .end()
 
-    const data = response.body.data;
+    const data = response.body;
 
     assert.equal(
       data.type,
@@ -115,6 +113,12 @@ test('FETCHING ALL CRANES', function *(assert) {
       'Should return data as an array.'
     );
 
+    assert.equal(
+      data.properties.name,
+      'cranes',
+      'Should return property name with value "cranes"'
+    );
+
 });
 
 test.skip('UPDATING A CRANE', function *(assert) {
@@ -124,24 +128,18 @@ test.skip('UPDATING A CRANE', function *(assert) {
     id: testCrane.properties.id
   };
 
-  const response = yield request
+  yield request
     .put('/cranes/' + testCrane.properties.id)
     .send(updatedCrane)
-    .expect(200)
+    .expect(204)
     .end();
-
-  assert.equal(
-    response.body.message,
-    'Crane updated.',
-    'Should return a message with status.'
-  );
 
   const doubleCheck = yield request
     .get('/cranes/' + testCrane.properties.id)
     .end();
 
   assert.equal(
-    doubleCheck.body.data.properties.permit,
+    doubleCheck.body.properties.permit,
     updatedCrane.value,
     'Should now return with updated row.'
   );
@@ -149,16 +147,10 @@ test.skip('UPDATING A CRANE', function *(assert) {
 });
 
 test('DESTROYING A CRANE', function *(assert) {
-  const response = yield request
+  yield request
     .del('/cranes/' + testCrane.properties.id)
-    .expect(200)
+    .expect(204)
     .end();
-
-  assert.equal(
-    response.body.message,
-    'Crane destroyed.',
-    'Should return a message with a status.'
-  );
 
 });
 
