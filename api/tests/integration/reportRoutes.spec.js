@@ -41,12 +41,12 @@ test('INSERTING A REPORT', function *(assert) {
     .end();
 
   assert.ok(
-    response.body.data.id,
+    response.body.id,
     'Should respond with ID of inserted report.'
   );
 
   // Stash ID on testReport to test later
-  testReport.properties.id = response.body.data.id;
+  testReport.properties.id = response.body.id;
 
 });
 
@@ -71,7 +71,7 @@ test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
     .expect(200)
     .end();
 
-  const data = response.body.data;
+  const data = response.body;
 
   assert.equal(
     data.featureCollection.features.length,
@@ -94,7 +94,7 @@ test('FETCHING ALL REPORTS', function *(assert) {
     .expect(200)
     .end();
 
-    const data = response.body.data;
+    const data = response.body;
 
     assert.equal(
       data.type,
@@ -105,6 +105,12 @@ test('FETCHING ALL REPORTS', function *(assert) {
     assert.ok(
       (data.features instanceof Array),
       'Should return features as an array.'
+    );
+
+    assert.equal(
+      data.properties.name,
+      'reports',
+      'Should have property of name "reports"'
     );
 
 });
@@ -118,7 +124,7 @@ test('FETCHING A REPORT BY ID', function *(assert) {
 
   assert.deepEqual(
     testReport,
-    response.body.data,
+    response.body,
     'Should return a report object that matches test report.'
   );
 
@@ -131,41 +137,29 @@ test('UPDATING A REPORT', function *(assert) {
     id: testReport.properties.id
   };
 
-  const response = yield request
+  yield request
     .put('/reports/' + testReport.properties.id)
     .send(updatedReport)
-    .expect(200)
+    .expect(204)
     .end();
-
-  assert.equal(
-    response.body.message,
-    'Report updated.',
-    'Should return a message with status.'
-  );
 
   const doubleCheck = yield request
     .get('/reports/' + testReport.properties.id)
     .end();
 
   assert.equal(
-    doubleCheck.body.data.properties.user_id,
+    doubleCheck.body.properties.user_id,
     updatedReport.value,
     'Should now return with updated row.'
   );
 
 });
 
-test('DESTROYING A REPORT', function *(assert) {
-  const response = yield request
+test('DESTROYING A REPORT', function *() {
+  yield request
     .del('/reports/' + testReport.properties.id)
-    .expect(200)
+    .expect(204)
     .end();
-
-  assert.equal(
-    response.body.message,
-    'Report destroyed.',
-    'Should return a message with status.'
-  );
 
 });
 

@@ -5,9 +5,7 @@ export default Router()
   .get('/reports', async (ctx) => {
     await reportModel.readAll()
       .then(data => {
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -17,9 +15,7 @@ export default Router()
   .get('/reports/within', async (ctx) => {
     await reportModel.findWithin(ctx.query)
       .then(data => {
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -30,9 +26,7 @@ export default Router()
     await reportModel.read(ctx.params.id)
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -43,9 +37,7 @@ export default Router()
     await reportModel.create(ctx.request.body)
       .then(data => {
         ctx.status = 201;
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -53,13 +45,13 @@ export default Router()
       });
   })
   .put('/reports/:id', async (ctx) => {
-    await reportModel.update(ctx.request.body)
+    let report = ctx.request.body;
+    report.id = ctx.params.id;
+    let response = reportModel.update(report);
+    await response
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          data: data,
-          message: 'Report updated.'
-        }
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -70,10 +62,8 @@ export default Router()
     await reportModel.destroy(ctx.params.id)
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          message: 'Report destroyed.',
-          data: data
-        };
+        ctx.body = data;
+        // ctx.message = 'Report destroyed.';
       })
       .catch(error => {
         ctx.status = 500;
