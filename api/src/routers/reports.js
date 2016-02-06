@@ -6,9 +6,7 @@ export default Router()
     let response = reportModel.readAll();
     await response
       .then(data => {
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -19,9 +17,7 @@ export default Router()
     const response = reportModel.findWithin(ctx.query);
     await response
       .then(data => {
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -34,9 +30,7 @@ export default Router()
     await response
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -49,9 +43,7 @@ export default Router()
     await response
       .then(data => {
         ctx.status = 201;
-        ctx.body = {
-          data: data
-        };
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -60,14 +52,12 @@ export default Router()
   })
   .put('/reports/:id', async (ctx) => {
     let report = ctx.request.body;
+    report.id = ctx.params.id;
     let response = reportModel.update(report);
     await response
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          data: data,
-          message: 'Report updated.'
-        }
+        ctx.body = data;
       })
       .catch(error => {
         ctx.status = 500;
@@ -80,10 +70,8 @@ export default Router()
     await response
       .then(data => {
         ctx.status = 200;
-        ctx.body = {
-          message: 'Report destroyed.',
-          data: data
-        };
+        ctx.body = data;
+        // ctx.message = 'Report destroyed.';
       })
       .catch(error => {
         ctx.status = 500;
