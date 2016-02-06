@@ -1,5 +1,5 @@
 import modelFactory from './base'
-import { merge } from 'lodash'
+import { merge, defaults } from 'lodash'
 
 const craneModel = modelFactory('cranes');
 
@@ -55,6 +55,25 @@ craneModel.readAll = function() {
   `;
   const response = this.db.one(query)
     .finally(this.close());
+  return response;
+};
+
+craneModel.findWithin = function(querystring) {
+  const options = defaults(querystring, {
+    radius: 1
+  });
+  const query = `
+    SELECT 'FeatureCollection' as type,
+    array_to_json(array_agg(f)) as features FROM (
+      SELECT 'Feature' as type,
+      ST_AsGeoJSON(r.location)::json as geometry,
+      row_to_json((SELECT l FROM (SELECT id, user_id) AS l)) AS properties
+      FROM ${this.tableName} AS r WHERE ST_DWithin(
+        r.location, 'POINT($/lng^/ $/lat^/)', $/radius^/
+      )
+    ) AS f
+  `;
+  const response = this.db.manyOrNone(query, options)
   return response;
 }
 
