@@ -8,23 +8,10 @@ import has from 'lodash/has';
 
 const MAPBOX_STYLE = 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3';
 
-function createLayer(sourceName) {
-  return {
-    'id': sourceName,
-    'type': 'symbol',
-    'source': sourceName,
-    'layout': {
-      'icon-image': 'default_marker',
-      'text-field': 'Report',
-      'text-anchor': 'top',
-      'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold']
-    }
-  };
-}
+import {createLayer} from './helpers';
 
 import './map.styl';
 import 'mapbox-gl/css';
-
 
 export default class Map extends Component {
 
@@ -67,12 +54,18 @@ export default class Map extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    const {data} = nextProps;
+    const {data, latitude, longitude} = nextProps;
     if (!isEqual(this.props.data, data) && has(this.sources, 'properties.name')) {
       this.updateSource(data);
     }
     if (Object.keys(this.sources).length === 0) {
       this.addData(data);
+    }
+    if (
+      !isEqual(this.props.longitude, longitude) ||
+      !isEqual(this.props.latitude, latitude)
+    ) {
+      this.updateLocation(longitude, latitude);
     }
   }
 
@@ -132,6 +125,10 @@ export default class Map extends Component {
     this.sources[name].setData(data);
   }
 
+  updateLocation = (longitude, latitude) => {
+    this.map.panTo([longitude, latitude]);
+  }
+
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
       this.addSource(data);
@@ -139,12 +136,13 @@ export default class Map extends Component {
     if (isArray(data)) {
       data.forEach(datum => this.addSource(datum));
     }
-    // Add Source to map
   }
 
   render = () => {
     return (
-      <div ref={(c) => this._mapContainer = c} className='c-mapcontainer'></div>
+      <div className='c-map-container'>
+        <div ref={(c) => this._mapContainer = c} className='c-map'></div>
+      </div>
     );
   }
 
