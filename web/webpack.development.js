@@ -19,7 +19,7 @@ module.exports = {
   resolve: {
     alias: {
       'mapbox-gl/css': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.css'),
-      'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
+      'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl-dev.js'),
       'protected': path.resolve(__dirname, 'protected.js'),
       'components': path.resolve(__dirname, 'src/components'),
       'containers': path.resolve(__dirname, 'src/containers')
