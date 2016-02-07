@@ -149,6 +149,10 @@ export default class Map extends Component {
     this.map.panTo([longitude, latitude]);
   };
 
+  updateLocation = (longitude, latitude) => {
+    this.map.panTo([longitude, latitude]);
+  }
+
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
       this.addSource(data);
