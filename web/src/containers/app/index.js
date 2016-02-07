@@ -15,41 +15,18 @@ class App extends Component {
     super(props);
     this.props = props;
   }
+  componentDidMount = () => {
+    this.props.dispatch(fetchReports());
+  }
   render = () => {
-    const {dispatch, reports} = this.props;
-
-    const mapActions = {
-      onLoad: (map) => {
-        // console.log('Map loaded.', map);
-        dispatch(fetchReports())
-      },
-      onMoveEnd: (map, event) => {
-        // console.log(map.getCenter());
-      }
-    };
-    const GEOJSON = {
-      'type': 'FeatureCollection',
-      'features': [
-        {
-          'type': 'Feature',
-          'geometry': {
-            'type': 'Point',
-            'coordinates': [-122.332152, 47.609831]
-          }
-        }
-      ],
-      'properties': {
-        'name': 'TEST'
-      }
-    };
+    const {reports} = this.props;
 
     return (
       <Map
         bearing={90}
         latitude={47.44}
         longitude={-122.66}
-        actions={mapActions}
-        data={[reports]}
+        data={reports.geojson}
       />
     );
   }
