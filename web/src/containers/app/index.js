@@ -14,18 +14,35 @@ class App extends Component {
   render = () => {
     const mapActions = {
       onLoad: (map) => {
-        console.log('Map loaded.', map);
+        // console.log('Map loaded.', map);
       },
       onMoveEnd: (map, event) => {
-        console.log(event)
+        // console.log(map.getCenter());
       }
-    }
+    };
+    const GEOJSON = {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'geometry': {
+            'type': 'Point',
+            'coordinates': [-122.332152, 47.609831]
+          }
+        }
+      ],
+      'properties': {
+        'name': 'TEST'
+      }
+    };
+
     return (
       <Map
         bearing={90}
-        latitude={47}
-        longitude={-122}
+        latitude={47.44}
+        longitude={-122.66}
         actions={mapActions}
+        data={[GEOJSON]}
       />
     );
   }
