@@ -3,6 +3,10 @@ import Mapbox from 'mapbox-gl';
 import {MAPBOX_KEY} from 'protected';
 import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
+import uniqueId from 'lodash/uniqueId';
+import has from 'lodash/has';
+
+const MAPBOX_STYLE = 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3';
 
 function createLayer(sourceName) {
   return {
@@ -21,11 +25,9 @@ function createLayer(sourceName) {
 import './map.styl';
 import 'mapbox-gl/css';
 
+
 export default class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-  }
+
   static propTypes = {
     latitude: PropTypes.number.isRequired,
     longitude: PropTypes.number.isRequired,
@@ -52,19 +54,28 @@ export default class Map extends Component {
     bearing: 0,
     maxBounds: [[-122.57107, 47.16157], [-122.01602, 47.78269]]
   }
+  constructor(props) {
+    super(props);
+    this.props = props;
+    this.state = {
+      loaded: false
+    };
+  }
+
   shouldComponentUpdate = () => {
     return false;
   }
+
   componentWillReceiveProps = (nextProps) => {
     const {data} = nextProps;
-    const dataSource = data.properties.name || null;
-    if (!isEqual(this.props.data, data) && this.sources[dataSource]) {
+    if (!isEqual(this.props.data, data) && has(this.sources, 'properties.name')) {
       this.updateSource(data);
     }
     if (Object.keys(this.sources).length === 0) {
       this.addData(data);
     }
   }
+
   componentDidMount = () => {
     Mapbox.accessToken = MAPBOX_KEY;
     const {data, actions, latitude, longitude, ...view} = this.props;
@@ -72,42 +83,44 @@ export default class Map extends Component {
       container: this._mapContainer,
       center: new Mapbox.LngLat(longitude, latitude),
       ...view,
-      style: 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3',
-      hash: false
+      style: MAPBOX_STYLE
     });
 
     map.on('load', () => {
-      actions.onLoad(map);
+      if (has(actions, 'onLoad')) actions.onLoad(map);
     });
-    map.on('moveend', (e) => {
-      actions.onMoveEnd(map, e);
+    map.on('moveend', (event) => {
+      if (has(actions, 'onMoveEnd')) actions.onMoveEnd(map, event);
+    });
+    map.on('style.load', () => {
+      this.setState({loaded: true});
     });
 
     this.sources = {};
+  }
 
-    if (data) {
-      map.on('style.load', () => {
-        console.log('Map style loaded');
-        this.addData(data);
-      });
-    }
-  }
   addSource = (data) => {
-    if (data.properties.name) {
-      const {name} = data.properties;
-      if (this.sources[name]) {
-        return console.error('Data source %s already exists.', name);
-      }
-      const source = this.sources[name] = new Mapbox.GeoJSONSource({data});
-      this.map.addSource(name, source);
-      if (this.map.getLayer(name)) return;
-      this.map.addLayer(createLayer(name));
+    let name = has(data, 'properties.name') ? data.properties.name : uniqueId();
+    if (has(this.sources, name)) {
+      return console.error('Data source %s already exists.', name);
     }
+    const source = this.sources[name] = new Mapbox.GeoJSONSource({data});
+    this.map.addSource(name, source);
+    if (this.map.getLayer(name)) return;
+    if (!this.state.loaded) {
+      this.map('style.load', () => {
+        this.map.addLayer(createLayer(name));
+      });
+      return;
+    }
+    this.map.addLayer(createLayer(name));
   }
+
   updateSource = (data) => {
     const {name} = data;
     this.sources[name].setData(data);
   }
+
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
       this.addSource(data);
@@ -117,9 +130,11 @@ export default class Map extends Component {
     }
     // Add Source to map
   }
+
   render = () => {
     return (
       <div ref={(c) => this._mapContainer = c} className='c-mapcontainer'></div>
     );
   }
+
 }
