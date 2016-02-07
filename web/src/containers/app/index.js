@@ -1,6 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
+import {
+  fetchReports
+} from '../../actions/reports';
+
 import Map from 'components/map';
 import Reticle from 'components/reticle';
 
@@ -12,9 +16,12 @@ class App extends Component {
     this.props = props;
   }
   render = () => {
+    const {dispatch, reports} = this.props;
+
     const mapActions = {
       onLoad: (map) => {
         // console.log('Map loaded.', map);
+        dispatch(fetchReports())
       },
       onMoveEnd: (map, event) => {
         // console.log(map.getCenter());
@@ -42,7 +49,7 @@ class App extends Component {
         latitude={47.44}
         longitude={-122.66}
         actions={mapActions}
-        data={[GEOJSON]}
+        data={[reports]}
       />
     );
   }
