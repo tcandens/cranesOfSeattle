@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'cheap-module-eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
-    './src/index.jsx'
+    './src/index.js'
   ],
   output: {
     path: path.join(__dirname, 'dist/js'),
@@ -20,7 +20,9 @@ module.exports = {
     alias: {
       'mapbox-gl/css': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.css'),
       'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js'),
-      'protected': path.resolve(__dirname, 'protected.js')
+      'protected': path.resolve(__dirname, 'protected.js'),
+      'components': path.resolve(__dirname, 'src/components'),
+      'containers': path.resolve(__dirname, 'src/containers')
     }
   },
   module: {

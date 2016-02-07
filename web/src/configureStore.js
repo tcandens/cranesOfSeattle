@@ -1,7 +1,7 @@
-import {createStore, compose, applyMiddleware} from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
-import rootReducer from './reducers/root'
+import {createStore, compose, applyMiddleware} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+import rootReducer from './reducers';
 
 const loggerMiddleware = createLogger();
 
@@ -16,5 +16,5 @@ export default function configureMiddleware(initialState) {
       ),
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )
-  )
+  );
 }
