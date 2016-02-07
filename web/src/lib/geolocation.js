@@ -7,4 +7,4 @@ export const getUserLocation = function() {
       resolve(position);
     });
   });
-}
+};
