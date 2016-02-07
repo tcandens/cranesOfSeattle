@@ -57,7 +57,8 @@ export default class Map extends Component {
   }
   componentWillReceiveProps = (nextProps) => {
     const {data} = nextProps;
-    if (!isEqual(this.props.data, data)) {
+    const dataSource = data.properties.name || null;
+    if (!isEqual(this.props.data, data) && this.sources[dataSource]) {
       this.updateSource(data);
     }
     if (Object.keys(this.sources).length === 0) {
