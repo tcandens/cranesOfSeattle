@@ -1,3 +1,5 @@
+import geojson from 'lib/geojson';
+
 import {
   REQUEST_REPORTS,
   RECEIVE_REPORTS,
@@ -22,9 +24,10 @@ function reports(state = {
         lastUpdated: action.receivedAt
       });
     case ADD_REPORT:
+      const report = geojson.pointFromLngLat(action.location);
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
-          features: [...state.geojson.features, action.report]
+          features: [...state.geojson.features, report]
         })
       });
     default:

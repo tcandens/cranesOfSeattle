@@ -43,6 +43,7 @@ export default class Map extends Component {
     bearing: 0,
     maxBounds: [[-122.57107, 47.16157], [-122.01602, 47.78269]]
   };
+
   constructor(props) {
     super(props);
     this.props = props;
@@ -57,8 +58,13 @@ export default class Map extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     const {data, latitude, longitude} = nextProps;
-    if (!isEqual(this.props.data, data) && has(this.sources, 'properties.name')) {
-      this.updateSource(data);
+    if (!isEqual(this.props.data, data)) {
+      if (this.sources[data.properties.name]) {
+        console.log('Updating data:', data);
+        this.updateSource(data);
+      } else {
+        this.addData(data);
+      }
     }
     if (Object.keys(this.sources).length === 0) {
       this.addData(data);
@@ -85,6 +91,10 @@ export default class Map extends Component {
       if (has(actions, 'onLoad')) actions.onLoad(map);
     });
     map.on('moveend', (event) => {
+      if (has(actions, 'onMoveEnd')) actions.onMoveEnd(map, event);
+    });
+    map.on('zoomend', (event) => {
+      if (has(actions, 'onZoomEnd')) actions.onZoomEnd(map, event);
       if (has(actions, 'onMoveEnd')) actions.onMoveEnd(map, event);
     });
     map.on('style.load', () => {
@@ -117,13 +127,13 @@ export default class Map extends Component {
       this.map('style.load', () => {
         this.map.addLayer(createLayer(name));
       });
-      return;
+    } else {
+      this.map.addLayer(createLayer(name));
     }
-    this.map.addLayer(createLayer(name));
   };
 
   updateSource = (data) => {
-    const {name} = data;
+    const {name} = data.properties;
     this.sources[name].setData(data);
   };
 
@@ -144,6 +154,7 @@ export default class Map extends Component {
     return (
       <div className='c-map-container'>
         <div ref={(c) => this._mapContainer = c} className='c-map'></div>
+        {this.props.children}
       </div>
     );
   };

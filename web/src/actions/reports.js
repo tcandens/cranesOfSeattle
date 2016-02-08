@@ -33,10 +33,10 @@ export function fetchReports() {
 }
 
 export const ADD_REPORT = 'ADD_REPORT';
-export function addReport(report) {
+export function addReport(location) {
   return {
     type: ADD_REPORT,
-    report: report
+    location
   };
 }
 
