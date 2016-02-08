@@ -115,14 +115,6 @@ export default class Map extends Component {
     map.easeTo({pitch: changedPitch});
   };
 
-  togglePitch = () => {
-    const map = this.map;
-    const {pitch} = this.props;
-    const currentPitch = map.getPitch();
-    const changedPitch = currentPitch === pitch ? 0 : pitch;
-    map.easeTo({pitch: changedPitch});
-  }
-
   addSource = (data) => {
     let name = has(data, 'properties.name') ? data.properties.name : uniqueId();
     if (has(this.sources, name)) {
@@ -151,7 +143,7 @@ export default class Map extends Component {
 
   updateLocation = (longitude, latitude) => {
     this.map.panTo([longitude, latitude]);
-  }
+  };
 
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
