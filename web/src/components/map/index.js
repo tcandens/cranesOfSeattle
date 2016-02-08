@@ -5,6 +5,7 @@ import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 import uniqueId from 'lodash/uniqueId';
 import has from 'lodash/has';
+import wrapWithUserLocation from 'decorators/userLocation';
 
 const MAPBOX_STYLE = 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3';
 
@@ -13,6 +14,7 @@ import {createLayer} from './helpers';
 import './map.styl';
 import 'mapbox-gl/css';
 
+@wrapWithUserLocation
 export default class Map extends Component {
 
   static propTypes = {
@@ -31,7 +33,7 @@ export default class Map extends Component {
       onLoad: PropTypes.func,
       onMoveEnd: PropTypes.func
     })
-  }
+  };
   static defaultProps = {
     latitude: 47.44,
     longitude: 122.66,
@@ -40,7 +42,7 @@ export default class Map extends Component {
     minZoom: 10,
     bearing: 0,
     maxBounds: [[-122.57107, 47.16157], [-122.01602, 47.78269]]
-  }
+  };
   constructor(props) {
     super(props);
     this.props = props;
@@ -51,7 +53,7 @@ export default class Map extends Component {
 
   shouldComponentUpdate = () => {
     return false;
-  }
+  };
 
   componentWillReceiveProps = (nextProps) => {
     const {data, latitude, longitude} = nextProps;
@@ -67,7 +69,7 @@ export default class Map extends Component {
     ) {
       this.updateLocation(longitude, latitude);
     }
-  }
+  };
 
   componentDidMount = () => {
     Mapbox.accessToken = MAPBOX_KEY;
@@ -93,7 +95,7 @@ export default class Map extends Component {
     });
 
     this.sources = {};
-  }
+  };
 
   togglePitch = () => {
     const map = this.map;
@@ -101,7 +103,7 @@ export default class Map extends Component {
     const currentPitch = map.getPitch();
     const changedPitch = currentPitch === pitch ? 0 : pitch;
     map.easeTo({pitch: changedPitch});
-  }
+  };
 
   addSource = (data) => {
     let name = has(data, 'properties.name') ? data.properties.name : uniqueId();
@@ -118,16 +120,16 @@ export default class Map extends Component {
       return;
     }
     this.map.addLayer(createLayer(name));
-  }
+  };
 
   updateSource = (data) => {
     const {name} = data;
     this.sources[name].setData(data);
-  }
+  };
 
   updateLocation = (longitude, latitude) => {
     this.map.panTo([longitude, latitude]);
-  }
+  };
 
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
@@ -136,7 +138,7 @@ export default class Map extends Component {
     if (isArray(data)) {
       data.forEach(datum => this.addSource(datum));
     }
-  }
+  };
 
   render = () => {
     return (
@@ -144,6 +146,6 @@ export default class Map extends Component {
         <div ref={(c) => this._mapContainer = c} className='c-map'></div>
       </div>
     );
-  }
+  };
 
 }

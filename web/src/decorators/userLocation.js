@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {getUserLocation} from '../lib/geolocation';
+import {getUserLocation} from 'lib/geolocation';
 
 export default function wrapWithUserLocation(WrappedComponent) {
   return class extends Component {
@@ -18,11 +18,11 @@ export default function wrapWithUserLocation(WrappedComponent) {
           longitude
         });
       });
-    }
+    };
     render = () => {
       return (
         <WrappedComponent {...this.props} {...this.state}/>
       );
-    }
+    };
   };
 }

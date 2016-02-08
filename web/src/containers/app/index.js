@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {
   fetchReports
-} from '../../actions/reports';
+} from 'actions/reports';
 
 import Map from 'components/map';
 import Reticle from 'components/reticle';
@@ -15,21 +15,26 @@ class App extends Component {
     super(props);
     this.props = props;
   }
+
   componentDidMount = () => {
-    this.props.dispatch(fetchReports());
-  }
+    const {dispatch} = this.props;
+    dispatch(fetchReports());
+  };
+
   render = () => {
     const {reports} = this.props;
 
     return (
-      <Map
-        bearing={90}
-        latitude={47.44}
-        longitude={-122.66}
-        data={reports.geojson}
-      />
+      <div>
+        <Map
+          bearing={90}
+          zoom={15}
+          data={reports.geojson}
+        />
+        <Reticle />
+      </div>
     );
-  }
+  };
 }
 
 export default connect(state => {

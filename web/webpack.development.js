@@ -21,8 +21,11 @@ module.exports = {
       'mapbox-gl/css': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.css'),
       'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl-dev.js'),
       'protected': path.resolve(__dirname, 'protected.js'),
+      'actions': path.resolve(__dirname, 'src/actions'),
       'components': path.resolve(__dirname, 'src/components'),
-      'containers': path.resolve(__dirname, 'src/containers')
+      'containers': path.resolve(__dirname, 'src/containers'),
+      'decorators': path.resolve(__dirname, 'src/decorators'),
+      'lib': path.resolve(__dirname, 'src/lib')
     }
   },
   module: {
