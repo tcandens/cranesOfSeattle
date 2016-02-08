@@ -1,16 +1,16 @@
 import {
-  MOVE_MAP
-} from '../actions/map';
+  RECORD_MAP_LOCATION
+} from 'actions/map';
 
 const assign = Object.assign;
 
 function map(state = {
-  mapPosition: []
+  location: []
 }, action) {
   switch (action.type) {
-    case MOVE_MAP:
+    case RECORD_MAP_LOCATION:
       return assign({}, state, {
-        mapPosition: action.position
+        location: action.location
       });
     default:
       return state;

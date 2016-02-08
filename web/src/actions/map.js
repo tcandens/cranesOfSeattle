@@ -1,7 +1,8 @@
-export const MOVE_MAP = 'MOVE_MAP';
-export function moveMap(position) {
+export const RECORD_MAP_LOCATION = 'RECORD_MAP_LOCATION';
+export function recordMapLocation(location) {
   return {
-    type: MOVE_MAP,
-    position: position
+    type: RECORD_MAP_LOCATION,
+    location,
+    recordedAt: Date.now()
   };
 }
