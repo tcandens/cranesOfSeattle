@@ -69,7 +69,7 @@ craneModel.findWithin = function(querystring) {
       ST_AsGeoJSON(r.location)::json as geometry,
       row_to_json((SELECT l FROM (SELECT id, user_id) AS l)) AS properties
       FROM ${this.tableName} AS r WHERE ST_DWithin(
-        r.location, 'POINT($/lng^/ $/lat^/)', $/radius^/
+        r.location, 'POINT($/lng~/ $/lat~/)', $/radius~/
       )
     ) AS f
   `;

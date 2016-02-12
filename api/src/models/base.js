@@ -14,7 +14,7 @@ const prototype = {
   },
   read(id) {
     const query = `
-      SELECT * FROM ${this.tableName} WHERE id = $1^
+      SELECT * FROM ${this.tableName} WHERE id = $1~
     `;
     const response = this.db.one(query, id)
       .finally(this.close());
@@ -30,7 +30,7 @@ const prototype = {
   },
   update(fieldObject) {
     const query = `
-      UPDATE ${this.tableName} SET $/key^/ = $/value/ WHERE id = $/id/
+      UPDATE ${this.tableName} SET $/key~/ = $/value/ WHERE id = $/id/
     `;
     const response = this.db.none(query, fieldObject)
       .finally(this.close());
@@ -38,7 +38,7 @@ const prototype = {
   },
   destroy(id) {
     const query = `
-      DELETE FROM ${this.tableName} WHERE id = $1^
+      DELETE FROM ${this.tableName} WHERE id = $1
     `;
     const response = this.db.none(query, id)
       .finally(this.close());
