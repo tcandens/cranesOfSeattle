@@ -14,7 +14,7 @@ const prototype = {
   },
   read(id) {
     const query = `
-      SELECT * FROM ${this.tableName} WHERE id = $1~
+      SELECT * FROM ${this.tableName} WHERE id = $1
     `;
     const response = this.db.one(query, id)
       .finally(this.close());
