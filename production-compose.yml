@@ -1,0 +1,33 @@
+db:
+  image: mdillon/postgis:latest
+  ports:
+    - "5432:5432"
+
+api:
+  build: ./api
+  dockerfile: Dockerfile.prod
+  expose:
+    - "3000"
+  environment:
+    - ENV=DEV
+    - PGDATABASE=postgres
+    - PGUSER=postgres
+    - PGPASSWORD=mysecretpassword
+  links:
+    - db
+
+webpack:
+  build: ./web
+  dockerfile: Dockerfile.prod
+  expose:
+    - "9000"
+
+nginx:
+  image: nginx:latest
+  volumes:
+    - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+  links:
+    - api:api
+    - webpack:web
+  ports:
+    - "80:80"
