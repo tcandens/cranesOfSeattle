@@ -11,7 +11,7 @@ if [ $containers -le "1" ]; then
   echo "> Building from test-docker-compose.yml"
   docker-compose -f test-docker-compose.yml build
 else
-  echo "> Containers are build and/or running."
+  echo "> Containers are built and/or running."
 fi
 
 echo "> Booting containers"
