@@ -6,4 +6,4 @@ services:
 script:
   - docker -v
   - docker-compose -v
-  - cd api; ./runtest.sh
+  - cd api; npm test
