@@ -5,6 +5,7 @@ testdb:
 
 testapi:
   build: .
+  dockerfile: Dockerfile.test
   environment:
     - ENV=TEST
     - PGDATABASE=test
