@@ -6,6 +6,4 @@ services:
 script:
   - docker -v
   - docker-compose -v
-  - docker-compose -f production-compose.yml build
-  - docker-compose -f production-compose.yml up
-  - docker ps | grep -q api
+  - cd api; ./runtest.sh
