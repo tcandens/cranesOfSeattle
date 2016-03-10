@@ -1,0 +1,9 @@
+sudo: required
+
+services:
+  - docker
+
+script:
+  - docker -v
+  - docker-compose -v
+  - cd api; npm test
