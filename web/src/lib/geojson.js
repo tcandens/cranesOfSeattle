@@ -5,7 +5,7 @@ geojson.pointFromLngLat = (lnglat) => {
     'type': 'Feature',
     'geometry': {
       'type': 'Point',
-      'coordinates': [lnglat.lng, lnglat.lat]
+      'coordinates': [lnglat.longitude, lnglat.latitude]
     },
     'properties': {
       'user_id': 11

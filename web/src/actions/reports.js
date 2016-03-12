@@ -23,7 +23,8 @@ export function fetchReports() {
     dispatch(requestReports());
     return axios.get('/api/reports')
       .then(response => {
-        dispatch(receiveReports(response.data));
+        const geojson = response.data;
+        dispatch(receiveReports(geojson));
       })
       .catch(error => {
         // Dispatch an error action here
@@ -43,14 +44,15 @@ export function addReport(location) {
 export function saveReport(report) {
   return function (dispatch) {
     dispatch(addReport(report));
-    return axios.post('/api/reports', report)
-      .then(response => {
-        // dispatch(completeAsync(response));
-        window.console.log(response);
-      })
-      .catch(error => {
-        // dispatch(registerError(error));
-        window.console.log(error);
-      });
+    console.log(report);
+    // return axios.post('/api/reports', report)
+    //   .then(response => {
+    //     // dispatch(completeAsync(response));
+    //     window.console.log(response);
+    //   })
+    //   .catch(error => {
+    //     // dispatch(registerError(error));
+    //     window.console.log(error);
+    //   });
   };
 }
