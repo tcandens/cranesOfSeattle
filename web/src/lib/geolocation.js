@@ -1,4 +1,4 @@
-import Promise from 'bluebird'
+import Promise from 'bluebird';
 
 export const getUserPosition = function() {
   return new Promise(function(resolve, reject) {

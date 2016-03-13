@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {getUserLocation} from 'lib/geolocation';
+import {getUserPosition} from 'lib/geolocation';
 
 export default function wrapWithUserLocation(WrappedComponent) {
   return class extends Component {
@@ -11,7 +11,7 @@ export default function wrapWithUserLocation(WrappedComponent) {
       };
     }
     componentDidMount = () => {
-      getUserLocation().then(location => {
+      getUserPosition().then(location => {
         const {latitude, longitude} = location.coords;
         this.setState({
           latitude,
