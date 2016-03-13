@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 
 import {
   fetchReports,
-  addReport
+  addReport,
+  saveReport
 } from 'actions/reports';
 import {
   recordMapLocation
@@ -37,7 +38,7 @@ export default class App extends Component {
 
     function handleReportClick(event) {
       event.preventDefault();
-      dispatch(addReport(map.location));
+      dispatch(saveReport(map.location));
     }
 
     return (
@@ -50,7 +51,7 @@ export default class App extends Component {
         >
           <Reticle />
         </Map>
-        <button className='c-report-button' onClick={handleReportClick} />
+        <button className='c-report-button' onClick={handleReportClick}>Report</button>
       </section>
     );
   };

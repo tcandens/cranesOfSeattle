@@ -1,4 +1,5 @@
 import axios from 'axios';
+import geojson from 'lib/geojson';
 
 export const REQUEST_REPORTS = 'REQUEST_REPORTS';
 export function requestReports() {
@@ -40,18 +41,18 @@ export function addReport(location) {
   };
 }
 
-export function saveReport(report) {
+export function saveReport(location) {
   return function (dispatch) {
-    dispatch(addReport(report));
-    console.log(report);
-    // return axios.post('/api/reports', report)
-    //   .then(response => {
-    //     // dispatch(completeAsync(response));
-    //     window.console.log(response);
-    //   })
-    //   .catch(error => {
-    //     // dispatch(registerError(error));
-    //     window.console.log(error);
-    //   });
+    dispatch(addReport(location));
+    const report = geojson.pointFromLngLat(location);
+    return axios.post('/api/reports', report)
+      .then(response => {
+        // dispatch(completeAsync(response));
+        window.console.log(response);
+      })
+      .catch(error => {
+        // dispatch(registerError(error));
+        window.console.log(error);
+      });
   };
 }
