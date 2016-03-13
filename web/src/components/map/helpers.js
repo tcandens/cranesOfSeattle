@@ -6,7 +6,8 @@ export function createLayer(sourceName) {
     'layout': {
       'icon-image': 'crane',
       'icon-allow-overlap': 'true',
-      'icon-ignore-placement': 'true'
+      'icon-ignore-placement': 'true',
+      'icon-offset': [-5, -20]
     }
   };
 }
