@@ -10,9 +10,10 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist/js'),
     filename: 'bundle.js',
-    publicPath: '/static/'
+    publicPath: '/dist/'
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   ],
@@ -31,7 +32,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js/,
+        test: /\.js$/,
         loaders: ['babel'],
         include: path.join(__dirname, 'src')
       },
