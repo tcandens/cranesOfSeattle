@@ -18,9 +18,9 @@ if (isDeveloping) {
   app.use('/dist', express.static(staticPath));
 }
 
-  app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  });
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.listen(9000, '0.0.0.0', function(err) {
   if (err) {
