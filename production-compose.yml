@@ -37,7 +37,6 @@ services:
       - api:api
       - web:web
     ports:
-      # - "80:80"
       - "80:80"
     depends_on:
       - web
