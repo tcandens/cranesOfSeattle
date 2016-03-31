@@ -1,33 +1,44 @@
-db:
-  image: mdillon/postgis:latest
-  ports:
-    - "5432:5432"
-
-api:
-  build: ./api
-  dockerfile: Dockerfile.prod
-  expose:
-    - "3000"
-  environment:
-    - ENV=DEV
-    - PGDATABASE=postgres
-    - PGUSER=postgres
-    - PGPASSWORD=mysecretpassword
-  links:
-    - db
-
-webpack:
-  build: ./web
-  dockerfile: Dockerfile.prod
-  expose:
-    - "9000"
-
-nginx:
-  image: nginx:latest
-  volumes:
-    - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-  links:
-    - api:api
-    - webpack:web
-  ports:
-    - "80:80"
+version: '2'
+services:
+  db:
+    image: mdillon/postgis:latest
+    ports:
+      - "5432:5432"
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.prod
+    expose:
+      - "3000"
+    environment:
+      - ENV=DEV
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=mysecretpassword
+    links:
+      - db
+    depends_on:
+      - "db"
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=5 -- ./entry.sh
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.prod
+    expose:
+      - "9000"
+    environment:
+      - ENV=production
+  nginx:
+    image: nginx:latest
+    # Use 'volumes_from' to mount and host web
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    links:
+      - api:api
+      - web:web
+    ports:
+      # - "80:80"
+      - "8080:80"
+    depends_on:
+      - web
+      - api
