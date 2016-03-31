@@ -1,26 +1,30 @@
 const path = require('path');
-const app = require('express')();
+const express = require('express');
 const webpack = require('webpack');
 const config = require('./webpack.development.js');
+const compiler = webpack(config);
+const app = express();
 
-var compiler = webpack(config);
+const isDeveloping = process.env.ENV !== 'production';
 
-app.use(require('webpack-dev-middleware')(compiler, {
-  noInfo: true,
-  publicPath: '/dist/'
-}));
-
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+if (isDeveloping) {
+  app.use(require('webpack-dev-middleware')(compiler, {
+    noInfo: true,
+    publicPath: '/dist/'
+  }));
+  app.use(require('webpack-hot-middleware')(compiler));
+  app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
+} else {
+  const staticPath = path.join(__dirname, 'dist');
+  app.use(express.static(staticPath));
+}
 
 app.listen(9000, '0.0.0.0', function(err) {
   if (err) {
     console.log(err);
     return;
   }
-
   console.log('Listening with webpack compiler.');
 });

@@ -4,6 +4,10 @@ WORKDIR /usr/src/
 COPY . /usr/src/
 RUN npm install
 
+RUN npm run clean
+RUN npm run build
+
 EXPOSE 9000
 
+# This should run NPM Build to run webpack compiler
 CMD ["npm", "start"]
