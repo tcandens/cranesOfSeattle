@@ -13,13 +13,14 @@ if (isDeveloping) {
     publicPath: '/dist/'
   }));
   app.use(require('webpack-hot-middleware')(compiler));
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  });
 } else {
   const staticPath = path.join(__dirname, 'dist');
-  app.use(express.static(staticPath));
+  app.use('/dist', express.static(staticPath));
 }
+
+  app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  });
 
 app.listen(9000, '0.0.0.0', function(err) {
   if (err) {
