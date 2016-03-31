@@ -1,3 +1,0 @@
-module.exports = {
-  MAPBOX_KEY: 'put your access key here'
-}

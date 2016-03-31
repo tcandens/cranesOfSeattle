@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
-import {MAPBOX_KEY} from 'protected';
 import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 import uniqueId from 'lodash/uniqueId';
@@ -8,6 +7,8 @@ import has from 'lodash/has';
 import wrapWithUserLocation from 'decorators/userLocation';
 
 const MAPBOX_STYLE = 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3';
+// Mapbox key is public, deal with the privacy issues later.
+const MAPBOX_KEY = 'pk.eyJ1IjoidGNhbmRlbnMiLCJhIjoiZDEzOTJmYTdkZWNjYzc3ZDA1OWE0ODJmMmRmMmFjODUifQ.6m8N0DXRDsDugoXMcGXfhQ';
 
 import {createLayer} from './helpers';
 
