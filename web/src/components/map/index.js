@@ -61,7 +61,6 @@ export default class Map extends Component {
     const {data, latitude, longitude} = nextProps;
     if (!isEqual(this.props.data, data)) {
       if (this.sources[data.properties.name]) {
-        console.log('Updating data:', data);
         this.updateSource(data);
       } else {
         this.addData(data);
@@ -116,19 +115,25 @@ export default class Map extends Component {
     map.easeTo({pitch: changedPitch});
   };
 
+  updateLocation = (longitude, latitude) => {
+    this.map.panTo([longitude, latitude]);
+  };
+
   addSource = (data) => {
     let name = has(data, 'properties.name') ? data.properties.name : uniqueId();
     if (has(this.sources, name)) {
-      return console.error('Data source %s already exists.', name);
+      return console.warn('Data source %s already exists.', name);
     }
     const source = this.sources[name] = new Mapbox.GeoJSONSource({data});
-    this.map.addSource(name, source);
     if (this.map.getLayer(name)) return;
     if (!this.state.loaded) {
-      this.map('style.load', () => {
+      // Add event listener to add styles at appropriate time
+      this.map.on('style.load', () => {
+        this.map.addSource(name, source);
         this.map.addLayer(createLayer(name));
       });
     } else {
+      this.map.addSource(name, source);
       this.map.addLayer(createLayer(name));
     }
   };
@@ -138,15 +143,10 @@ export default class Map extends Component {
     this.sources[name].setData(data);
   };
 
-  updateLocation = (longitude, latitude) => {
-    this.map.panTo([longitude, latitude]);
-  };
-
   addData = (data) => {
     if (data.features || data.type === 'FeatureCollection') {
       this.addSource(data);
-    }
-    if (isArray(data)) {
+    } else if (isArray(data)) {
       data.forEach(datum => this.addSource(datum));
     }
   };
