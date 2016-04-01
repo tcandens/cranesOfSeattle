@@ -1,36 +1,41 @@
-db:
-  image: mdillon/postgis:latest
-  ports:
-    - "5432:5432"
-
-api:
-  build: ./api
-  expose:
-    - "3000"
-  environment:
-    - ENV=DEV
-    - PGDATABASE=postgres
-    - PGUSER=postgres
-    - PGPASSWORD=mysecretpassword
-  volumes:
-    - ./api:/var/www/api
-    - ./api/node_modules:/var/www/api/node_modules/
-  links:
-    - db
-
-webpack:
-  build: ./web
-  expose:
-    - "9000"
-  volumes:
-    - ./web:/usr/src
-
-nginx:
-  image: nginx:latest
-  volumes:
-    - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
-  links:
-    - api:api
-    - webpack:web
-  ports:
-    - "8080:80"
+version: '2'
+services:
+  db:
+    image: mdillon/postgis:latest
+    ports:
+      - "5432:5432"
+  api:
+    build:
+      context: ./api
+    expose:
+      - "3000"
+    environment:
+      - ENV=DEV
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=mysecretpassword
+    volumes:
+      - ./api:/var/www/api
+      - ./api/node_modules:/var/www/api/node_modules/
+    links:
+      - db
+    depends_on:
+      - db
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=5 -- ./entry.sh
+  webpack:
+    build:
+      context: ./web
+      dockerfile: ./docker/development
+    expose:
+      - "9000"
+    volumes:
+      - ./web:/usr/src
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    links:
+      - api:api
+      - webpack:web
+    ports:
+      - "8080:80"

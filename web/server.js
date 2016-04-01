@@ -1,21 +1,21 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
-const config = require('./webpack.development.js');
+const config = require('./webpack/development.config');
 const compiler = webpack(config);
 const app = express();
 
 const isDeveloping = process.env.ENV !== 'production';
 
 if (isDeveloping) {
-  console.log('== Loading .env && Developing with HMR ==>');
+  console.info('== Developing with HMR ==>');
   app.use(require('webpack-dev-middleware')(compiler, {
     noInfo: true,
     publicPath: '/dist/'
   }));
   app.use(require('webpack-hot-middleware')(compiler));
 } else {
-  console.log('== Production with Express Static ==>');
+  console.info('== Production with Express Static ==>');
   const staticPath = path.join(__dirname, 'dist');
   app.use('/dist', express.static(staticPath));
 }
