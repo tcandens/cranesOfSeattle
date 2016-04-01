@@ -23,7 +23,7 @@ services:
   web:
     build:
       context: ./web
-      dockerfile: Dockerfile.prod
+      dockerfile: ./docker/production
     expose:
       - "9000"
     environment:
