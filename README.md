@@ -1,17 +1,21 @@
-# Docker-Compose-Example
-An example using Docker and Docker-compose to create a development environment with quasi-microservices or containers
-
-## Goals
-This setup is for the moment focused on providing a portable and flexible development environment using Docker but room is left for production settings.
-
-## Stack
-On the front-end, the development setup provides a Webpack-dev-serve with React-Hot-Loader and ES6. Right now, there is no working Webpack production build task.
-For the API backend, a node container will run Nodemon with an Babel ES6 compilation. The server is running Koa.js to provide the API and to communicate with the PostGRES container for persistence.
-All of this is proxied by Nginx do deal with CORS issues and to provide a close-to-production setup. Eventually, a production configuration for Nginx will continue to proxy the API server but will serve static built assets instead of Webpack-dev-server.
+# The Cranes of Seattle
+Crowdsourced web application for visualizing the tower cranes erected in
+Seattle, Washington. This project includes an API and frontend.
 
 ## Setup
 ### Requirements
 - Docker
 - Docker-compose
 
-After installing Docker and Docker compose, you should be able to simply run `docker-compose build` within the root of this project. This will take a long while as docker pulls the required images and then builds from the included Dockerfiles. After building, run `docker-compose up` and there should be output for all running containers.
+After installing Docker and Docker compose on your machine, you can run
+any of the following commands to begin:
+- `Make install`: Will install dependencies across entire project.
+- `Make dev`: Run entire project in a development environment. This will
+probably take quite a while for Docker images to build. Then navigate to
+`localhost:8080`.
+- `Make prod`: Run entire project in production environment. Currently, the
+main difference from the development environment is that frontend will
+not be using Webpack HMR middleware and instead serving compiled JavaScript.
+
+## Notes
+This is very much a work in progress and will be changing frequently.
