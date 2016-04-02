@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const ROOT = path.resolve(__dirname, '../');
+const ROOT = path.resolve(process.cwd());
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -10,7 +10,7 @@ module.exports = {
     './src/index.js'
   ],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: path.join(ROOT, 'dist'),
     filename: 'bundle.js',
     publicPath: '/dist/'
   },

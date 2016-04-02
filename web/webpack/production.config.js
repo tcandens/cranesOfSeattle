@@ -1,6 +1,7 @@
 const defaults = require('lodash.defaults');
 const webpack = require('webpack');
 const config = require('./development.config');
+const path = require('path');
 
 module.exports = defaults(config, {
   devtool: '#source-maps',
