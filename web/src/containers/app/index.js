@@ -7,6 +7,11 @@ import {
   saveReport
 } from 'actions/reports';
 import {
+  fetchCranes,
+  addCrane,
+  saveCrane
+} from 'actions/cranes';
+import {
   recordMapLocation
 } from 'actions/map';
 
@@ -25,10 +30,11 @@ export default class App extends Component {
   componentDidMount = () => {
     const {dispatch} = this.props;
     dispatch(fetchReports());
+    dispatch(fetchCranes());
   };
 
   render = () => {
-    const {dispatch, reports, map} = this.props;
+    const {dispatch, reports, cranes, map} = this.props;
 
     const mapActions = {
       onMoveEnd: (map, event) => {
@@ -38,7 +44,7 @@ export default class App extends Component {
 
     function handleReportClick(event) {
       event.preventDefault();
-      dispatch(saveReport(map.location));
+      dispatch(saveCrane(map.location));
     }
 
     return (
@@ -46,7 +52,7 @@ export default class App extends Component {
         <Map
           bearing={90}
           zoom={15}
-          data={reports.geojson}
+          data={[reports.geojson, cranes.geojson]}
           actions={mapActions}
         >
           <Reticle />
@@ -56,9 +62,3 @@ export default class App extends Component {
     );
   };
 }
-
-// export default App;
-
-// export default connect(state => {
-//   return state;
-// })(App);

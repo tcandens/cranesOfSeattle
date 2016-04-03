@@ -2,31 +2,31 @@ import geojson from 'lib/geojson';
 import assign from 'lodash/assign';
 
 import {
-  REQUEST_REPORTS,
-  RECEIVE_REPORTS,
-  ADD_REPORT
-} from  'actions/reports';
+  REQUEST_CRANES,
+  RECEIVE_CRANES,
+  ADD_CRANE
+} from 'actions/cranes';
 
-function reports(state = {
+function cranes(state = {
   isFetching: false,
   geojson: {}
 }, action) {
   switch (action.type) {
-    case REQUEST_REPORTS:
+    case REQUEST_CRANES:
       return assign({}, state, {
         isFetching: true
       });
-    case RECEIVE_REPORTS:
+    case RECEIVE_CRANES:
       return assign({}, state, {
         isFetching: false,
         geojson: action.geojson,
         lastUpdated: action.receivedAt
       });
-    case ADD_REPORT:
-      const report = geojson.pointFromLngLat(action.location);
+    case ADD_CRANE:
+      const crane = geojson.pointFromLngLat(action.location);
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
-          features: [...state.geojson.features, report]
+          features: [...state.geojson.features, crane]
         })
       });
     default:
@@ -34,4 +34,4 @@ function reports(state = {
   }
 }
 
-export default reports;
+export default cranes;
