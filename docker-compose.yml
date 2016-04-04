@@ -30,6 +30,7 @@ services:
       - "9000"
     volumes:
       - ./web:/usr/src
+      - ./web/node_modules:/usr/src/node_modules/
   nginx:
     image: nginx:latest
     volumes:
