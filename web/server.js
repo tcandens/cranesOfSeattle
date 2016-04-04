@@ -20,7 +20,7 @@ if (isDeveloping) {
   app.use('/dist', express.static(staticPath));
 }
 
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 

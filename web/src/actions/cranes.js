@@ -44,7 +44,6 @@ export function saveCrane(location) {
   return function (dispatch) {
     dispatch(addCrane(location));
     const crane = geojson.pointFromLngLat(location);
-    crane.properties['permit'] = '2220';
     return axios.post('/api/cranes', crane)
       .then(response => {
         window.console.log(response);

@@ -133,7 +133,6 @@ export default class Map extends Component {
       source
     };
     const layer = createLayer(name);
-    console.log(layer)
     map.addSource(name, source);
     map.addLayer(layer);
     this.setState({sources});
