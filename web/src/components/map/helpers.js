@@ -4,7 +4,7 @@ export function createLayer(sourceName) {
     'type': 'symbol',
     'source': sourceName,
     'layout': {
-      'icon-image': 'crane',
+      'icon-image': sourceName,
       'icon-allow-overlap': 'true',
       'icon-ignore-placement': 'true',
       'icon-offset': [-5, -20]

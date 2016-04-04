@@ -52,7 +52,7 @@ export default class App extends Component {
         <Map
           bearing={90}
           zoom={15}
-          data={[reports.geojson, cranes.geojson]}
+          sources={[reports.geojson, cranes.geojson]}
           actions={mapActions}
         >
           <Reticle />

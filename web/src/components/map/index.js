@@ -2,8 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
 import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
-import uniqueId from 'lodash/uniqueId';
 import has from 'lodash/has';
+import isEmpty from 'lodash/isEmpty';
 import wrapWithUserLocation from 'decorators/userLocation';
 
 const MAPBOX_STYLE = 'mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3';
@@ -26,8 +26,7 @@ export default class Map extends Component {
     minZoom: PropTypes.number,
     bearing: PropTypes.number,
     maxBounds: PropTypes.arrayOf(PropTypes.array),
-    data: PropTypes.oneOfType([
-      PropTypes.object,
+    sources: PropTypes.oneOfType([
       PropTypes.array
     ]),
     actions: PropTypes.shape({
@@ -49,7 +48,8 @@ export default class Map extends Component {
     super(props);
     this.props = props;
     this.state = {
-      loaded: false
+      loaded: false,
+      sources: {}
     };
   }
 
@@ -58,16 +58,23 @@ export default class Map extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {data, latitude, longitude} = nextProps;
-    if (!isEqual(this.props.data, data)) {
-      if (this.sources[data.properties.name]) {
-        this.updateSource(data);
-      } else {
-        this.addData(data);
-      }
-    }
-    if (Object.keys(this.sources).length === 0) {
-      this.addData(data);
+    const {sources, latitude, longitude} = nextProps;
+    const currentSources = this.state.sources;
+    if (!isEqual(this.props.sources, sources) || isEmpty(currentSources)) {
+      sources.forEach(source => {
+        const name = has(source.properties, 'name') ? source.properties['name'] : null;
+        if (!name) {
+          return console.log('Source has no name property. -->%s', name);
+        } else if (currentSources[name]) {
+          // Update currentSource with new data
+          console.log('Updating source %s:', name, source);
+          this.updateSource(name, source);
+        } else {
+          // Else create new source and layer... add data
+          console.log('Adding source %s:', name, source);
+          this.addSource(name, source);
+        }
+      });
     }
     if (
       !isEqual(this.props.longitude, longitude) ||
@@ -104,7 +111,6 @@ export default class Map extends Component {
       this.togglePitch();
     });
 
-    this.sources = {};
   };
 
   togglePitch = () => {
@@ -119,36 +125,34 @@ export default class Map extends Component {
     this.map.panTo([longitude, latitude]);
   };
 
-  addSource = (data) => {
-    let name = has(data, 'properties.name') ? data.properties.name : uniqueId();
-    if (has(this.sources, name)) {
-      return console.warn('Data source %s already exists.', name);
-    }
-    const source = this.sources[name] = new Mapbox.GeoJSONSource({data});
-    if (this.map.getLayer(name)) return;
-    if (!this.state.loaded) {
-      // Add event listener to add styles at appropriate time
+  addToMap = (name, source) => {
+    const map = this.map;
+    const {sources} = this.state;
+    sources[name] = {
+      name,
+      source
+    };
+    const layer = createLayer(name);
+    console.log(layer)
+    map.addSource(name, source);
+    map.addLayer(layer);
+    this.setState({sources});
+  }
+
+  addSource = (name, source) => {
+    const {loaded} = this.state;
+    const geoJSONSource = new Mapbox.GeoJSONSource({data: source});
+    if (!loaded) {
       this.map.on('style.load', () => {
-        this.map.addSource(name, source);
-        this.map.addLayer(createLayer(name));
+        this.addToMap(name, geoJSONSource);
       });
     } else {
-      this.map.addSource(name, source);
-      this.map.addLayer(createLayer(name));
+      this.addToMap(name, geoJSONSource);
     }
-  };
+  }
 
-  updateSource = (data) => {
-    const {name} = data.properties;
-    this.sources[name].setData(data);
-  };
-
-  addData = (data) => {
-    if (data.features || data.type === 'FeatureCollection') {
-      this.addSource(data);
-    } else if (isArray(data)) {
-      data.forEach(datum => this.addSource(datum));
-    }
+  updateSource = (name, source) => {
+    this.state.sources[name].source.setData(source);
   };
 
   render = () => {
