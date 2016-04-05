@@ -16,8 +16,8 @@ if (isDeveloping) {
   app.use(require('webpack-hot-middleware')(compiler));
 } else {
   console.info('== Production with Express Static ==>');
-  const staticPath = path.join(__dirname, 'dist');
-  app.use('/dist', express.static(staticPath));
+  const distPath = path.join(__dirname, 'dist');
+  app.use('/dist', express.static(distPath));
 }
 
 app.get('*', function(req, res) {

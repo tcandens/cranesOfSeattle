@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.join(ROOT, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/dist/'
+    publicPath: '/assets/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -28,7 +28,8 @@ module.exports = {
       'components': path.resolve(ROOT, 'src/components'),
       'containers': path.resolve(ROOT, 'src/containers'),
       'decorators': path.resolve(ROOT, 'src/decorators'),
-      'lib': path.resolve(ROOT, 'src/lib')
+      'lib': path.resolve(ROOT, 'src/lib'),
+      'assets': path.resolve(ROOT, './assets')
     }
   },
   module: {
@@ -44,11 +45,19 @@ module.exports = {
       },
       {
         test: /\.styl$/,
-        loaders: ['style', 'css', 'stylus']
+        loaders: ['style', 'css', 'stylus'],
+        include: path.join(ROOT, 'src')
+        // loader: 'style!css!stylus?resolve url'
       },
       {
         test: /\.json$/,
         loaders: ['json']
+      },
+      {
+        test: /\.(jpe?g)$/,
+        loader: 'url?.[ext]&mimetype=image/jpeg',
+        include: path.join(ROOT, 'assets')
+        // query: {limit: 10240}
       }
     ]
   }
