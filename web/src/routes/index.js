@@ -1,8 +1,8 @@
 import React from 'react';
 import {Route} from 'react-router';
 
-import App from 'containers/app';
+import Entry from 'components/entry';
 
 export default (store) => (
-  <Route path='/' component={App} />
+  <Route path='/' component={Entry} />
 );
