@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 
-import './entry.styl';
+import './index.styl';
 
 export default class Entry extends Component {
   constructor(props) {
@@ -8,10 +8,9 @@ export default class Entry extends Component {
   }
   render = () => {
     return (
-      <div>
+      <section className='c-header--hero'>
         <h1>Hello, from React-Router!</h1>
-        <div className='bg' />
-      </div>
+      </section>
     );
   }
 }

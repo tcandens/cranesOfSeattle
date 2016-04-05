@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.join(ROOT, 'dist'),
     filename: 'bundle.js',
-    publicPath: '/assets/'
+    publicPath: '/dist/'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -23,12 +23,12 @@ module.exports = {
     alias: {
       'mapbox-gl/css': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.css'),
       'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl-dev.js'),
-      'protected': path.resolve(ROOT, 'protected.js'),
       'actions': path.resolve(ROOT, 'src/actions'),
       'components': path.resolve(ROOT, 'src/components'),
       'containers': path.resolve(ROOT, 'src/containers'),
       'decorators': path.resolve(ROOT, 'src/decorators'),
       'lib': path.resolve(ROOT, 'src/lib'),
+      'styles': path.resolve(ROOT, 'src/styles'),
       'assets': path.resolve(ROOT, './assets')
     }
   },
@@ -47,7 +47,6 @@ module.exports = {
         test: /\.styl$/,
         loaders: ['style', 'css', 'stylus'],
         include: path.join(ROOT, 'src')
-        // loader: 'style!css!stylus?resolve url'
       },
       {
         test: /\.json$/,
@@ -57,7 +56,6 @@ module.exports = {
         test: /\.(jpe?g)$/,
         loader: 'url?.[ext]&mimetype=image/jpeg',
         include: path.join(ROOT, 'assets')
-        // query: {limit: 10240}
       }
     ]
   }

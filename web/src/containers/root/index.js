@@ -2,6 +2,8 @@ import React, {Component, PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router';
 
+import 'styles/index.styl';
+
 export default class Root extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
