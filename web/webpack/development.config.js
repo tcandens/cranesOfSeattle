@@ -13,10 +13,15 @@ module.exports = {
   ],
   output: {
     path: path.join(ROOT, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
+    chunkFilename: '[id].chunk.js',
     publicPath: '/dist/'
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Cranes of Seattle',
+      filename: 'index.html'
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()

@@ -3,6 +3,7 @@ const path = require('path');
 const aliases = require('./aliases');
 const loaders = require('./loaders');
 const merge = require('lodash/merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = module.exports = {
   devtool: 'source-map',
@@ -30,6 +31,10 @@ const config = module.exports = {
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Cranes of Seattle',
+      filename: 'index.html'
     })
   ],
   resolve: {
