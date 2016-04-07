@@ -1,10 +1,21 @@
 import React from 'react';
-import {Route} from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 
+import MainLayout from 'layouts/main';
 import Entry from 'components/entry';
-import Map from 'components/map';
+import MapContainer from 'containers/map';
 
-export default (store) => (
-  <Route path='/' component={Entry} >
-  </Route>
-);
+const requireComponent = (path) => (location, callback) => {
+  require.ensure([], require => {
+    callback(null, require(path).default);
+  });
+};
+
+export default (store) => {
+  return (
+    <Route path='/' component={MainLayout}>
+      <IndexRoute component={Entry} />
+      <Route path='map' getComponent={requireComponent('containers/map')} />
+    </Route>
+  );
+};

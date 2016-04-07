@@ -7,15 +7,15 @@ import 'styles/index.styl';
 export default class Root extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
-    routes: PropTypes.element.isRequired,
+    routes: PropTypes.object.isRequired,
     store: PropTypes.object.isRequired
   };
 
   get content () {
-    const {routes, history} = this.props;
+    const {routes, history, children} = this.props;
     return (
-      <Router history={history}>
-        {routes}
+      <Router history={history} routes={routes}>
+        {children}
       </Router>
     );
   }

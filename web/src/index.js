@@ -8,10 +8,10 @@ import Root from 'containers/root';
 const store = configureStore();
 const routes = makeRoutes(store);
 
-ReactDOM.render(
+ReactDOM.render((
   <Root
     history={browserHistory}
     routes={routes}
     store={store}
-  />, document.getElementById('root')
+  ></Root>), document.getElementById('root')
 );

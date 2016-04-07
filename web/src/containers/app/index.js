@@ -29,8 +29,8 @@ export default class App extends Component {
 
   componentDidMount = () => {
     const {dispatch} = this.props;
-    dispatch(fetchReports());
-    dispatch(fetchCranes());
+    // dispatch(fetchReports());
+    // dispatch(fetchCranes());
   };
 
   render = () => {
