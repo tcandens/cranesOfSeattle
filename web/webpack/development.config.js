@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      template: path.resolve(ROOT, 'templates', 'index.jade'),
       title: 'Cranes of Seattle',
       filename: 'index.html'
     }),

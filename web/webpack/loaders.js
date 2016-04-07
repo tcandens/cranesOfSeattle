@@ -25,5 +25,10 @@ const loaders = module.exports = [
     test: /\.(jpe?g)$/,
     loader: 'url?.[ext]&mimetype=image/jpeg',
     include: path.join(ROOT, 'assets')
+  },
+  {
+    test: /\.jade$/,
+    loaders: ['jade'],
+    include: path.join(ROOT, 'templates')
   }
 ];
