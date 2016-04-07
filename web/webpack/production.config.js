@@ -1,44 +1,43 @@
-const assign = require('lodash/assign');
-const defaults = require('lodash/defaultsDeep');
-const merge = require('lodash/merge');
 const webpack = require('webpack');
 const path = require('path');
-const devConfig = require('./development.config');
+const aliases = require('./aliases');
+const loaders = require('./loaders');
+const merge = require('lodash/merge');
 
-const config = assign({}, devConfig, {
+const config = module.exports = {
   devtool: 'source-map',
   entry: [
     './src/index.js'
   ],
+  output: {
+    path: path.join(process.cwd(), 'dist'),
+    filename: '[name].js',
+    chunkFilename: '[id].chunk.js',
+    publicPath: '/dist/'
+  },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        unused: true,
+        dead_code: true,
+        warnings: false,
+        screw_ie8: true
+      }
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
     })
-  ]
-});
-
-merge(config, {
+  ],
   resolve: {
-    alias: {
-      'mapbox-gl': path.resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
-      // 'react': path.resolve('./node_modules/react/dist/react.min.js'),
-      // 'react-dom': path.resolve('./node_modules/react-dom/dist/react-dom.min.js')
-    }
+    alias: merge(aliases, {
+      'mapbox-gl': path.resolve(process.cwd(), './node_modules/mapbox-gl/dist/mapbox-gl.js')
+    })
   },
   module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loaders: ['babel'],
-        include: path.resolve('src')
-      }
-    ]
+    loaders: loaders
   }
-});
-
-
-module.exports = config;
+};
