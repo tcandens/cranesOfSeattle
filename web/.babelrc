@@ -3,7 +3,7 @@
   "plugins": ["syntax-decorators", "transform-decorators-legacy"],
   "env": {
     "development": {
-      "presets": ["es2015", "stage-0", "react-hmre"]
+      "presets": ["react-hmre"]
     }
   }
 }
