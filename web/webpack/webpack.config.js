@@ -63,6 +63,9 @@ module.exports = {
   },
   plugins: getPlugins(isDeveloping),
   resolve: {
+    extensions: [
+      '', '.js', '.styl'
+    ],
     alias: merge({
       'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
       'mapbox-gl': (isDeveloping ?
