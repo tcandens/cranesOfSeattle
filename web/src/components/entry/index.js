@@ -7,6 +7,7 @@ import './index.styl';
 export default class Entry extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
   }
   render = () => {
     return (
