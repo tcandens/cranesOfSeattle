@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import MapContainer from 'containers/map';
 
+import 'styles/layouts/map';
+
 export default class MapLayout extends Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,9 @@ export default class MapLayout extends Component {
   render = () => {
     return (
       <div className='map-layout'>
-        {this.props.children}
+        <main className='c-content-container'>
+          {this.props.children}
+        </main>
         <MapContainer/>
       </div>
     );
