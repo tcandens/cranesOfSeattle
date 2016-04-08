@@ -1,18 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
-const getLoaders = require('./loaders');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const merge = require('lodash/merge');
+const createAliasesFrom = require('./helpers').alias;
+const getLoaders = require('./loaders');
+
 const ROOT = path.resolve(process.cwd());
-
 const isDeveloping = process.env.NODE_ENV !== 'production';
-
-const createAliasesFrom = (root) => (names) => {
-  return names.reduce((result, value) => {
-    result[value] = path.resolve(root, value);
-    return result;
-  }, {});
-};
 
 const getEntry = (isDeveloping) => {
   const entry = [];
@@ -71,19 +65,24 @@ module.exports = {
   resolve: {
     alias: merge({
       'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
-      'mapbox-gl': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js')
-    }, createAliasesFrom(path.resolve(ROOT, 'src'))([
-      'actions',
-      'containers',
-      'components',
-      'decorators',
-      'layouts',
-      'lib',
-      'styles'
-    ]), {
-      'assets': path.resolve(ROOT, './assets'),
-      'containers': path.resolve(process.cwd(), './src/containers')
-    })
+      'mapbox-gl': (isDeveloping ?
+        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
+        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
+      )
+    }, createAliasesFrom(path.resolve(ROOT, 'src'))
+      .to([
+        'actions',
+        'containers',
+        'components',
+        'decorators',
+        'layouts',
+        'lib',
+        'styles'
+    ]), createAliasesFrom(path.resolve(ROOT))
+      .to([
+        'assets'
+      ])
+    )
   },
   module: {
     loaders: getLoaders(ROOT)
