@@ -1,7 +1,7 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
-const config = require('./webpack/development.config');
+const config = require('./webpack/webpack.config');
 const compiler = webpack(config);
 const app = express();
 
@@ -20,15 +20,27 @@ if (isDeveloping) {
   app.use(require('webpack-hot-middleware')(compiler, {
     reload: true
   }));
+
+  app.get('*', (req, res, next) => {
+    const filename = path.join(compiler.outputPath, 'index.html');
+    compiler.outputFileSystem.readFile(filename, (error, result) => {
+      if (error) {
+        return next(error);
+      }
+      res.set('content-type', 'text/html');
+      res.send(result);
+      res.send();
+    });
+  });
 } else {
   console.info('== Production with Express Static ==>');
   const distPath = path.join(__dirname, 'dist');
   app.use('/dist', express.static(distPath));
+  app.get('*', (req, res) => {
+    res.send('dist/index.html');
+  });
 }
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
 
 app.listen(9000, '0.0.0.0', function(err) {
   if (err) {

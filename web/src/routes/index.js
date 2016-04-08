@@ -7,7 +7,7 @@ import MapContainer from 'containers/map';
 
 const requireComponent = (path) => (location, callback) => {
   require.ensure([], require => {
-    callback(null, require(path).default);
+    callback(null, require(path));
   });
 };
 

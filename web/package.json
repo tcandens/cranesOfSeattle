@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/production.config.js",
+    "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/webpack.config.js",
     "clean": "./node_modules/.bin/rimraf dist/"
   },
   "author": "",
