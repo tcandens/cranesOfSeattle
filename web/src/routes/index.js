@@ -8,6 +8,7 @@ export default (store) => {
   return (
     <Route path='/' component={MapLayout}>
       <IndexRoute component={Entry} />
+      <Route path='map' component={null} />
     </Route>
   );
 };

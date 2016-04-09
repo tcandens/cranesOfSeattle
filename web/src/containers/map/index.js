@@ -6,8 +6,11 @@ import {
 } from 'actions/map';
 
 import MapLoader from 'components/map/loader';
+import Reticle from 'components/reticle';
 
-@connect(state => state)
+@connect(
+  (state) => { return {state} }
+)
 export default class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +38,9 @@ export default class MapContainer extends Component {
           zoom={16}
           actions={mapActions}
           sources={[]}
-        />}
+        >
+          <Reticle/>
+        </this.state.Map>}
       </div>
     );
   }
