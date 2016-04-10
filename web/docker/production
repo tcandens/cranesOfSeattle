@@ -1,8 +1,9 @@
 FROM node:5.3
 
 WORKDIR /usr/src/
-COPY . /usr/src/
+COPY ./package.json package.json
 RUN npm install
+COPY . /usr/src/
 
 RUN npm run clean
 RUN npm run build
