@@ -37,7 +37,7 @@ if (isDeveloping) {
   const distPath = path.join(__dirname, 'dist');
   app.use('/dist', express.static(distPath));
   app.get('*', (req, res) => {
-    res.sendFile('dist/index.html');
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 }
 
