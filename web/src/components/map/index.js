@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
 import isEqual from 'lodash/isEqual';
-import isArray from 'lodash/isArray';
 import has from 'lodash/has';
 import isEmpty from 'lodash/isEmpty';
 import wrapWithUserLocation from 'decorators/userLocation';

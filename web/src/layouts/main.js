@@ -1,15 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class MainLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-  }
-  render = () => {
-    return (
-      <main className='content-container'>
-        {this.props.children}
-      </main>
-    );
-  }
-}
+const MainLayout = (props) => {
+  return (
+    <main className='l-content'>
+      {props.children}
+    </main>
+  );
+};
+
+export default MainLayout;

@@ -1,19 +1,21 @@
-import React, {Component} from 'react';
+import React from 'react';
 import MapContainer from 'containers/map';
+import MainLayout from 'layouts/main';
 import classNames from 'classnames';
 
 const MapLayout = (props) => {
+  // Location prop is injected by route
   const {location} = props;
   const layoutClass = classNames({
     'l-map': true,
-    'l-map--isMapActive': location.pathname === '/map'
+    'l-map--isMapActive': /map|cranes|report/.test(location.pathname)
   });
   return (
     <div className={layoutClass}>
-      <main className='l-content'>
-        {props.children}
-      </main>
       <MapContainer/>
+      <MainLayout>
+        {props.children}
+      </MainLayout>
     </div>
   );
 };

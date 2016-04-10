@@ -9,7 +9,9 @@ import {
 
 function reports(state = {
   isFetching: false,
-  geojson: {}
+  geojson: {
+    features: []
+  }
 }, action) {
   switch (action.type) {
     case REQUEST_REPORTS:

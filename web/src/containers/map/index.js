@@ -9,7 +9,11 @@ import MapLoader from 'components/map/loader';
 import Reticle from 'components/reticle';
 
 @connect(
-  (state) => { return {state} }
+  (state) => {
+    return {
+      reports: state.reports.geojson
+    }
+  }
 )
 export default class MapContainer extends Component {
   constructor(props) {
@@ -23,7 +27,7 @@ export default class MapContainer extends Component {
     });
   }
   render = () => {
-    const {dispatch} = this.props;
+    const {dispatch, reports} = this.props;
     const mapActions = {
       onMoveEnd: (map, event) => {
         dispatch(recordMapLocation(map.getCenter()));
@@ -37,7 +41,7 @@ export default class MapContainer extends Component {
           bearing={90}
           zoom={16}
           actions={mapActions}
-          sources={[]}
+          sources={[reports]}
         >
           <Reticle/>
         </this.state.Map>}
