@@ -28,6 +28,7 @@ services:
       - "9000"
     environment:
       - ENV=production
+      - NODE_ENV=production
   nginx:
     image: nginx:latest
     # Use 'volumes_from' to mount and host web
