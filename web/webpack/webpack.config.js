@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
@@ -25,6 +26,7 @@ const getPlugins = (isDeveloping) => {
       title: 'Cranes of Seattle',
       filename: 'index.html'
     }),
+    // new ExtractTextPlugin('styles.css'),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
@@ -34,7 +36,8 @@ const getPlugins = (isDeveloping) => {
   if (isDeveloping) {
     plugins.push(
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
+      new webpack.NoErrorsPlugin(),
+      new ExtractTextPlugin('styles.css')
     );
   } else {
     plugins.push(
@@ -88,6 +91,6 @@ module.exports = {
     )
   },
   module: {
-    loaders: getLoaders(ROOT)
+    loaders: getLoaders(ROOT, isDeveloping)
   }
 };

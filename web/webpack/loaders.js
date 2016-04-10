@@ -1,6 +1,7 @@
 const path = require('path');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const createLoaders = (ROOT) => {
+const createLoaders = (ROOT, isDeveloping) => {
   return [
     {
       test: /\.js$/,
@@ -10,11 +11,17 @@ const createLoaders = (ROOT) => {
     },
     {
       test: /\.css$/,
-      loaders: ['style', 'css']
+      loader: (isDeveloping ?
+        'style!css' :
+        ExtractTextPlugin.extract(['style', 'css'])
+      )
     },
     {
       test: /\.styl$/,
-      loaders: ['style', 'css', 'stylus'],
+      loader: (isDeveloping ?
+        'style!css!stylus' :
+        ExtractTextPlugin.extract(['css', 'stylus'])
+      ),
       include: path.join(ROOT, 'src')
     },
     {
