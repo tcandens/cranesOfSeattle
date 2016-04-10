@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 import {Link} from 'react-router';
-
-import './index.styl';
 
 export default class Entry extends Component {
   constructor(props) {
@@ -10,8 +8,11 @@ export default class Entry extends Component {
     this.props = props;
   }
   render = () => {
+    const entryClass = classNames({
+      'c-entry': true
+    });
     return (
-      <section className='c-header--hero'>
+      <section className={entryClass}>
         <h1>Hello, from React-Router!</h1>
         <Link to='/map'>Map</Link>
       </section>

@@ -156,8 +156,8 @@ export default class Map extends Component {
 
   render = () => {
     return (
-      <div className='c-map-container'>
-        <div ref={(c) => this._mapContainer = c} className='c-map'></div>
+      <div className='c-map'>
+        <div ref={(c) => this._mapContainer = c} className='c-map__target'></div>
         {this.props.children}
       </div>
     );

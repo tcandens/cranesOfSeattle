@@ -10,6 +10,8 @@ const store = configureStore();
 const routes = makeRoutes(store);
 const history = syncHistoryWithStore(browserHistory, store);
 
+import 'styles';
+
 ReactDOM.render((
   <Root
     history={history}
