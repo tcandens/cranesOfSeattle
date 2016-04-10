@@ -11,7 +11,6 @@ const MAPBOX_KEY = 'pk.eyJ1IjoidGNhbmRlbnMiLCJhIjoiZDEzOTJmYTdkZWNjYzc3ZDA1OWE0O
 
 import {createLayer} from './helpers';
 
-import './map.styl';
 import 'mapbox-gl/css';
 
 @wrapWithUserLocation
