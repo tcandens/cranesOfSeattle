@@ -3,7 +3,8 @@ import {connect} from 'react-redux';
 
 import {
   fetchReports,
-  addReport
+  addReport,
+  saveReport
 } from 'actions/reports'
 
 @connect(
@@ -26,7 +27,7 @@ export default class ReportContainer extends Component {
   }
   handleStartReport = (e) => {
     const {dispatch, map} = this.props;
-    dispatch(addReport(map.location));
+    dispatch(saveReport(map.location));
     e.preventDefault();
   }
   render = () => {
