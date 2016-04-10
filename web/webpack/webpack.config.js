@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+console.log(autoprefixer({browsers: ['last 2 versions']}).info());
 const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
@@ -36,12 +38,12 @@ const getPlugins = (isDeveloping) => {
   if (isDeveloping) {
     plugins.push(
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
-      new ExtractTextPlugin('styles.css')
+      new webpack.NoErrorsPlugin()
     );
   } else {
     plugins.push(
       new webpack.optimize.DedupePlugin(),
+      new ExtractTextPlugin('styles.css'),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           unused: true,
@@ -92,5 +94,10 @@ module.exports = {
   },
   module: {
     loaders: getLoaders(ROOT, isDeveloping)
+  },
+  stylus: {
+    use: [
+      require('poststylus')(['autoprefixer'])
+    ]
   }
 };
