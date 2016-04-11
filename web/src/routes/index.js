@@ -4,6 +4,7 @@ import {Route, IndexRoute} from 'react-router';
 import MapLayout from 'layouts/map';
 import Entry from 'layouts/entry';
 import Report from 'containers/report';
+import Login from 'containers/login';
 
 const Cranes = () => {};
 const CraneInfo = () => {};
@@ -16,6 +17,7 @@ export default (store) => {
         <Route path=':id' component={CraneInfo} />
       </Route>
       <Route path='report' component={Report} />
+      <Route path='login' component={Login} />
     </Route>
   );
 };
