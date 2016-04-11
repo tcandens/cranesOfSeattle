@@ -33,7 +33,7 @@ export function errorLogin(message) {
 export function userLogin(credentials) {
   return dispatch => {
     dispatch(requestLogin(credentials));
-    return axios.post('/api/auth')
+    return axios.post('/api/auth/google')
       .then(response => {
         console.log(response);
         dispatch(receiveLogin(response.user));
