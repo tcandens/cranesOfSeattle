@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 import {
   userLogin
@@ -19,9 +20,9 @@ export default class LoginContainer extends Component {
   render = () => {
     return (
       <div className='c-login'>
-        <div
-          onClick={this.handleLoginSubmit}
-          className='c-button c-button--lg c-button--auth'>Facebook</div>
+        <div className='c-button c-button--lg c-button--auth'>
+          <Link to='/api/auth/google'>Google</Link>
+        </div>
       </div>
     );
   }

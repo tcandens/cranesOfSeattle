@@ -18,8 +18,10 @@
     "koa": "^2.0.0-alpha.3",
     "koa-json-body": "^5.0.0-alpha.1",
     "koa-logger": "^2.0.0",
+    "koa-passport": "^2.1.0",
     "koa-router": "^7.0.1",
     "node-pg-migrate": "0.0.9",
+    "passport-google-oauth20": "^1.0.0",
     "pg-monitor": "^0.4.5",
     "pg-promise": "^3.1.0"
   },
