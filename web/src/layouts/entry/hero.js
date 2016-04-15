@@ -20,8 +20,9 @@ const EntryLayout = (props) => {
         <div className='c-button c-button--lg'>
           <Link to='/report'>Report a crane</Link>
         </div>
-        <div className='c-button c-button--lg c-button--auth'>
-          <Link to ='/login'>Login</Link>
+        <div
+          className='c-button c-button--lg c-button--auth'>
+          Login
         </div>
       </ul>
     </section>

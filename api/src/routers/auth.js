@@ -11,6 +11,7 @@ export default (passport) => {
     .get('/auth/google/callback',
       passport.authenticate('google', {failureRedirect: '/login'}),
       async (ctx) => {
+        console.log(ctx.query);
         ctx.redirect('/login')
       }
     )
