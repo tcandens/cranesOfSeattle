@@ -8,14 +8,15 @@ import packageJSON from '../package.json';
 
 /* Middleware */
 import logger from 'koa-logger';
-import json from './middleware/json_response';
-import jsonBody from 'koa-json-body';
 import version from './middleware/version';
+import convert from 'koa-convert';
+import session from 'koa-session';
 
-app.use(jsonBody());
-app.use(json());
 app.use(logger());
 app.use(version(packageJSON.version));
+
+app.keys = ['SECRET_HERE'];
+app.use(convert(session(app)));
 
 /* Routes */
 import cranes from './routers/cranes';

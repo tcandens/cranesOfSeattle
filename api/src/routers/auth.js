@@ -11,8 +11,11 @@ export default (passport) => {
     .get('/auth/google/callback',
       passport.authenticate('google', {failureRedirect: '/login'}),
       async (ctx) => {
-        console.log(ctx.query);
-        ctx.redirect('/login')
+        await ctx.redirect('/auth/received?id=' + ctx.req.user.id);
       }
     )
+    .get('/auth/received', async (ctx) => {
+      ctx.type = 'html';
+      ctx.body = '<h1>Hello, world</h1>';
+    });
 }

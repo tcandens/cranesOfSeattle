@@ -1,7 +1,10 @@
 import Router from 'koa-router'
 import reportModel from '../models/report'
+import json from '../middleware/json_response';
+import jsonBody from 'koa-json-body';
 
 export default Router()
+  .use(json(), jsonBody())
   .get('/reports', async (ctx) => {
     await reportModel.readAll()
       .then(data => {

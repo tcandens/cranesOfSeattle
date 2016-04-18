@@ -1,7 +1,10 @@
 import Router from 'koa-router'
 import craneModel from '../models/crane'
+import json from '../middleware/json_response';
+import jsonBody from 'koa-json-body';
 
 export default Router()
+  .use(json(), jsonBody())
   .get('/cranes', async (ctx) => {
     await craneModel.readAll()
       .then(data => {
