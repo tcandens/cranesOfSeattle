@@ -15,6 +15,7 @@ services:
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
+      - HOST=http://localhost:8080/
     volumes:
       - ./api:/var/www/api
       - ./api/node_modules:/var/www/api/node_modules/
