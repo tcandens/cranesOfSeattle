@@ -5,21 +5,23 @@ import {
   RECEIVE_LOGIN,
   ERROR_LOGIN
 } from 'actions/user';
+import {REHYDRATE} from 'redux-persist/constants';
 
 function user(state = {
   isFetching: false,
-  isAuthenticated: false
+  isAuthenticated: false,
+  id: null
 }, action) {
   switch (action.type) {
     case REQUEST_LOGIN:
       return assign({}, state, {
-        isFetching: true,
-        user: action.credentials
+        isFetching: true
       });
     case RECEIVE_LOGIN:
       return assign({}, state, {
         isFetching: false,
-        isAuthenticated: true
+        isAuthenticated: true,
+        id: action.id
       });
     case ERROR_LOGIN:
       return assign({}, state, {
@@ -27,6 +29,10 @@ function user(state = {
         isAuthenticated: false,
         error: action.message
       });
+    case REHYDRATE:
+      const incoming = action.payload.user;
+      if (incoming) return {...state, ...incoming};
+      return state;
     default:
       return state;
   }

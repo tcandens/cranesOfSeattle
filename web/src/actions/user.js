@@ -1,22 +1,21 @@
 import axios from 'axios';
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export function requestLogin(credentials) {
+export function requestLogin() {
   return {
     type: REQUEST_LOGIN,
     isFetching: true,
-    isAuthenticated: false,
-    credentials
+    isAuthenticated: false
   };
 }
 
 export const RECEIVE_LOGIN = 'RECIEVE_LOGIN';
-export function receiveLogin(user) {
+export function receiveLogin(id) {
   return {
     type: RECEIVE_LOGIN,
     isFetching: false,
     isAuthenticated: true,
-    token: user.token
+    id
   };
 }
 
@@ -30,22 +29,18 @@ export function errorLogin(error) {
   };
 }
 
-export function userLogin(credentials) {
+import {loginPopup, parseSearchString} from 'lib/oauth';
+import {browserHistory} from 'react-router';
+
+export function userLogin(options) {
   return dispatch => {
-    dispatch(requestLogin(credentials));
-    const config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    return axios.get('/api/auth/google', config)
-      .then(response => {
-        console.log(response);
-        dispatch(receiveLogin(response.user));
-      })
-      .catch(response => {
-        dispatch(errorLogin(response));
+    dispatch(requestLogin());
+    loginPopup()
+      .then(id => {
+        dispatch(receiveLogin(id));
+        if (options && options.redirect) {
+          browserHistory.push(options.redirect);
+        }
       });
   };
 }
