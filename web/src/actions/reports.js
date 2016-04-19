@@ -34,17 +34,17 @@ export function fetchReports() {
 }
 
 export const ADD_REPORT = 'ADD_REPORT';
-export function addReport(location) {
+export function addReport(data) {
   return {
     type: ADD_REPORT,
-    location
+    data
   };
 }
 
-export function saveReport(location) {
+export function saveReport(data) {
   return function (dispatch) {
-    dispatch(addReport(location));
-    const report = geojson.pointFromLngLat(location);
+    dispatch(addReport(data));
+    const report = geojson.pointFromLngLat(data.location, data.properties);
     return axios.post('/api/reports', report)
       .then(response => {
         // dispatch(completeAsync(response));

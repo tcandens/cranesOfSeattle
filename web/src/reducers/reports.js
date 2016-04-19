@@ -25,7 +25,8 @@ function reports(state = {
         lastUpdated: action.receivedAt
       });
     case ADD_REPORT:
-      const report = geojson.pointFromLngLat(action.location);
+      const {location, properties} = action.data;
+      const report = geojson.pointFromLngLat(location, properties);
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
           features: [...state.geojson.features, report]
