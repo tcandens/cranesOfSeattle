@@ -9,15 +9,25 @@ import Login from 'containers/login';
 const Cranes = () => {};
 const CraneInfo = () => {};
 
+
 export default (store) => {
+  const requireAuth = function requireAuth(nextState, replace) {
+    const state = store.getState();
+    const {id} = state.user;
+    if (!id) {
+      replace({
+        pathname: '/',
+        state: {nextPathname: nextState.location.pathname}
+      });
+    }
+  }
   return (
     <Route path='/' component={MapLayout}>
       <IndexRoute component={Entry} />
       <Route path='cranes' component={Cranes}>
         <Route path=':id' component={CraneInfo} />
       </Route>
-      <Route path='report' component={Report} />
-      <Route path='login' component={Login} />
+      <Route path='report' component={Report} onEnter={requireAuth} />
     </Route>
   );
 };

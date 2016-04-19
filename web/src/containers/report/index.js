@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 import {
   fetchReports,
@@ -11,7 +12,8 @@ import {
   (state) => {
     return {
       reports: state.reports,
-      map: state.map
+      map: state.map,
+      userId: state.user.id
     };
   }
 )
@@ -26,15 +28,19 @@ export default class ReportContainer extends Component {
     dispatch(fetchReports());
   }
   handleStartReport = (e) => {
-    const {dispatch, map} = this.props;
-    dispatch(saveReport(map.location));
+    const {dispatch, map, userId} = this.props;
+    const {location} = map;
+    dispatch(saveReport({location, properties: {userId}}));
     e.preventDefault();
   }
   render = () => {
     return (
-      <div className='c-button c-button--lg' onClick={this.handleStartReport}>
-        Add Report
-      </div>
+      <section className='c-report'>
+        <button className='c-button c-button--lg' onClick={this.handleStartReport}>
+          Add Report
+        </button>
+        <Link className='c-button c-button--lg' to='/'>Home</Link>
+      </section>
     );
   }
 }

@@ -2,8 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-console.log(autoprefixer({browsers: ['last 2 versions']}).info());
 const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
@@ -27,12 +25,6 @@ const getPlugins = (isDeveloping) => {
       template: path.resolve(ROOT, 'templates', 'index.jade'),
       title: 'Cranes of Seattle',
       filename: 'index.html'
-    }),
-    // new ExtractTextPlugin('styles.css'),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
     })
   ];
   if (isDeveloping) {
@@ -42,6 +34,11 @@ const getPlugins = (isDeveloping) => {
     );
   } else {
     plugins.push(
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': JSON.stringify('production')
+        }
+      }),
       new webpack.optimize.DedupePlugin(),
       new ExtractTextPlugin('styles.css'),
       new webpack.optimize.UglifyJsPlugin({
@@ -58,7 +55,7 @@ const getPlugins = (isDeveloping) => {
 };
 
 module.exports = {
-  devtool: isDeveloping ? 'cheap-module-eval-source-map' : 'source-map',
+  devtool: isDeveloping ? 'cheap-module-source-map' : 'source-map',
   entry: getEntry(isDeveloping),
   output: {
     path: path.join(ROOT, 'dist'),
