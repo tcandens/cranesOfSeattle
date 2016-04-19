@@ -8,7 +8,8 @@ const MapLayout = (props) => {
   const {location} = props;
   const layoutClass = classNames({
     'l-map': true,
-    'l-map--isMapActive': /map|cranes|report/.test(location.pathname)
+    'l-map--isMapActive': /map|cranes|report/.test(location.pathname),
+    'l-map--isReporting': /report/.test(location.pathname)
   });
   return (
     <div className={layoutClass}>

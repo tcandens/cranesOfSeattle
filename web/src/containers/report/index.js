@@ -36,10 +36,10 @@ export default class ReportContainer extends Component {
   render = () => {
     return (
       <section className='c-report'>
-        <button className='c-button c-button--lg' onClick={this.handleStartReport}>
+        <button className='c-button c-button--invert c-button--lg' onClick={this.handleStartReport}>
           Add Report
         </button>
-        <Link className='c-button c-button--lg' to='/'>Home</Link>
+        <Link className='c-button c-button--invert c-button--lg u-unicode' to='/'>🖚</Link>
       </section>
     );
   }
