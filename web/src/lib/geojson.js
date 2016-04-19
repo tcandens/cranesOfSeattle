@@ -1,5 +1,6 @@
 const geojson = {
-  pointFromLngLat: (lnglat) => {
+  pointFromLngLat: (lnglat, properties) => {
+    console.log(properties)
     const longitude = lnglat.longitude || lnglat.lng;
     const latitude = lnglat.latitude || lnglat.lat;
     return {
@@ -9,7 +10,7 @@ const geojson = {
         'coordinates': [longitude, latitude]
       },
       'properties': {
-        'user_id': 11
+        'user_id': properties['userId']
       }
     };
   }
