@@ -26,10 +26,8 @@ export function loginPopup() {
 function listenForId(popup, resolve) {
   let parsed;
   try {
-    parsed = queryString.parse(popup.location.search);
-  } catch (e) {
-    console.log(e)
-  }
+    parsed = queryString.parse(popup.location);
+  } catch (e) {}
   if (parsed && parsed.id) {
     resolve(parsed.id);
   } else {
