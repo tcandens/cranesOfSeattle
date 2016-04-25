@@ -15,7 +15,7 @@ services:
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
-      - HOST=http://159.203.249.187/
+      - HOST=https://www.seattlecranes.site
     links:
       - db
     depends_on:
