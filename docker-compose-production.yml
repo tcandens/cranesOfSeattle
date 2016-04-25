@@ -32,14 +32,15 @@ services:
       - NODE_ENV=production
   nginx:
     image: nginx:latest
-    # Use 'volumes_from' to mount and host web
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt/archive/www.seattlecranes.site:/etc/letsencrypt
+      - ./nginx:/etc/nginx
     links:
       - api:api
       - web:web
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - web
       - api

@@ -16,4 +16,8 @@ prod:
 	@ docker-compose -f docker-compose-production.yml build && \
 	docker-compose -f docker-compose-production.yml up
 
-.PHONY: install dev prod
+# Get SSL/HTTPS Certificates via Let's Encrypt
+https:
+	@./letsencrypt/get_certs.sh
+
+.PHONY: install dev prod https
