@@ -26,7 +26,7 @@ export function createGoogleTokenUrl(queries) {
     redirect_uri: `${window.location.host}/api/auth/google/callback`,
     response_type: 'token',
     state: 'profile',
-    scope: 'profile'
+    scope: 'email'
   });
   queries['client_id'] = GOOGLE_CLIENT_ID;
   const protocol = window.location.protocol;
