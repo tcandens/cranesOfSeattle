@@ -9,6 +9,8 @@ const getLoaders = require('./loaders');
 const ROOT = path.resolve(process.cwd());
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
+console.log(process.env);
+
 const getEntry = (isDeveloping) => {
   const entry = [];
   if (isDeveloping) {
@@ -30,7 +32,11 @@ const getPlugins = (isDeveloping) => {
   if (isDeveloping) {
     plugins.push(
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin()
+      new webpack.NoErrorsPlugin(),
+      new webpack.DefinePlugin({
+        GOOGLE_CLIENT_ID: JSON.stringify(process.env.GOOGLE_CLIENT_ID),
+        GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET)
+      })
     );
   } else {
     plugins.push(

@@ -26,7 +26,7 @@ app
   .use(cranes.routes())
   .use(reports.routes())
 
-import authDecorator from './auth/decorator';
-authDecorator(app);
+// import authDecorator from './auth/decorator';
+// authDecorator(app);
 
 export default app

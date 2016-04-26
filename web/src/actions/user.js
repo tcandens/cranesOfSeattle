@@ -35,12 +35,6 @@ import {browserHistory} from 'react-router';
 export function userLogin(options) {
   return dispatch => {
     dispatch(requestLogin());
-    loginPopup()
-      .then(id => {
-        dispatch(receiveLogin(id));
-        if (options && options.redirect) {
-          browserHistory.push(options.redirect);
-        }
-      });
+    loginPopup();
   };
 }

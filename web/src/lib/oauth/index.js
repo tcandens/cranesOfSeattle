@@ -1,40 +1,54 @@
 import Promise from 'bluebird';
 import queryString from 'query-string';
 
-const AUTH_ENDPOINT = '/api/auth/google';
-const RECEIVE_ENDPOINT = '/api/auth/receive';
-const POPUP_NAME = 'Auth Popup';
-const POPUP_FEATURES = `
+const POPUP_NAME = 'Sign In Popup';
+const GOOGLE_OAUTH_WINDOW_FEATURES = `
   width=320,
   height=570,
   scrollbars=no,
   locationbar=no
 `;
 
+export function createGoogleTokenUrl(queries) {
+  queries = queries || {};
+  queries['client_id'] = GOOGLE_CLIENT_ID;
+  const protocol = window.location.protocol;
+  if (queries.redirect_uri) {
+    queries.redirect_uri = `${protocol}//${queries.redirect_uri}`;
+  }
+  const qstring = queryString.stringify(queries);
+  return `https://accounts.google.com/o/oauth2/v2/auth?${qstring}`;
+}
+
 export function loginPopup() {
-  return new Promise((resolve) => {
-    const {protocol, host} = window.location;
-    const authUrl = `${protocol}//${host}${AUTH_ENDPOINT}`;
-    const _popup = window.open(authUrl, POPUP_NAME, POPUP_FEATURES);
-    listenForId(_popup, (id) => {
-      _popup.close();
-      resolve(id);
-    });
+  const authUrl = createGoogleTokenUrl({
+    redirect_uri: `${window.location.host}/api/auth/google/callback`,
+    response_type: 'token',
+    state: 'profile',
+    scope: 'profile'
+  });
+  const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
+  listenForToken(popup, (error, token) => {
+    console.log(token)
   });
 }
 
-function listenForId(popup, resolve) {
+function listenForToken(popup, cb) {
   let parsed;
   try {
-    parsed = queryString.parse(popup.location.search);
-  } catch (e) {
-    console.log(e)
-  }
-  if (parsed && parsed.id) {
-    resolve(parsed.id);
+    parsed = parsePopupLocation(popup);
+  } catch(e) {}
+  if (parsed && parsed['access_token']) {
+    cb(null, parsed['access_token']);
+    window.clearTimeout(window.CRANES_TIMER);
+    popup.close();
   } else {
-    setTimeout(() => {
-      listenForId(popup, resolve);
+    window.CRANES_TIMER = setTimeout(() => {
+      listenForToken(popup, cb);
     }, 500);
   }
+}
+
+function parsePopupLocation(popup) {
+  return queryString.parse(popup.location.hash);
 }

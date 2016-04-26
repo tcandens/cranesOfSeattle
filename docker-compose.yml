@@ -28,6 +28,7 @@ services:
     build:
       context: ./web
       dockerfile: ./docker/development
+    env_file: ./web/.env
     expose:
       - "9000"
     volumes:
