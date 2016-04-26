@@ -28,25 +28,30 @@ export function loginPopup() {
     scope: 'profile'
   });
   const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
-  listenForToken(popup, (error, token) => {
-    console.log(token)
+  listenForToken(popup).then(token => {
+    console.log(token);
   });
 }
 
-function listenForToken(popup, cb) {
-  let parsed;
-  try {
-    parsed = parsePopupLocation(popup);
-  } catch(e) {}
-  if (parsed && parsed['access_token']) {
-    cb(null, parsed['access_token']);
-    window.clearTimeout(window.CRANES_TIMER);
-    popup.close();
-  } else {
-    window.CRANES_TIMER = setTimeout(() => {
-      listenForToken(popup, cb);
-    }, 500);
-  }
+function listenForToken(popup) {
+  return new Promise(resolve => {
+    let parsed;
+    function tryParsing(popup) {
+      try {
+        parsed = parsePopupLocation(popup);
+      } catch(e) {}
+      if (parsed && parsed['access_token']) {
+        resolve(parsed.access_token);
+        window.clearTimeout(window.CRANES_TIMER);
+        popup.close();
+      } else {
+        window.CRANES_TIMER = setTimeout(() => {
+          tryParsing(popup);
+        }, 500);
+      }
+    }
+    tryParsing(popup);
+  });
 }
 
 function parsePopupLocation(popup) {
