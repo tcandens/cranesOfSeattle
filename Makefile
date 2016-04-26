@@ -18,6 +18,6 @@ prod:
 
 # Get SSL/HTTPS Certificates via Let's Encrypt
 https:
-	@./letsencrypt/get_certs.sh
+	@./ssl/get_certs.sh
 
 .PHONY: install dev prod https

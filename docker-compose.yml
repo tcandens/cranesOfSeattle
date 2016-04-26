@@ -33,10 +33,10 @@ services:
     volumes:
       - ./web:/usr/src
       - ./web/node_modules:/usr/src/node_modules/
-  nginx:
+  proxy:
     image: nginx:latest
     volumes:
-      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - ./proxy/nginx.dev.conf:/etc/nginx/nginx.conf:ro
     links:
       - api:api
       - webpack:web
