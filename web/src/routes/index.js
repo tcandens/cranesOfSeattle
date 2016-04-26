@@ -9,18 +9,18 @@ import Login from 'containers/login';
 const Cranes = () => {};
 const CraneInfo = () => {};
 
-
 export default (store) => {
   const requireAuth = function requireAuth(nextState, replace) {
     const state = store.getState();
-    const {id} = state.user;
-    if (!id) {
+    const {isAuthenticated} = state.user;
+    if (!isAuthenticated) {
       replace({
         pathname: '/',
         state: {nextPathname: nextState.location.pathname}
       });
     }
-  }
+  };
+  
   return (
     <Route path='/' component={MapLayout}>
       <IndexRoute component={Entry} />

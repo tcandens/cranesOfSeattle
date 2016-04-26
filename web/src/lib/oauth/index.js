@@ -17,10 +17,12 @@ export function loginPopup() {
     scope: 'profile'
   });
   const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
-  listenForToken(popup).then(token => {
-    return fetchGoogleProfile(token)
+  return listenForToken(popup).then(token => {
+    return fetchGoogleProfile(token);
   }).then(profile => {
-    console.log(profile);
+    return Promise.resolve(profile);
+  }).catch(error => {
+    return Promise.reject(error);
   });
 }
 
