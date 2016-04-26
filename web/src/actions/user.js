@@ -10,12 +10,12 @@ export function requestLogin() {
 }
 
 export const RECEIVE_LOGIN = 'RECIEVE_LOGIN';
-export function receiveLogin(id) {
+export function receiveLogin(profile) {
   return {
     type: RECEIVE_LOGIN,
     isFetching: false,
     isAuthenticated: true,
-    id
+    profile
   };
 }
 
@@ -35,12 +35,9 @@ import {browserHistory} from 'react-router';
 export function userLogin(options) {
   return dispatch => {
     dispatch(requestLogin());
-    loginPopup()
-      .then(id => {
-        dispatch(receiveLogin(id));
-        if (options && options.redirect) {
-          browserHistory.push(options.redirect);
-        }
-      });
+    loginPopup().then(profile => {
+      console.log(profile)
+      dispatch(receiveLogin(profile));
+    });
   };
 }

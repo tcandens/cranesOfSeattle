@@ -1,10 +1,12 @@
 import Promise from 'bluebird';
-import queryString from 'query-string';
+import {
+  listenForToken,
+  fetchGoogleProfile,
+  createGoogleTokenUrl
+} from './utils';
 
-const AUTH_ENDPOINT = '/api/auth/google';
-const RECEIVE_ENDPOINT = '/api/auth/receive';
-const POPUP_NAME = 'Auth Popup';
-const POPUP_FEATURES = `
+const POPUP_NAME = 'Sign In Popup';
+const GOOGLE_OAUTH_WINDOW_FEATURES = `
   width=320,
   height=570,
   scrollbars=no,
@@ -12,27 +14,13 @@ const POPUP_FEATURES = `
 `;
 
 export function loginPopup() {
-  return new Promise((resolve) => {
-    const {protocol, host} = window.location;
-    const authUrl = `${protocol}//${host}${AUTH_ENDPOINT}`;
-    const _popup = window.open(authUrl, POPUP_NAME, POPUP_FEATURES);
-    listenForId(_popup, (id) => {
-      _popup.close();
-      resolve(id);
-    });
+  const authUrl = createGoogleTokenUrl({scope:'email'});
+  const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
+  return listenForToken(popup).then(token => {
+    return fetchGoogleProfile(token);
+  }).then(profile => {
+    return Promise.resolve(profile);
+  }).catch(error => {
+    return Promise.reject(error);
   });
-}
-
-function listenForId(popup, resolve) {
-  let parsed;
-  try {
-    parsed = queryString.parse(popup.location);
-  } catch (e) {}
-  if (parsed && parsed.id) {
-    resolve(parsed.id);
-  } else {
-    setTimeout(() => {
-      listenForId(popup, resolve);
-    }, 500);
-  }
 }

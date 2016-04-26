@@ -10,7 +10,7 @@ import {REHYDRATE} from 'redux-persist/constants';
 function user(state = {
   isFetching: false,
   isAuthenticated: false,
-  id: null
+  profile: {}
 }, action) {
   switch (action.type) {
     case REQUEST_LOGIN:
@@ -21,7 +21,7 @@ function user(state = {
       return assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
-        id: action.id
+        profile: action.profile
       });
     case ERROR_LOGIN:
       return assign({}, state, {

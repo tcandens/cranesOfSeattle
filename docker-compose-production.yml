@@ -30,11 +30,11 @@ services:
     environment:
       - ENV=production
       - NODE_ENV=production
-  nginx:
+  proxy:
     image: nginx:latest
     volumes:
       - /etc/letsencrypt/archive/www.seattlecranes.site:/etc/letsencrypt
-      - ./nginx:/etc/nginx
+      - ./proxy:/etc/nginx
     links:
       - api:api
       - web:web

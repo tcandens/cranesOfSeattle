@@ -21,12 +21,11 @@ app.use(convert(session(app)));
 /* Routes */
 import cranes from './routers/cranes';
 import reports from './routers/reports';
+import auth from './routers/auth';
 
 app
   .use(cranes.routes())
   .use(reports.routes())
-
-import authDecorator from './auth/decorator';
-authDecorator(app);
+  .use(auth.routes());
 
 export default app
