@@ -69,7 +69,7 @@ test('FETCHING A CRANE BY ID', function *(assert) {
 
 });
 
-test.skip('FETCH CRANES WITHIN RANGE', function *(assert) {
+test('FETCH CRANES WITHIN RANGE', function *(assert) {
   // Insert dummy crane outside of range
   const response = yield request
     .get('/cranes')
@@ -121,7 +121,7 @@ test('FETCHING ALL CRANES', function *(assert) {
 
 });
 
-test.skip('UPDATING A CRANE', function *(assert) {
+test('UPDATING A CRANE', function *(assert) {
   const updatedCrane = {
     key: 'permit',
     value: 2323,

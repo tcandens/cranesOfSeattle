@@ -4,12 +4,13 @@ const userModel = modelFactory('users');
 
 userModel.create = function(user) {
   const query = `
-    INSERT INTO ${this.tablename}
-    (id, name, email)
-    VALUE (
-      $/id/,
+    INSERT INTO ${this.tableName}
+    (google_id, name, email, image_url)
+    VALUES (
+      $/google_id/,
+      $/name/,
       $/email/,
-      $/address/
+      $/image_url/
     )
     RETURNING ID
   `;

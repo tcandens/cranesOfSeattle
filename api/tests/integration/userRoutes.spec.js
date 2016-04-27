@@ -20,9 +20,14 @@ function clearTables () {
 /**
  * Example of user model
  */
-const testUser = { }
+const testUser = {
+  name: 'Douglas Adams',
+  google_id: '999999',
+  email: 'douglas.adams@test.com',
+  image_url: 'https://test.user.com/image_url'
+}
 
-test.skip('INSERTING A USER', function *(assert) {
+test('INSERTING A USER', function *(assert) {
   clearTables();
 
   const response = yield request
@@ -33,16 +38,16 @@ test.skip('INSERTING A USER', function *(assert) {
     .end();
 
   assert.ok(
-    response.body.data.id,
+    response.body.id,
     'Should return the ID of new user.'
   );
 
   // Stash returned ID to test later
-  testUser.id = response.body.data.id;
+  testUser.id = response.body.id;
 
 });
 
-test.skip('FETCHING A USER', function *(assert) {
+test('FETCHING A USER', function *(assert) {
   const response = yield request
     .get('/users/' + testUser.id)
     .expect('Content-Type', /json/)
@@ -51,12 +56,13 @@ test.skip('FETCHING A USER', function *(assert) {
 
   assert.deepEqual(
     testUser,
-    response.body.data,
+    response.body,
     'Should return a user row that matches test user.'
   );
 
 });
 
+/*
 test.skip('UPDATING A USER', function *(assert) {
   const updatedUser = {};
 
@@ -72,8 +78,10 @@ test.skip('UPDATING A USER', function *(assert) {
   );
 
 });
+*/
 
-test.skip('DESTROYING A USER', function *(assert) {
+/*
+test('DESTROYING A USER', function *(assert) {
   const response = yield request
     .del('/user/' + testUser.id)
     .expect(200)
@@ -86,5 +94,6 @@ test.skip('DESTROYING A USER', function *(assert) {
   );
 
 });
+*/
 
 server.close();

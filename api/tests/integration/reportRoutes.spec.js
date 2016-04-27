@@ -50,6 +50,7 @@ test('INSERTING A REPORT', function *(assert) {
 
 });
 
+/*
 test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
   // Insert another report that should be outside search radius
   request
@@ -86,6 +87,7 @@ test.skip('FETCHING REPORTS WITHIN RANGE', function *(assert) {
   );
 
 });
+*/
 
 test('FETCHING ALL REPORTS', function *(assert) {
   const response = yield request
