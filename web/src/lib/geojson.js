@@ -1,6 +1,5 @@
 const geojson = {
   pointFromLngLat: (lnglat, properties) => {
-    console.log(properties)
     const longitude = lnglat.longitude || lnglat.lng;
     const latitude = lnglat.latitude || lnglat.lat;
     return {
