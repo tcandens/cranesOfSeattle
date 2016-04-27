@@ -12,7 +12,7 @@ import {
     return {
       reports: state.reports,
       map: state.map,
-      userId: state.user.id
+      userId: state.user.profile.id
     };
   }
 )
