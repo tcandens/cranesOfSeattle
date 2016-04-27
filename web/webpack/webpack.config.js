@@ -9,8 +9,6 @@ const getLoaders = require('./loaders');
 const ROOT = path.resolve(process.cwd());
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
-console.log(process.env);
-
 const getEntry = (isDeveloping) => {
   const entry = [];
   if (isDeveloping) {
