@@ -27,6 +27,7 @@ services:
       dockerfile: ./docker/production
     expose:
       - "9000"
+    env_file: ./web/.env
     environment:
       - ENV=production
       - NODE_ENV=production

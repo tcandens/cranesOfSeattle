@@ -29,22 +29,23 @@ const getPlugins = (isDeveloping) => {
       filename: 'index.html'
     })
   ];
+  const defaultGlobals = {
+    GOOGLE_CLIENT_ID: JSON.stringify(process.env.GOOGLE_CLIENT_ID),
+    GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET)
+  };
   if (isDeveloping) {
     plugins.push(
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin(),
-      new webpack.DefinePlugin({
-        GOOGLE_CLIENT_ID: JSON.stringify(process.env.GOOGLE_CLIENT_ID),
-        GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET)
-      })
+      new webpack.DefinePlugin(defaultGlobals)
     );
   } else {
     plugins.push(
-      new webpack.DefinePlugin({
+      new webpack.DefinePlugin(merge(defaultGlobals, {
         'process.env': {
           'NODE_ENV': JSON.stringify('production')
         }
-      }),
+      })),
       new webpack.optimize.DedupePlugin(),
       new ExtractTextPlugin('styles.css'),
       new webpack.optimize.UglifyJsPlugin({
