@@ -29,14 +29,13 @@ export function errorLogin(error) {
   };
 }
 
-import {loginPopup, parseSearchString} from 'lib/oauth';
+import {loginPopup} from 'lib/oauth';
 import {browserHistory} from 'react-router';
 
 export function userLogin(options) {
   return dispatch => {
     dispatch(requestLogin());
     loginPopup().then(profile => {
-      console.log(profile)
       dispatch(receiveLogin(profile));
     });
   };
