@@ -1,12 +1,12 @@
 exports.up = function(pgm) {
   pgm.addColumns('reports', {
     created_at: {
-      type: 'TIMESTAMPTZ NOW()'
+      type: 'TIMESTAMPTZ DEFAULT NOW()'
     }
   });
   pgm.addColumns('cranes', {
     created_at: {
-      type: 'TIMESTAMPTZ NOW()'
+      type: 'TIMESTAMPTZ DEFAULT NOW()'
     }
   });
 };
