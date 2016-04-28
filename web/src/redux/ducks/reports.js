@@ -1,7 +1,41 @@
 import axios from 'axios';
 import geojson from 'lib/geojson';
+const assign = Object.assign;
 
-export const REQUEST_REPORTS = 'REQUEST_REPORTS';
+const REQUEST_REPORTS = 'REQUEST_REPORTS';
+const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
+const ADD_REPORT = 'ADD_REPORT';
+
+export default function reducer(state = {
+  isFetching: false,
+  geojson: {
+    features: []
+  }
+}, action) {
+  switch (action.type) {
+    case REQUEST_REPORTS:
+      return assign({}, state, {
+        isFetching: true
+      });
+    case RECEIVE_REPORTS:
+      return assign({}, state, {
+        isFetching: false,
+        geojson: action.geojson,
+        lastUpdated: action.receivedAt
+      });
+    case ADD_REPORT:
+      const {location, properties} = action.data;
+      const report = geojson.pointFromLngLat(location, properties);
+      return assign({}, state, {
+        geojson: assign({}, state.geojson, {
+          features: [...state.geojson.features, report]
+        })
+      });
+    default:
+      return state;
+  }
+}
+
 export function requestReports() {
   return {
     type: REQUEST_REPORTS,
@@ -9,7 +43,6 @@ export function requestReports() {
   };
 }
 
-export const RECEIVE_REPORTS = 'RECEIVE_REPORTS';
 export function receiveReports(geojson) {
   return {
     type: RECEIVE_REPORTS,
@@ -33,7 +66,6 @@ export function fetchReports() {
   };
 }
 
-export const ADD_REPORT = 'ADD_REPORT';
 export function addReport(data) {
   return {
     type: ADD_REPORT,

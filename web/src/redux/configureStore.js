@@ -1,7 +1,7 @@
 import {createStore, compose, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-import rootReducer from './reducers';
+import rootReducer from 'ducks/reducer';
 import {persistStore, autoRehydrate} from 'redux-persist';
 
 const loggerMiddleware = createLogger();

@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {
   recordMapLocation
-} from 'actions/map';
+} from 'ducks/map';
 
 import MapLoader from 'components/map/loader';
 import Reticle from 'components/reticle';

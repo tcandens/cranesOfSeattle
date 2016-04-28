@@ -5,12 +5,10 @@ import map from './map';
 import user from './user';
 import {routerReducer} from 'react-router-redux';
 
-const rootReducer = combineReducers({
+export default combineReducers({
   reports,
   cranes,
   map,
   user,
   routing: routerReducer
 });
-
-export default rootReducer;

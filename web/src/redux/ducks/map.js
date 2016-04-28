@@ -1,10 +1,8 @@
-import {
-  RECORD_MAP_LOCATION
-} from 'actions/map';
-
 const assign = Object.assign;
 
-function map(state = {
+const RECORD_MAP_LOCATION = 'RECORD_MAP_LOCATION';
+
+export default function reducer(state = {
   location: []
 }, action) {
   switch (action.type) {
@@ -17,4 +15,10 @@ function map(state = {
   }
 }
 
-export default map;
+export function recordMapLocation(location) {
+  return {
+    type: RECORD_MAP_LOCATION,
+    location,
+    recordedAt: Date.now()
+  };
+}

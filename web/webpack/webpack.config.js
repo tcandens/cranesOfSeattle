@@ -73,24 +73,27 @@ module.exports = {
     extensions: [
       '', '.js', '.styl'
     ],
-    alias: merge({
-      'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
-      'mapbox-gl': (isDeveloping ?
-        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
-        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
-      )
-    }, createAliasesFrom(path.resolve(ROOT, 'src'))
-      .to([
-        'actions',
+    alias: merge(
+      {
+        'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
+        'mapbox-gl': (isDeveloping ?
+          path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
+          path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
+        )
+      },
+      createAliasesFrom(path.resolve(ROOT, 'src')).to([
         'containers',
         'components',
         'decorators',
         'layouts',
         'lib',
         'styles'
-    ]), createAliasesFrom(path.resolve(ROOT))
-      .to([
+      ]),
+      createAliasesFrom(path.resolve(ROOT)).to([
         'assets'
+      ]),
+      createAliasesFrom(path.resolve(ROOT, 'src', 'redux')).to([
+        'ducks'
       ])
     )
   },

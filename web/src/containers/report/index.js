@@ -4,9 +4,8 @@ import {Link} from 'react-router';
 
 import {
   fetchReports,
-  addReport,
   saveReport
-} from 'actions/reports'
+} from 'ducks/reports';
 
 @connect(
   (state) => {

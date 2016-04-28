@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router';
 
 import {
   userLogin
-} from 'actions/user';
+} from 'ducks/user';
 
 @connect(
   (state) => {
