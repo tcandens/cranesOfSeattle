@@ -10,12 +10,15 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 if (isDeveloping) {
   console.info('== Developing with HMR ==>');
   app.use(require('webpack-dev-middleware')(compiler, {
+    publicPath: '/dist/',
     watchOptions: {
       aggregateTimeout: 300,
       poll: true
     },
     noInfo: true,
-    publicPath: '/dist/'
+    stats: {
+      colors: true
+    }
   }));
   app.use(require('webpack-hot-middleware')(compiler, {
     reload: true
