@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import debug from 'debug';
 import {browserHistory} from 'react-router';
 import configureStore from './configureStore';
 import {syncHistoryWithStore} from 'react-router-redux';
@@ -20,5 +19,3 @@ ReactDOM.render((
     store={store}
   ></Root>), document.getElementById('root')
 );
-
-window.debugger = debug;
