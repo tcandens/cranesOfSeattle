@@ -1,6 +1,4 @@
 import Router from 'koa-router';
-import Debug from 'debug';
-const debug = Debug('router/auth');
 
 export default function googleAuthRoutesFactory(passport) {
   return Router()
@@ -23,7 +21,7 @@ export default function googleAuthRoutesFactory(passport) {
         }
       ),
       (ctx) => {
-        debug(ctx.user);
+        console.log(ctx.user);
       }
     )
 }

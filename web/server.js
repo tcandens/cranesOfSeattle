@@ -16,6 +16,7 @@ if (isDeveloping) {
       poll: true
     },
     noInfo: true,
+    silent: true,
     stats: {
       colors: true
     }
