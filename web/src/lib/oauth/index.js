@@ -1,8 +1,6 @@
-import Promise from 'bluebird';
+import jwtDecode from 'jwt-decode';
 import {
-  listenForToken,
-  fetchGoogleProfile,
-  createGoogleTokenUrl
+  listenForToken
 } from './utils';
 
 const POPUP_NAME = 'Sign In Popup';
@@ -14,13 +12,17 @@ const GOOGLE_OAUTH_WINDOW_FEATURES = `
 `;
 
 export function loginPopup() {
-  const authUrl = 'http://localhost:8080/api/auth/google';
-  const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
+  const protocol = window.location.protocol;
+  const host = window.location.host;
+  const endpoint = '/api/auth/google';
+  const authEndpoint = `${protocol}//${host}${endpoint}`;
+  const popup = window.open(authEndpoint, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
   return listenForToken(popup).then(token => {
-    return fetchGoogleProfile(token);
-  }).then(profile => {
-    return Promise.resolve(profile);
-  }).catch(error => {
-    return Promise.reject(error);
+    const decoded = jwtDecode(token);
+    const profile = {
+      ...decoded,
+      token
+    };
+    return profile;
   });
 }

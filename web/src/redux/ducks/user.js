@@ -9,7 +9,8 @@ import {REHYDRATE} from 'redux-persist/constants';
 export default function reducer(state = {
   isFetching: false,
   isAuthenticated: false,
-  profile: {}
+  profile: {},
+  token: null
 }, action) {
   switch (action.type) {
     case REQUEST_LOGIN:
@@ -17,10 +18,12 @@ export default function reducer(state = {
         isFetching: true
       });
     case RECEIVE_LOGIN:
+      const {token, ...profile} = action.profile;
       return assign({}, state, {
         isFetching: false,
         isAuthenticated: true,
-        profile: action.profile
+        profile,
+        token
       });
     case ERROR_LOGIN:
       return assign({}, state, {
@@ -71,6 +74,9 @@ export function userLogin(options) {
     dispatch(requestLogin());
     loginPopup().then(profile => {
       dispatch(receiveLogin(profile));
+      if (options.redirect) {
+        browserHistory.push(options.redirect);
+      }
     });
   };
 }

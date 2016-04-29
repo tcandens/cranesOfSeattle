@@ -38,6 +38,7 @@ export default Router()
         ctx.body = error.toString();
       });
   })
+  // Lock this route with JWT token auth middleware
   .post('/cranes', async (ctx) => {
     await craneModel.create(ctx.request.body)
       .then(data => {
@@ -49,6 +50,7 @@ export default Router()
         ctx.body = error.toString();
       });
   })
+  // Lock this route with JWT token auth middleware
   .put('/cranes/:id', async (ctx) => {
     let crane = ctx.request.body;
     crane.id = ctx.params.id;
@@ -61,6 +63,7 @@ export default Router()
         ctx.body = error.toString();
       });
   })
+  // Lock this route with JWT token auth middleware
   .del('/cranes/:id', async (ctx) => {
     await craneModel.destroy(ctx.params.id)
       .then(data => {

@@ -11,8 +11,7 @@ import {
   (state) => {
     return {
       reports: state.reports,
-      map: state.map,
-      userId: state.user.profile.id
+      map: state.map
     };
   }
 )
@@ -27,9 +26,8 @@ export default class ReportContainer extends Component {
     dispatch(fetchReports());
   }
   handleStartReport = (e) => {
-    const {dispatch, map, userId} = this.props;
-    const {location} = map;
-    dispatch(saveReport({location, properties: {userId}}));
+    const {dispatch, map} = this.props;
+    dispatch(saveReport(map.location));
     e.preventDefault();
   }
   render = () => {

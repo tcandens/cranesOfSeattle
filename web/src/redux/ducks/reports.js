@@ -24,8 +24,7 @@ export default function reducer(state = {
         lastUpdated: action.receivedAt
       });
     case ADD_REPORT:
-      const {location, properties} = action.data;
-      const report = geojson.pointFromLngLat(location, properties);
+      const {report} = action;
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
           features: [...state.geojson.features, report]
@@ -66,18 +65,32 @@ export function fetchReports() {
   };
 }
 
-export function addReport(data) {
+export function addReport(report) {
   return {
     type: ADD_REPORT,
-    data
+    report
   };
 }
 
-export function saveReport(data) {
+import {store} from '../../index';
+
+export function saveReport(location) {
   return function (dispatch) {
-    dispatch(addReport(data));
-    const report = geojson.pointFromLngLat(data.location, data.properties);
-    return axios.post('/api/reports', report)
+    const state = store.getState();
+    const userId = state.user.profile.id || null;
+    const token = state.user.token || null;
+    if (!userId || !token) {
+      dispatch({error: 'Not Authorized'});
+    }
+    const report = geojson.pointFromLngLat(location, {userId});
+    dispatch(addReport(report));
+    // check for isAuthenticated && user.profile.token
+    const requestConfig = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+    return axios.post('/api/reports', report, requestConfig)
       .then(response => {
         // dispatch(completeAsync(response));
         window.console.log(response);
