@@ -14,7 +14,7 @@ const GOOGLE_OAUTH_WINDOW_FEATURES = `
 `;
 
 export function loginPopup() {
-  const authUrl = createGoogleTokenUrl({scope:'email'});
+  const authUrl = 'http://localhost:8080/api/auth/google';
   const popup = window.open(authUrl, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
   return listenForToken(popup).then(token => {
     return fetchGoogleProfile(token);

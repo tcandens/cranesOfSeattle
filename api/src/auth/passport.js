@@ -10,8 +10,23 @@ passport.use(new GoogleStrategy({
   callbackURL: process.env.HOSTURL + 'api/auth/google/callback'
 },
 (accessToken, refreshToken, profile, callback) => {
-  console.log(profile);
-  callback(null, 'user');
+  profile = profile._json;
+  // 1. Find or create user with profile details in DB.
+  const _user = {
+    google_id: profile.id,
+    name: profile.displayName,
+    image_url: profile.image.url
+  }
+  profile['emails'].forEach(email => {
+    if (email.type === 'account') {
+      _user.email = email.value;
+    }
+  });
+  userModel.findOrCreate(_user).then(user => {
+    callback(null, user);
+  })
+  // 2. Create JWT with user profile.
+  // 3. Redirect with JWT encoded in the url for client to access.
 }))
 
 export default passport;

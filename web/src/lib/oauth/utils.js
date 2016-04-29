@@ -38,14 +38,15 @@ export function createGoogleTokenUrl(queries) {
 }
 
 export function listenForToken(popup) {
+  const URI_STRING = 'token';
   return new Promise(resolve => {
     let parsed;
     function tryParsing(popup) {
       try {
         parsed = parsePopupLocation(popup);
       } catch(e) {}
-      if (parsed && parsed['access_token']) {
-        resolve(parsed.access_token);
+      if (parsed && parsed[URI_STRING]) {
+        resolve(parsed[URI_STRING]);
         window.clearTimeout(window.CRANES_TIMER);
         popup.close();
       } else {
