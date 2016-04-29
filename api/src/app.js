@@ -22,12 +22,13 @@ app.use(convert(session(app)));
 import cranes from './routers/cranes';
 import reports from './routers/reports';
 import users from './routers/users';
-import auth from './routers/auth';
 
 app
   .use(cranes.routes())
   .use(reports.routes())
   .use(users.routes())
-  .use(auth.routes());
+
+import authDecorator from './auth/decorator';
+authDecorator(app);
 
 export default app
