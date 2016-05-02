@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {browserHistory} from 'react-router';
-import configureStore from './redux/configureStore';
+import store from './redux/store';
 import {syncHistoryWithStore} from 'react-router-redux';
 import makeRoutes from './routes';
 import Root from 'containers/root';
 
-export const store = configureStore();
 const routes = makeRoutes(store);
 const history = syncHistoryWithStore(browserHistory, store);
 

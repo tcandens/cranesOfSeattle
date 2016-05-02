@@ -6,7 +6,7 @@ import {persistStore, autoRehydrate} from 'redux-persist';
 
 const loggerMiddleware = createLogger();
 
-export default function configureMiddleware(initialState) {
+function configureMiddleware(initialState) {
   const store = createStore(
     rootReducer,
     initialState || {},
@@ -22,3 +22,5 @@ export default function configureMiddleware(initialState) {
   persistStore(store, {whitelist: 'user'});
   return store;
 }
+
+export default configureMiddleware();
