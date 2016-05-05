@@ -56,8 +56,11 @@ export default class Map extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {sources, latitude, longitude} = nextProps;
+    const {sources, latitude, longitude, isActive} = nextProps;
     const currentSources = this.state.sources;
+    if (!!isActive && !this.props.isActive) {
+      this.resize();
+    }
     if (!isEqual(this.props.sources, sources) || isEmpty(currentSources)) {
       sources.forEach(source => {
         const name = has(source.properties, 'name') ? source.properties['name'] : null;
@@ -111,6 +114,10 @@ export default class Map extends Component {
 
   };
 
+  componentWillUnmount = () => {
+    this.map.remove();
+  }
+
   togglePitch = () => {
     const map = this.map;
     const {pitch} = this.props;
@@ -118,6 +125,14 @@ export default class Map extends Component {
     const changedPitch = currentPitch === pitch ? 0 : pitch;
     map.easeTo({pitch: changedPitch});
   };
+
+  resize = () => {
+    if (this.map) {
+      setTimeout(() => {
+        this.map.resize();
+      }, 0)
+    }
+  }
 
   updateLocation = (longitude, latitude) => {
     this.map.panTo([longitude, latitude]);
