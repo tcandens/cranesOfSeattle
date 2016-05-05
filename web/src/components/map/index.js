@@ -47,11 +47,16 @@ export default class Map extends Component {
     this.props = props;
     this.state = {
       loaded: false,
-      sources: {}
+      sources: {},
+      width: null,
+      height: null
     };
   }
 
-  shouldComponentUpdate = () => {
+  shouldComponentUpdate = (nextProps, nextState) => {
+    if (nextState.width || nextState.height) {
+      return true;
+    }
     return false;
   };
 
@@ -87,7 +92,16 @@ export default class Map extends Component {
 
   componentDidMount = () => {
     Mapbox.accessToken = MAPBOX_KEY;
-    const {data, actions, latitude, longitude, ...view} = this.props;
+    const {
+      data,
+      actions,
+      latitude,
+      longitude,
+      isActive,
+      children,
+      reticle,
+      ...view
+    } = this.props;
     const map = this.map = new Mapbox.Map({
       container: this._mapContainer,
       center: new Mapbox.LngLat(longitude, latitude),
@@ -130,8 +144,18 @@ export default class Map extends Component {
     if (this.map) {
       setTimeout(() => {
         this.map.resize();
-      }, 0)
+        this.lockDimensions();
+      }, 0);
     }
+  }
+
+  lockDimensions = () => {
+    const computed = window.getComputedStyle(this._mapContainer);
+    const {width, height} = computed;
+    this.setState({
+      width,
+      height
+    });
   }
 
   updateLocation = (longitude, latitude) => {
@@ -168,9 +192,18 @@ export default class Map extends Component {
   };
 
   render = () => {
+    const {width, height} = this.state;
+    const containerStyles = width || height ? {
+      position: 'absolute',
+      bottom: 0
+    } : null;
     return (
-      <div className='c-map'>
-        <div ref={(c) => this._mapContainer = c} className='c-map__target'></div>
+      <div className='c-map' style={containerStyles}>
+        <div
+          ref={(c) => this._mapContainer = c}
+          className='c-map__target'
+          style={{width: width, height: height}}
+        ></div>
         {this.props.children}
       </div>
     );

@@ -30,6 +30,10 @@ export default class ReportContainer extends Component {
     const {dispatch} = this.props;
     dispatch(fetchReports());
   }
+  abortReport = () => {
+    const {dispatch} = this.props;
+    dispatch(finishReport());
+  }
   handleStartReport = (e) => {
     const {dispatch, map} = this.props;
     dispatch(startReport(map.location));
@@ -72,15 +76,18 @@ export default class ReportContainer extends Component {
         <button className='c-button c-button--invert c-button--lg' onClick={this.handleSaveReport}>
           Save Report
         </button>
+        <button className='c-button c-button--invert c-button--lg'
+          onClick={this.abortReport}>
+          Abort
+        </button>
       </div>
     );
   }
   renderNavigation = () => {
-    const {dispatch} = this.props;
     return (
       <nav className='c-navigation'>
         <Link
-          onClick={() => dispatch(finishReport())}
+          onClick={this.abortReport}
           className='c-button c-button--invert c-button--lg u-unicode' to='/'>
           🖚
         </Link>

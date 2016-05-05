@@ -19,9 +19,7 @@ export default class MapContainer extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.state = {
-      active: false
-    };
+    this.state = {};
   }
   componentDidMount = () => {
     MapLoader().then(({Map}) => {
