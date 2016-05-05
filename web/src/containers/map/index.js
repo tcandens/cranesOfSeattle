@@ -19,7 +19,9 @@ export default class MapContainer extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.state = {};
+    this.state = {
+      active: false
+    };
   }
   componentDidMount = () => {
     MapLoader().then(({Map}) => {
@@ -27,7 +29,7 @@ export default class MapContainer extends Component {
     });
   }
   render = () => {
-    const {dispatch, reports} = this.props;
+    const {dispatch, reports, isActive} = this.props;
     const mapActions = {
       onMoveEnd: (map, event) => {
         dispatch(recordMapLocation(map.getCenter()));
@@ -42,6 +44,7 @@ export default class MapContainer extends Component {
           zoom={16}
           actions={mapActions}
           sources={[reports]}
+          isActive={isActive}
         >
           <Reticle/>
         </this.state.Map>}
