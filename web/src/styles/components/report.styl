@@ -6,3 +6,25 @@
   align-content flex-start
   align-items flex-end
   justify-content space-between
+
+.fadeup
+  &-leave, &-leave-active
+    transition opacity 600ms ease-in-out
+  &-leave
+    opacity 1
+  &-leave-active
+    opacity 0.01
+  &-enter, &-enter-active
+    transition opacity 600ms ease-in-out
+  &-enter
+    opacity 0.01
+  &-enter-active
+    opacity 1
+  &-appear, &-appear-active
+    transition all 600ms ease-in-out
+  &-appear
+    opacity 0.01
+    max-height 0
+  &-appear-active
+    opacity 1
+    max-height 200px

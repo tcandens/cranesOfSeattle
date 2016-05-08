@@ -53,6 +53,7 @@
     "mapbox-gl": "^0.13.1",
     "query-string": "^4.1.0",
     "react": "^15.0.2",
+    "react-addons-css-transition-group": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-hot-loader": "^3.0.0-beta.2",
     "react-redux": "^4.1.1",

@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import TransitionGroup from 'react-addons-css-transition-group';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 
@@ -98,9 +99,31 @@ export default class ReportContainer extends Component {
     const {isReporting} = this.props;
     return (
       <section className='c-report'>
-        {isReporting ? this.renderCreateReport() : this.renderStartReport()}
+        <div className='c-report--content'>
+          <TransitionGroup
+            component={SingleChild}
+            transitionName='fadeup'
+            transitionAppear={true}
+            transitionAppearTimeout={600}
+            transitionLeaveTimeout={600}
+            transitionEnterTimeout={600}
+          >
+            {isReporting ? this.renderCreateReport() : this.renderStartReport()}
+          </TransitionGroup>
+        </div>
         {this.renderNavigation()}
       </section>
     );
+  }
+}
+
+class SingleChild extends Component {
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+  render = () => {
+    const children = React.Children.toArray(this.props.children);
+    return children[0] || null;
   }
 }
