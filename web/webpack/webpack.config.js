@@ -12,7 +12,11 @@ const isDeveloping = process.env.NODE_ENV !== 'production';
 const getEntry = (isDeveloping) => {
   const entry = [];
   if (isDeveloping) {
-    entry.push('webpack-hot-middleware/client?reload=true');
+    entry.push(
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:9000',
+      'webpack/hot/only-dev-server'
+    );
   }
   entry.push('./src/index.js');
   return entry;
@@ -60,13 +64,13 @@ const getPlugins = (isDeveloping) => {
 };
 
 module.exports = {
-  devtool: isDeveloping ? 'cheap-module-source-map' : 'source-map',
+  devtool: isDeveloping ? 'eval' : 'source-map',
   entry: getEntry(isDeveloping),
   output: {
     path: path.join(ROOT, 'dist'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: '/dist/'
+    publicPath: isDeveloping ? '/' : 'dist/'
   },
   plugins: getPlugins(isDeveloping),
   resolve: {

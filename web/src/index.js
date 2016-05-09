@@ -1,20 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {browserHistory} from 'react-router';
-import store from './redux/store';
-import {syncHistoryWithStore} from 'react-router-redux';
-import makeRoutes from './routes';
-import Root from 'containers/root';
+import {AppContainer} from 'react-hot-loader';
+import App from './App';
+import {render} from 'react-dom';
 
-const routes = makeRoutes(store);
-const history = syncHistoryWithStore(browserHistory, store);
+const AppRoot = document.getElementById('root');
 
-import 'styles';
-
-ReactDOM.render((
-  <Root
-    history={history}
-    routes={routes}
-    store={store}
-  ></Root>), document.getElementById('root')
+render((
+  <AppContainer>
+    <App />
+  </AppContainer>
+), document.getElementById('root')
 );
+
+if (module.hot) {
+  module.hot.accept('./App', () => {
+    const NextApp = require('./App').default;
+    render((
+      <AppContainer>
+        <NextApp />
+      </AppContainer>
+    ), document.getElementById('root'));
+  });
+}

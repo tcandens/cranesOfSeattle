@@ -11,6 +11,8 @@ const CraneInfo = () => {};
 
 export default (store) => {
   const requireAuth = function requireAuth(nextState, replace) {
+    // Try to wait for rehydration of redux state
+    // If isDeveloping, return
     const state = store.getState();
     const {isAuthenticated} = state.user;
     if (!isAuthenticated) {
@@ -20,13 +22,14 @@ export default (store) => {
       });
     }
   };
-  
+
   return (
     <Route path='/' component={MapLayout}>
       <IndexRoute component={Entry} />
       <Route path='cranes' component={Cranes}>
         <Route path=':id' component={CraneInfo} />
       </Route>
+      <Route path='map' component={Report} />
       <Route path='report' component={Report} onEnter={requireAuth} />
     </Route>
   );

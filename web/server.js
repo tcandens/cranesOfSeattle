@@ -1,55 +1,43 @@
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack/webpack.config');
 const compiler = webpack(config);
 const app = express();
+const port = 9000;
 
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
 if (isDeveloping) {
-  console.info('== Developing with HMR ==>');
-  app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath: '/dist/',
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: true
-    },
+  new WebpackDevServer(compiler, {
+    publicPath: '/',
+    hot: true,
+    historyApiFallback: true,
     noInfo: true,
-    silent: true,
     stats: {
+      asssets: false,
+      cachedAssets: false,
+      cached: false,
       colors: true
     }
-  }));
-  app.use(require('webpack-hot-middleware')(compiler, {
-    reload: true
-  }));
-
-  app.get('*', (req, res, next) => {
-    const filename = path.join(compiler.outputPath, 'index.html');
-    compiler.outputFileSystem.readFile(filename, (error, result) => {
-      if (error) {
-        return next(error);
-      }
-      res.set('content-type', 'text/html');
-      res.send(result);
-      res.send();
-    });
+  }).listen(port, function(error, result) {
+    if (error) {
+      return console.log(error)
+    }
+    console.info('== Developing with HMR ==>');
   });
 } else {
-  console.info('== Production with Express Static ==>');
   const distPath = path.join(__dirname, 'dist');
   app.use('/dist', express.static(distPath));
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
+  app.listen(9000, '0.0.0.0', function(err) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    console.info('== Production with Express Static ==>');
+  });
 }
-
-
-app.listen(9000, '0.0.0.0', function(err) {
-  if (err) {
-    console.log(err);
-    return;
-  }
-  console.log('Listening with webpack compiler.');
-});
