@@ -7,7 +7,6 @@ COPY ./src ./src/
 COPY ./templates ./templates
 COPY ./webpack ./webpack
 COPY ./server.js ./server.js
-COPY ./index.html ./index.html
 COPY ./.babelrc ./.babelrc
 COPY ./package.json ./package.json
 

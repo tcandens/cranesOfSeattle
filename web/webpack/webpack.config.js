@@ -14,7 +14,7 @@ const getEntry = (isDeveloping) => {
   if (isDeveloping) {
     entry.push(
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:9000',
+      'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/only-dev-server'
     );
   }
