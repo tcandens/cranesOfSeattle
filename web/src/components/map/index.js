@@ -61,9 +61,9 @@ export default class Map extends Component {
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {sources, latitude, longitude, isActive} = nextProps;
+    const {sources, latitude, longitude, isVisible} = nextProps;
     const currentSources = this.state.sources;
-    if (!!isActive && !this.props.isActive) {
+    if (!!isVisible && !this.props.isVisible) {
       this.resize();
     }
     if (!isEqual(this.props.sources, sources) || isEmpty(currentSources)) {
@@ -143,9 +143,9 @@ export default class Map extends Component {
   resize = () => {
     if (this.map) {
       setTimeout(() => {
-        this.map.resize();
         this.lockDimensions();
-      }, 0);
+        this.map.resize();
+      }, 10);
     }
   }
 
@@ -198,10 +198,10 @@ export default class Map extends Component {
       bottom: 0
     } : null;
     return (
-      <div className='c-map' style={containerStyles}>
+      <div className='map' style={containerStyles}>
         <div
           ref={(c) => this._mapContainer = c}
-          className='c-map__target'
+          className='map__target'
           style={{width: width, height: height}}
         ></div>
         {this.props.children}

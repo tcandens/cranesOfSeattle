@@ -21,7 +21,7 @@ export default class CtaContainer extends Component {
     const {isAuthenticated} = this.props;
     let reportButton;
     if (isAuthenticated) {
-      reportButton = <Link className='c-button c-button--lg' to='/report'>
+      reportButton = <Link className='button button--lg' to='/report'>
         Report a crane</Link>;
     } else {
       reportButton = <LoginButton to='/report'>Sign in to report a crane
@@ -31,8 +31,8 @@ export default class CtaContainer extends Component {
   }
   render() {
     return (
-      <ul className='c-list--vertical'>
-        <Link to='/map' className='c-button c-button--lg'>
+      <ul className='list--vertical'>
+        <Link to='/map' className='button button--lg'>
           View the cranes
         </Link>
         {this.renderReportButton()}

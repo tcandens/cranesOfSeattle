@@ -6,17 +6,19 @@
   left 0
   top 0
   overflow hidden
-  .s-map
+  .c-map
     position relative
-    display none
+    display block
+    visibility hidden
     transition height 400ms ease
-  &--isMapActive
+  &[data-state='isReporting']
     display flex
     flex-direction column
     align-content flex-end
     justify-content space-between
     .l-content
       flex-basis 100px
-    .s-map
+    .c-map
       display flex
+      visibility visible
       flex-basis 100%

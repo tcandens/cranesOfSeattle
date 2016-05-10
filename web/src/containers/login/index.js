@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {browserHistory} from 'react-router';
 
 import {
   userLogin
@@ -11,7 +10,7 @@ import {
     return {
       isAuthenticated: state.user.isAuthenticated,
       isFetching: state.user.isFetching
-    }
+    };
   }
 )
 export default class LoginButton extends Component {
@@ -30,7 +29,7 @@ export default class LoginButton extends Component {
     return (
       <button
         onClick={this.handleLoginSubmit}
-        className='c-login c-button c-button--lg'>
+        className='login button button--lg'>
           {children || 'Sign in'}
       </button>
     );

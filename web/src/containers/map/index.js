@@ -35,7 +35,7 @@ export default class MapContainer extends Component {
     };
 
     return (
-      <div className='s-map'>
+      <div className='c-map'>
         {!('Map' in this.state) ? <p>Loading...</p> :
         <this.state.Map
           bearing={90}

@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import TransitionGroup from 'react-addons-css-transition-group';
 import {connect} from 'react-redux';
+import {VelocityComponent} from 'velocity-react';
 import CreateReport from './create';
 import Navigation from './nav';
 import StartReport from './start';
@@ -61,19 +61,17 @@ export default class ReportContainer extends Component {
     const {isReporting} = this.props;
     return (
       <section className='c-report'>
-        <div className='c-report--content'>
-          {
-            isReporting ?
-            <CreateReport
-              onChange={this.handleChangeReport}
-              onSave={this.handleSaveReport}
-              onAbort={this.abortReport}
-            /> :
-            <StartReport
-              onStart={this.handleStartReport}
-            />
-          }
-        </div>
+        {
+          isReporting ?
+          <CreateReport
+            onChange={this.handleChangeReport}
+            onSave={this.handleSaveReport}
+            onAbort={this.abortReport}
+          /> :
+          <StartReport
+            onStart={this.handleStartReport}
+          />
+        }
         <Navigation onAbort={this.abortReport} />
       </section>
     );

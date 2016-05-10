@@ -3,10 +3,10 @@ import {Link} from 'react-router';
 
 export default ({onAbort}) => {
   return (
-    <nav className='c-navigation'>
+    <nav className='navigation'>
       <Link
         onClick={onAbort}
-        className='c-button c-button--invert c-button--lg u-unicode' to='/'>
+        className='button button--invert button--lg u-unicode' to='/'>
         🖚
       </Link>
     </nav>

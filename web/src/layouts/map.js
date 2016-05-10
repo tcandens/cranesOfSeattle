@@ -6,16 +6,18 @@ import classNames from 'classnames';
 const MapLayout = (props) => {
   // Location prop is injected by route
   const {location} = props;
-  const isMapActive = /map|cranes|report/.test(location.pathname);
-  const isReporting = /report/.test(location.pathname);
-  const layoutClass = classNames({
-    'l-map': true,
-    'l-map--isMapActive': isMapActive,
-    'l-map--isReporting': isReporting
-  });
+  let layoutState, isMapVisible;
+  switch (location.pathname) {
+    case '/report':
+      layoutState = 'isReporting';
+      isMapVisible = true;
+      break;
+    default:
+      isMapVisible = false;
+  }
   return (
-    <div className={layoutClass}>
-      <MapContainer isActive={isMapActive}/>
+    <div className='l-map' data-state={layoutState}>
+      <MapContainer isVisible={isMapVisible}/>
       <MainLayout>
         {props.children}
       </MainLayout>
