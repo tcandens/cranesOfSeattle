@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import CtaContainer from 'containers/cta';
+import CtaContainer from 'containers/CallToAction';
 
 const EntryLayout = (props) => {
   const entryClass = classNames({

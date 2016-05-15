@@ -1,7 +1,7 @@
 import React from 'react';
 import connect from 'react-redux';
 
-import Hero from './hero';
+import Hero from 'components/EntryHero';
 
 const EntryLayout = (props) => {
   return (

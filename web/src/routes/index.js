@@ -1,9 +1,9 @@
 import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
-import MainLayout from 'layouts/main';
-import Entry from 'layouts/entry';
-import Report from 'containers/report';
+import MainLayout from 'layouts/Main';
+import Entry from 'components/Entry';
+import Report from 'containers/Report';
 
 export default (store) => {
   const requireAuth = function requireAuth(nextState, replace) {

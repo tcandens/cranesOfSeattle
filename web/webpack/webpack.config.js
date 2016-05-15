@@ -33,7 +33,8 @@ const getPlugins = (isDeveloping) => {
   ];
   const defaultGlobals = {
     GOOGLE_CLIENT_ID: JSON.stringify(process.env.GOOGLE_CLIENT_ID),
-    GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET)
+    GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET),
+    MAPBOX_TOKEN: JSON.stringify(process.env.MAPBOX_TOKEN)
   };
   if (isDeveloping) {
     plugins.push(

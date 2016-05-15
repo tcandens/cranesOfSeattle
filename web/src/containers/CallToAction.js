@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import LoginButton from 'containers/login';
+import LoginButton from 'containers/LoginButton';
 import classNames from 'classnames';
 import {Link} from 'react-router';
 
