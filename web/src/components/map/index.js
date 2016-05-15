@@ -47,25 +47,17 @@ export default class Map extends Component {
     this.props = props;
     this.state = {
       loaded: false,
-      sources: {},
-      width: null,
-      height: null
+      sources: {}
     };
   }
 
   shouldComponentUpdate = (nextProps, nextState) => {
-    if (nextState.width || nextState.height) {
-      return true;
-    }
     return false;
   };
 
   componentWillReceiveProps = (nextProps) => {
-    const {sources, latitude, longitude, isVisible} = nextProps;
+    const {sources, latitude, longitude} = nextProps;
     const currentSources = this.state.sources;
-    if (!!isVisible && !this.props.isVisible) {
-      this.resize();
-    }
     if (!isEqual(this.props.sources, sources) || isEmpty(currentSources)) {
       sources.forEach(source => {
         const name = has(source.properties, 'name') ? source.properties['name'] : null;
@@ -140,24 +132,6 @@ export default class Map extends Component {
     map.easeTo({pitch: changedPitch});
   };
 
-  resize = () => {
-    if (this.map) {
-      setTimeout(() => {
-        this.lockDimensions();
-        this.map.resize();
-      }, 10);
-    }
-  }
-
-  lockDimensions = () => {
-    const computed = window.getComputedStyle(this._mapContainer);
-    const {width, height} = computed;
-    this.setState({
-      width,
-      height
-    });
-  }
-
   updateLocation = (longitude, latitude) => {
     this.map.panTo([longitude, latitude]);
   };
@@ -192,17 +166,11 @@ export default class Map extends Component {
   };
 
   render = () => {
-    const {width, height} = this.state;
-    const containerStyles = width || height ? {
-      position: 'absolute',
-      bottom: 0
-    } : null;
     return (
-      <div className='map' style={containerStyles}>
+      <div className='map'>
         <div
           ref={(c) => this._mapContainer = c}
           className='map__target'
-          style={{width: width, height: height}}
         ></div>
         {this.props.children}
       </div>

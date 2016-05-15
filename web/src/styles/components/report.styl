@@ -1,11 +1,17 @@
 .c-report
-  display flex
+  display block
   width 100%
-  background-color $dark
-  flex-direction row
-  align-content flex-start
-  align-items flex-end
-  justify-content space-between
+  height 100%
+  &--forms
+    height 200px
+    display flex
+    background-color $dark
+    flex-direction row
+    align-content flex-start
+    align-items flex-end
+    justify-content space-between
+  .map
+    height calc(100% - 200px)
 
 .fadeup
   &-leave, &-leave-active

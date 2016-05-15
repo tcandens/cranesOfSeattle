@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
-import {VelocityComponent} from 'velocity-react';
+import Map from 'components/map';
+import Reticle from 'components/reticle';
 import CreateReport from './create';
 import Navigation from './nav';
 import StartReport from './start';
@@ -12,14 +13,20 @@ import {
   finishReport
 } from 'ducks/reports';
 
+import {
+  recordMapLocation
+} from 'ducks/map';
+
+const selectReporting = (state) => {
+  return {
+    reports: state.reports.geojson,
+    map: state.map,
+    isReporting: state.reports.isReporting
+  };
+};
+
 @connect(
-  (state) => {
-    return {
-      reports: state.reports,
-      map: state.map,
-      isReporting: state.reports.isReporting
-    };
-  }
+  selectReporting
 )
 export default class ReportContainer extends Component {
   constructor(props) {
@@ -57,22 +64,45 @@ export default class ReportContainer extends Component {
       }
     });
   }
+  mapActions = () => {
+    const {dispatch} = this.props;
+    return {
+      onMoveEnd: (map, event) => {
+        dispatch(recordMapLocation(map.getCenter()));
+      }
+    };
+  }
   render = () => {
-    const {isReporting} = this.props;
+    const {
+      map,
+      reports,
+      isReporting
+    } = this.props;
+
     return (
       <section className='c-report'>
-        {
-          isReporting ?
-          <CreateReport
-            onChange={this.handleChangeReport}
-            onSave={this.handleSaveReport}
-            onAbort={this.abortReport}
-          /> :
-          <StartReport
-            onStart={this.handleStartReport}
-          />
-        }
-        <Navigation onAbort={this.abortReport} />
+        <Map
+          bearing={0}
+          zoom={16}
+          actions={this.mapActions()}
+          sources={[reports]}
+        >
+          <Reticle />
+        </Map>
+        <div className='c-report--forms'>
+          {
+            isReporting ?
+            <CreateReport
+              onChange={this.handleChangeReport}
+              onSave={this.handleSaveReport}
+              onAbort={this.abortReport}
+            /> :
+            <StartReport
+              onStart={this.handleStartReport}
+            />
+          }
+          <Navigation onAbort={this.abortReport} />
+        </div>
       </section>
     );
   }

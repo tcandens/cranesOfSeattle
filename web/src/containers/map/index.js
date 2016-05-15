@@ -5,14 +5,14 @@ import {
   recordMapLocation
 } from 'ducks/map';
 
-import MapLoader from 'components/map/loader';
+import Map from 'components/map';
 import Reticle from 'components/reticle';
 
 @connect(
   (state) => {
     return {
       reports: state.reports.geojson
-    }
+    };
   }
 )
 export default class MapContainer extends Component {
@@ -21,13 +21,8 @@ export default class MapContainer extends Component {
     this.props = props;
     this.state = {};
   }
-  componentDidMount = () => {
-    MapLoader().then(({Map}) => {
-      this.setState({Map});
-    });
-  }
   render = () => {
-    const {dispatch, reports, isActive} = this.props;
+    const {dispatch, reports} = this.props;
     const mapActions = {
       onMoveEnd: (map, event) => {
         dispatch(recordMapLocation(map.getCenter()));
@@ -35,18 +30,13 @@ export default class MapContainer extends Component {
     };
 
     return (
-      <div className='c-map'>
-        {!('Map' in this.state) ? <p>Loading...</p> :
-        <this.state.Map
-          bearing={90}
-          zoom={16}
-          actions={mapActions}
-          sources={[reports]}
-          isActive={isActive}
-        >
-          <Reticle/>
-        </this.state.Map>}
-      </div>
+      <Map
+        bearing={0}
+        zoom={16}
+        actions={mapActions}
+        sources={[reports]}
+      >
+      </Map>
     );
   }
 }

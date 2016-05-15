@@ -33,7 +33,12 @@ export default function reducer(state = {
       });
     case REHYDRATE:
       const incoming = action.payload.user;
-      if (incoming) return {...state, ...incoming};
+      if (incoming) {
+        return {
+          ...state,
+          ...incoming
+        };
+      }
       return state;
     default:
       return state;

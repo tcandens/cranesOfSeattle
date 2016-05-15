@@ -2,7 +2,7 @@ import React from 'react';
 
 const MainLayout = (props) => {
   return (
-    <main className='l-content'>
+    <main className='l-main'>
       {props.children}
     </main>
   );
