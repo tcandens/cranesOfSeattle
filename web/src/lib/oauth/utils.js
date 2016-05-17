@@ -11,8 +11,8 @@ export function fetchGoogleProfile(token) {
   const googleApiUrl = 'https://www.googleapis.com/userinfo/v2/me';
   return axios.get(googleApiUrl, {
     headers: {
-      'Authorization': `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   }).then(response => {
     return Promise.resolve(response.data);
   });
@@ -22,18 +22,18 @@ export function createGoogleTokenUrl(queries) {
   if (!GOOGLE_CLIENT_ID) {
     return console.warn('Google Client ID required.');
   }
-  queries = defaults(queries, {
+  const defaultQueries = defaults(queries, {
     redirect_uri: `${window.location.host}/api/auth/google/callback`,
     response_type: 'token',
     state: 'profile',
-    scope: 'email'
+    scope: 'email',
   });
-  queries['client_id'] = GOOGLE_CLIENT_ID;
+  defaultQueries.client_id = GOOGLE_CLIENT_ID;
   const protocol = window.location.protocol;
   if (queries.redirect_uri) {
-    queries.redirect_uri = `${protocol}//${queries.redirect_uri}`;
+    defaultQueries.redirect_uri = `${protocol}//${queries.redirect_uri}`;
   }
-  const qstring = queryString.stringify(queries);
+  const qstring = queryString.stringify(defaultQueries);
   return `https://accounts.google.com/o/oauth2/v2/auth?${qstring}`;
 }
 
@@ -41,10 +41,10 @@ export function listenForToken(popup) {
   const URI_STRING = 'token';
   return new Promise(resolve => {
     let parsed;
-    function tryParsing(popup) {
+    function tryParsing(popupToParse) {
       try {
-        parsed = parsePopupLocation(popup);
-      } catch(e) {}
+        parsed = parsePopupLocation(popupToParse);
+      } catch (e) {}
       if (parsed && parsed[URI_STRING]) {
         resolve(parsed[URI_STRING]);
         window.clearTimeout(window.CRANES_TIMER);

@@ -1,0 +1,34 @@
+.geolocator
+  display block
+  position absolute
+  bottom 2rem
+  right 1.5rem
+  width 40px
+  height @width
+  border none
+  background transparent
+  overflow hidden
+  cursor pointer
+  text-indent -9999px
+  transition transform 300ms ease
+  z-index 1000
+  &:before, &:after
+    display block
+    content ''
+    position absolute
+    border-radius 50%
+  &:before
+    top 0
+    left 0
+    border 5px solid $dark
+    width @width
+    height @width
+  &:after
+    background-color $dark
+    width (@width / 2)
+    height (@height / 2)
+    top (@width / 2)
+    left (@height / 2)
+
+.geolocator:hover, .geolocator:active
+  transform scale(1.1)

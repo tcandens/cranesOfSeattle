@@ -1,6 +1,6 @@
 import jwtDecode from 'jwt-decode';
 import {
-  listenForToken
+  listenForToken,
 } from './utils';
 
 const POPUP_NAME = 'Sign In Popup';
@@ -21,7 +21,7 @@ export function loginPopup() {
     const decoded = jwtDecode(token);
     const profile = {
       ...decoded,
-      token
+      token,
     };
     return profile;
   });

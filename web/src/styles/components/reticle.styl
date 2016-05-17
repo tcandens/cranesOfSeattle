@@ -1,8 +1,28 @@
+$width = 5px
 .reticle
   position absolute
   left 50%
   top 50%
-  width 5px
-  height 5px
-  border-radius 2px
+  width $width
+  height $width
+  border-radius floor($width / 2)
   background-color $magenta
+  z-index 1000
+  &:after
+    display block
+    content ''
+    width 70px
+    height @width
+    margin-left -((@width - $width) / 2)
+    margin-top -((@width - $width) / 2)
+    background-color alpha($magenta, 80%)
+    border-radius 50%
+    animation location_pinging 2000ms ease infinite
+
+@keyframes location_pinging
+  from
+    transform scale(0.01) rotateX(30deg)
+    opacity 1
+  to
+    transform scale(1) rotateX(30deg)
+    opacity 0

@@ -2,23 +2,19 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 
 import {
-  userLogin
+  userLogin,
 } from 'ducks/user';
 
 @connect(
   (state) => {
     return {
       isAuthenticated: state.user.isAuthenticated,
-      isFetching: state.user.isFetching
+      isFetching: state.user.isFetching,
     };
   }
 )
 export default class LoginButton extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.state = {};
-  }
+  state = {};
   handleLoginSubmit = (e) => {
     const {dispatch, to} = this.props;
     e.preventDefault();
@@ -35,3 +31,8 @@ export default class LoginButton extends Component {
     );
   }
 }
+
+LoginButton.propTypes = {
+  isAuthenticated: PropTypes.boolean,
+  isFetching: PropTypes.boolean,
+};

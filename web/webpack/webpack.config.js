@@ -18,7 +18,7 @@ const getEntry = (isDeveloping) => {
       'webpack/hot/only-dev-server'
     );
   }
-  entry.push('./src/index.js');
+  entry.push('./src/index.jsx');
   return entry;
 };
 
@@ -46,8 +46,8 @@ const getPlugins = (isDeveloping) => {
     plugins.push(
       new webpack.DefinePlugin(merge(defaultGlobals, {
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
-        }
+          'NODE_ENV': JSON.stringify('production'),
+        },
       })),
       new webpack.optimize.DedupePlugin(),
       new ExtractTextPlugin('styles.css'),
@@ -56,8 +56,8 @@ const getPlugins = (isDeveloping) => {
           unused: true,
           dead_code: true,
           warnings: false,
-          screw_ie8: true
-        }
+          screw_ie8: true,
+        },
       })
     );
   }
@@ -71,12 +71,12 @@ module.exports = {
     path: path.join(ROOT, 'dist'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: isDeveloping ? '/' : 'dist/'
+    publicPath: isDeveloping ? '/' : 'dist/',
   },
   plugins: getPlugins(isDeveloping),
   resolve: {
     extensions: [
-      '', '.js', '.styl'
+      '', '.js', '.jsx', '.styl',
     ],
     alias: merge(
       {
@@ -84,7 +84,7 @@ module.exports = {
         'mapbox-gl': (isDeveloping ?
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
-        )
+        ),
       },
       createAliasesFrom(path.resolve(ROOT, 'src')).to([
         'containers',
@@ -92,22 +92,22 @@ module.exports = {
         'decorators',
         'layouts',
         'lib',
-        'styles'
+        'styles',
       ]),
       createAliasesFrom(path.resolve(ROOT)).to([
-        'assets'
+        'assets',
       ]),
       createAliasesFrom(path.resolve(ROOT, 'src', 'redux')).to([
-        'ducks'
+        'ducks',
       ])
-    )
+    ),
   },
   module: {
-    loaders: getLoaders(ROOT, isDeveloping)
+    loaders: getLoaders(ROOT, isDeveloping),
   },
   stylus: {
     use: [
-      require('poststylus')(['autoprefixer'])
-    ]
-  }
+      require('poststylus')(['autoprefixer']),
+    ],
+  },
 };

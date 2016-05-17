@@ -1,20 +1,11 @@
-extends: eslint:recommended
+extends:
+  - airbnb-base
+  - plugin:react/recommended
 parser: babel-eslint
-ecmaFeatures:
-  jsx: true
-plugins:
-  - react
-env:
-  es6: true
-  node: true
-  browser: true
 rules:
-  comma-style:
-    - 2
-    - last
-  semi:
-    - 2
-    - always
-  comma-dangle:
-    - 2
-    - always-multiline
+  import/no-unresolved: 0
+  react/prop-types: 0
+  object-curly-spacing: [1, "never"]
+  arrow-body-style: 0
+  no-return-assign: 0
+  jsx-quotes: [2, "prefer-double"]

@@ -1,12 +1,10 @@
 import React from 'react';
-import connect from 'react-redux';
-
 import Hero from 'components/EntryHero';
 
-const EntryLayout = (props) => {
+export default function EntryLayout(props) {
   return (
     <div className='l-entry'>
-      <Hero/>
+      <Hero />
       <section>
         <h2>Here is how you can help</h2>
         <p>If you see a crane, drop a pin on the map and report it</p>
@@ -14,6 +12,4 @@ const EntryLayout = (props) => {
       {props.children}
     </div>
   );
-};
-
-export default EntryLayout;
+}

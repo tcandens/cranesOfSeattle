@@ -1,23 +1,18 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import LoginButton from 'containers/LoginButton';
-import classNames from 'classnames';
 import {Link} from 'react-router';
 
 @connect(
   (state) => {
     return {
-      isAuthenticated: state.user.isAuthenticated
+      isAuthenticated: state.user.isAuthenticated,
     };
   }
 )
 export default class CtaContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.props = props;
-    this.state = {};
-  }
-  renderReportButton = () => {
+  state = {};
+  get reportButton() {
     const {isAuthenticated} = this.props;
     let reportButton;
     if (isAuthenticated) {
@@ -35,8 +30,12 @@ export default class CtaContainer extends Component {
         <Link to='/map' className='button button--lg'>
           View the cranes
         </Link>
-        {this.renderReportButton()}
+        {this.reportButton}
       </ul>
     );
   }
 }
+
+CtaContainer.propTypes = {
+  isAuthenticated: PropTypes.boolean,
+};

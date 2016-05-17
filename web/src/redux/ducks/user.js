@@ -1,4 +1,3 @@
-import axios from 'axios';
 const assign = Object.assign;
 
 const REQUEST_LOGIN = 'REQUEST_LOGIN';
@@ -10,12 +9,12 @@ export default function reducer(state = {
   isFetching: false,
   isAuthenticated: false,
   profile: {},
-  token: null
+  token: null,
 }, action) {
   switch (action.type) {
     case REQUEST_LOGIN:
       return assign({}, state, {
-        isFetching: true
+        isFetching: true,
       });
     case RECEIVE_LOGIN:
       const {token, ...profile} = action.profile;
@@ -23,20 +22,20 @@ export default function reducer(state = {
         isFetching: false,
         isAuthenticated: true,
         profile,
-        token
+        token,
       });
     case ERROR_LOGIN:
       return assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
-        error: action.message
+        error: action.message,
       });
     case REHYDRATE:
       const incoming = action.payload.user;
       if (incoming) {
         return {
           ...state,
-          ...incoming
+          ...incoming,
         };
       }
       return state;
@@ -49,7 +48,7 @@ export function requestLogin() {
   return {
     type: REQUEST_LOGIN,
     isFetching: true,
-    isAuthenticated: false
+    isAuthenticated: false,
   };
 }
 
@@ -58,7 +57,7 @@ export function receiveLogin(profile) {
     type: RECEIVE_LOGIN,
     isFetching: false,
     isAuthenticated: true,
-    profile
+    profile,
   };
 }
 
@@ -67,7 +66,7 @@ export function errorLogin(error) {
     type: ERROR_LOGIN,
     isFetching: false,
     isAuthenticated: false,
-    message: error.message
+    message: error.message,
   };
 }
 

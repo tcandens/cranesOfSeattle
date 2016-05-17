@@ -2,35 +2,14 @@
   display block
   width 100%
   height 100%
+  $form-height = 100px
   &--forms
-    height 200px
+    height $form-height
     display flex
     background-color $dark
     flex-direction row
     align-content flex-start
     align-items flex-end
     justify-content space-between
-  .map
-    height calc(100% - 200px)
-
-.fadeup
-  &-leave, &-leave-active
-    transition opacity 600ms ease-in-out
-  &-leave
-    opacity 1
-  &-leave-active
-    opacity 0.01
-  &-enter, &-enter-active
-    transition opacity 600ms ease-in-out
-  &-enter
-    opacity 0.01
-  &-enter-active
-    opacity 1
-  &-appear, &-appear-active
-    transition all 600ms ease-in-out
-  &-appear
-    opacity 0.01
-    max-height 0
-  &-appear-active
-    opacity 1
-    max-height 200px
+  .mapbox-gl-container
+    height: "calc(100vh - %s)" % ($form-height + $nav-height)

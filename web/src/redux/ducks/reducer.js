@@ -10,5 +10,5 @@ export default combineReducers({
   cranes,
   map,
   user,
-  routing: routerReducer
+  routing: routerReducer,
 });

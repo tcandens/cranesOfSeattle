@@ -1,6 +1,6 @@
 import React from 'react';
 import {AppContainer} from 'react-hot-loader';
-import App from './App';
+import App from 'components/App';
 import {render} from 'react-dom';
 
 const AppRoot = document.getElementById('root');
@@ -9,16 +9,16 @@ render((
   <AppContainer>
     <App />
   </AppContainer>
-), document.getElementById('root')
+), AppRoot
 );
 
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default;
+  module.hot.accept('components/App', () => {
+    const NextApp = require('components/App').default; // eslint-disable-line
     render((
       <AppContainer>
         <NextApp />
       </AppContainer>
-    ), document.getElementById('root'));
+    ), AppRoot);
   });
 }

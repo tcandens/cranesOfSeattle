@@ -8,25 +8,25 @@ const ADD_CRANE = 'ADD_CRANE';
 
 export default function reducer(state = {
   isFetching: false,
-  geojson: {}
+  geojson: {},
 }, action) {
   switch (action.type) {
     case REQUEST_CRANES:
       return assign({}, state, {
-        isFetching: true
+        isFetching: true,
       });
     case RECEIVE_CRANES:
       return assign({}, state, {
         isFetching: false,
         geojson: action.geojson,
-        lastUpdated: action.receivedAt
+        lastUpdated: action.receivedAt,
       });
     case ADD_CRANE:
       const crane = geojson.pointFromLngLat(action.location);
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
-          features: [...state.geojson.features, crane]
-        })
+          features: [...state.geojson.features, crane],
+        }),
       });
     default:
       return state;
@@ -36,21 +36,21 @@ export default function reducer(state = {
 export function requestCranes() {
   return {
     type: REQUEST_CRANES,
-    isFetching: true
+    isFetching: true,
   };
 }
 
-export function receiveCranes(geojson) {
+export function receiveCranes(geojsonObject) {
   return {
     type: RECEIVE_CRANES,
-    geojson: geojson,
+    geojson: geojsonObject,
     isFetching: false,
-    receivedAt: Date.now()
+    receivedAt: Date.now(),
   };
 }
 
 export function fetchCranes() {
-  return function (dispatch) {
+  return (dispatch) => {
     dispatch(requestCranes());
     return axios.get('/api/cranes')
       .then(response => {
@@ -65,12 +65,12 @@ export function fetchCranes() {
 export function addCrane(location) {
   return {
     type: ADD_CRANE,
-    location
+    location,
   };
 }
 
 export function saveCrane(location) {
-  return function (dispatch) {
+  return (dispatch) => {
     dispatch(addCrane(location));
     const crane = geojson.pointFromLngLat(location);
     return axios.post('/api/cranes', crane)

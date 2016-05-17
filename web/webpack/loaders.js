@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const createLoaders = (ROOT, isDeveloping) => {
   return [
     {
-      test: /\.js$/,
+      test: /\.js/,
       loaders: ['babel'],
       include: path.resolve(ROOT, 'src'),
       exclude: /(node_modules)/

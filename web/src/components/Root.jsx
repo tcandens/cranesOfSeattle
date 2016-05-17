@@ -5,13 +5,7 @@ import {Router} from 'react-router';
 import 'styles/index.styl';
 
 export default class Root extends Component {
-  static propTypes = {
-    history: PropTypes.object.isRequired,
-    routes: PropTypes.object.isRequired,
-    store: PropTypes.object.isRequired
-  };
-
-  get content () {
+  get content() {
     const {routes, history, children} = this.props;
     return (
       <Router history={history} routes={routes}>
@@ -29,3 +23,9 @@ export default class Root extends Component {
     );
   }
 }
+
+Root.propTypes = {
+  history: PropTypes.object.isRequired,
+  routes: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
+};

@@ -14,7 +14,7 @@ function configureMiddleware(initialState) {
       autoRehydrate(),
       applyMiddleware(
         thunkMiddleware,
-        loggerMiddleware,
+        loggerMiddleware
       ),
       window.devToolsExtension ? window.devToolsExtension() : f => f
     )
