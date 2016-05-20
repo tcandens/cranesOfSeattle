@@ -12,6 +12,9 @@ export default function ReportRecord(props) {
       <li>
         <em>latitude:</em> <span>{props.geometry.coordinates[1]}</span>
       </li>
+      <li>
+        <em>confidence:</em> <span>{props.properties.confidence}</span>
+      </li>
     </ul>
   );
 }

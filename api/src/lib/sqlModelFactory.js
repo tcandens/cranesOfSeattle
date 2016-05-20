@@ -45,8 +45,7 @@ const prototype = {
     return response;
   },
   __destroyAll__() {
-    const res = this.db.query(`DELETE FROM ${this.tableName}`)
-      .finally(this.close())
+    return this.db.query(`DELETE FROM ${this.tableName}`)
   }
 }
 

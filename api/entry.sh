@@ -12,7 +12,7 @@ elif [ "$ENV" = 'TEST' ]; then
   export PORT=3333
   echo $'Running Tests\n-------------';
   ./node_modules/.bin/pg-migrate up;
-  npm run tests;
+  npm run tests -- --watch;
 else
   echo "Running Production Server"
   echo "-------------------------"

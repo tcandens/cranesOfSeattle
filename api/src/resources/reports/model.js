@@ -12,9 +12,7 @@ reportModel.create = function(report) {
       $/user_id/
     )
     RETURNING ID`;
-  const response = this.db.one(query, merge(report, report.properties))
-    .finally(this.close());
-  return response;
+  return this.db.one(query, merge(report, report.properties))
 };
 
 reportModel.read = function(id) {
@@ -31,8 +29,7 @@ reportModel.read = function(id) {
     ) AS properties
     FROM ${this.tableName} AS l WHERE l.id = $1
   `;
-  const response = this.db.one(query, id);
-  return response;
+  return this.db.one(query, id);
 }
 
 reportModel.readAll = function() {
@@ -46,9 +43,7 @@ reportModel.readAll = function() {
       FROM ${this.tableName} AS r
     ) AS f
   `;
-  const response = this.db.one(query)
-    .finally(this.close());
-  return response;
+  return this.db.one(query);
 }
 
 reportModel.findWithin = function(querystring) {
@@ -66,8 +61,7 @@ reportModel.findWithin = function(querystring) {
       )
     ) AS f
   `;
-  const response = this.db.manyOrNone(query, options)
-  return response;
+  return this.db.manyOrNone(query, options);
 }
 
 export default reportModel;

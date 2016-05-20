@@ -4,16 +4,10 @@ import json from '../../middleware/json_response';
 import jsonBody from 'koa-json-body';
 import authMiddleware from '../../middleware/jwt_auth';
 
-import permitModel from '../permits/model';
+import confirmationService from '../../services/reportConfirmationService';
 
 export default Router()
   .use(json(), jsonBody())
-  .get('/permits', async (ctx) => {
-    await permitModel.fetchAll()
-      .then(permits => {
-        ctx.body = permits;
-      })
-  })
   .get('/reports', async (ctx) => {
     await reportModel.readAll()
       .then(data => {
@@ -46,17 +40,11 @@ export default Router()
       });
   })
   .post('/reports', authMiddleware(), async (ctx) => {
-    // Calculate report confidence
     const report = ctx.request.body;
-    await reportModel.create(report)
-      .then(data => {
-        ctx.status = 201;
-        ctx.body = data;
-      })
-      .catch(error => {
-        ctx.status = 500;
-        ctx.body = error.toString();
-      });
+    await confirmationService(report).then(reportConfidence => {
+      ctx.status = 200;
+      ctx.body = reportConfidence;
+    })
   })
   .put('/reports/:id', authMiddleware(), async (ctx) => {
     let report = ctx.request.body;
