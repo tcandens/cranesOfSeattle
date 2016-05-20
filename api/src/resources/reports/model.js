@@ -6,10 +6,11 @@ const reportModel = modelFactory('reports');
 reportModel.create = function(report) {
   const query = `
     INSERT INTO ${this.tableName}
-    (location, user_id)
+    (location, user_id, confidence)
     VALUES (
       ST_GeomFromGeoJSON($/geometry/),
-      $/user_id/
+      $/user_id/,
+      $/confidence/
     )
     RETURNING ID`;
   return this.db.one(query, merge(report, report.properties))
