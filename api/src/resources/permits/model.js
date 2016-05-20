@@ -6,7 +6,7 @@ const queries = {
   '$where': 'value > 1000000'
 }
 
-function buildEndpoint() {
+export function buildEndpoint() {
   let q;
   try {
     q = querystring.stringify(queries);
@@ -17,7 +17,7 @@ function buildEndpoint() {
   return uri;
 }
 
-function fetchAll() {
+export function fetchAll() {
   return axios.get(buildEndpoint())
     .then(response => {
       return response.data;
@@ -25,5 +25,5 @@ function fetchAll() {
 }
 
 export default {
-  fetchAll: fetchAll
+  fetchAll
 }
