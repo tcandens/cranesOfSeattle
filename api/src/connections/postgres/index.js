@@ -1,5 +1,5 @@
-import info from './db_info'
-import options from './db_options'
+import info from './info'
+import options from './options'
 import pgp from 'pg-promise'
 import monitor from 'pg-monitor'
 

@@ -19,16 +19,16 @@ app.keys = ['SECRET_HERE'];
 app.use(convert(session(app)));
 
 /* Routes */
-import cranes from './routers/cranes';
-import reports from './routers/reports';
-import users from './routers/users';
+import cranes from './resources/cranes/router';
+import reports from './resources/reports/router';
+import users from './resources/users/router';
 
 app
   .use(cranes.routes())
   .use(reports.routes())
   .use(users.routes())
 
-import authDecorator from './auth/decorator';
+import authDecorator from './resources/auth/decorator';
 authDecorator(app);
 
 export default app

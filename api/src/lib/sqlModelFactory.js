@@ -1,5 +1,5 @@
 import { create } from 'lodash'
-import db from '../connections/db'
+import db from '../connections/postgres'
 
 const __database = db.init();
 

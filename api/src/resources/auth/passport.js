@@ -1,6 +1,6 @@
 import passport from 'koa-passport';
 import GooglePassport from 'passport-google-oauth20';
-import userModel from '../models/user';
+import userModel from '../users/model';
 
 const GoogleStrategy = GooglePassport.Strategy;
 
@@ -11,7 +11,6 @@ passport.use(new GoogleStrategy({
 },
 (accessToken, refreshToken, profile, callback) => {
   profile = profile._json;
-  // 1. Find or create user with profile details in DB.
   const _user = {
     google_id: profile.id,
     name: profile.displayName,
@@ -25,8 +24,6 @@ passport.use(new GoogleStrategy({
   userModel.findOrCreate(_user).then(user => {
     callback(null, user);
   })
-  // 2. Create JWT with user profile.
-  // 3. Redirect with JWT encoded in the url for client to access.
 }))
 
 export default passport;

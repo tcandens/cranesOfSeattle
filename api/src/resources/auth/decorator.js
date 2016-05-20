@@ -1,4 +1,4 @@
-import authRoutes from '../routers/auth';
+import authRoutes from './router';
 import passport from './passport';
 
 export default function authDecorator(app) {

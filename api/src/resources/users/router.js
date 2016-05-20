@@ -1,6 +1,6 @@
 import Router from 'koa-router';
-import userModel from '../models/user';
-import json from '../middleware/json_response';
+import userModel from './model';
+import json from '../../middleware/json_response';
 import jsonBody from 'koa-json-body';
 
 export default Router()

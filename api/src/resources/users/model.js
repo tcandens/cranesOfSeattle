@@ -1,5 +1,4 @@
-import modelFactory from './base';
-import Promise from 'bluebird';
+import modelFactory from '../../lib/sqlModelFactory';
 
 const userModel = modelFactory('users');
 
