@@ -1,17 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import classNames from 'classnames';
 import Map from 'components/Map';
 import Geolocator from 'components/Geolocator';
 import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
+import Modal from 'components/Modal';
+import ReportRecord from 'components/ReportRecord';
 
 import {
   fetchReports,
   saveReport,
   startReport,
   finishReport,
+  confirmSaveSuccess,
 } from 'ducks/reports';
 
 import {
@@ -22,14 +25,15 @@ import {
 function selectReporting(state) {
   return {
     reports: state.reports.geojson,
+    reported: state.reports.reported,
     map: state.map,
     isReporting: state.reports.isReporting,
     longitude: state.map.location.lng,
     latitude: state.map.location.lat,
+    isSaved: state.reports.isSaved,
   };
 }
 
-// @wrapWithUserLocation
 @connect(
   selectReporting
 )
@@ -42,7 +46,7 @@ export default class ReportContainer extends Component {
     longitude: 122.66,
   }
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(fetchReports());
     dispatch(fetchUserLocation());
   }
@@ -53,22 +57,22 @@ export default class ReportContainer extends Component {
     });
   }
   abortReport = () => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(finishReport());
   }
   handleStartReport = (e) => {
-    const { dispatch, map } = this.props;
+    const {dispatch, map} = this.props;
     dispatch(startReport(map.location));
     e.preventDefault();
   }
   handleSaveReport = (e) => {
-    const { dispatch, map } = this.props;
-    const { report } = this.state;
+    const {dispatch, map} = this.props;
+    const {report} = this.state;
     dispatch(saveReport(map.location, report));
     e.preventDefault();
   }
   handleChangeReport = (event) => {
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     this.setState({
       report: {
         ...this.state.report,
@@ -76,25 +80,32 @@ export default class ReportContainer extends Component {
       },
     });
   }
+  handleConfirmSuccess = (e) => {
+    e.preventDefault();
+    const {dispatch} = this.props;
+    dispatch(confirmSaveSuccess());
+  }
   getUserPosition = () => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch(fetchUserLocation());
   }
   mapActions = () => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
+    const sendMapCenter = (map) => dispatch(recordMapLocation(map.getCenter()));
     return {
       moveend: (map) => {
-        dispatch(recordMapLocation(map.getCenter()));
+        // Pop to the end of the stack for zoom events to avoid loop
+        window.setTimeout(() => sendMapCenter(map), 0);
       },
       click: (map, event) => {
         const threshold = 10;
-        const { x, y } = event.point;
+        const {x, y} = event.point;
         const features = map.queryRenderedFeatures(
           [
             [x - threshold / 2, y - threshold / 2],
             [x + threshold / 2, y + threshold / 2],
           ],
-          { layers: ['reports'] }
+          {layers: ['reports']}
         );
         console.log(features);
       },
@@ -104,9 +115,11 @@ export default class ReportContainer extends Component {
   render = () => {
     const {
       reports,
+      reported,
       isReporting,
       longitude,
       latitude,
+      isSaved,
     } = this.props;
 
     const mapSources = {
@@ -136,10 +149,10 @@ export default class ReportContainer extends Component {
     });
 
     return (
-      <section className='c-report' data-state={containerState}>
+      <section className="c-report" data-state={containerState}>
         <Map
           accessToken={MAPBOX_TOKEN}
-          style='mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3'
+          style="mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3"
           bearing={45}
           zoom={16}
           pitch={30}
@@ -152,7 +165,7 @@ export default class ReportContainer extends Component {
           <Geolocator onClick={this.getUserPosition} />
           <Reticle />
         </Map>
-        <div className='c-report--forms'>
+        <div className="c-report--forms">
           {
             isReporting ?
             <CreateReport
@@ -164,7 +177,20 @@ export default class ReportContainer extends Component {
               onStart={this.handleStartReport}
             />
           }
+          {
+            isSaved ? <div>Good Job</div> : null
+          }
         </div>
+        { isSaved ?
+          <Modal type="success"
+            action={this.handleConfirmSuccess}
+          >
+            <ReportRecord
+              {...reported[reported.length - 1]}
+            />
+          </Modal>
+          : null
+        }
       </section>
     );
   }

@@ -9,13 +9,19 @@ export default function ReportCreateForm(props) {
             <input name="cranesInView" type="number" min="1" max="5" defaultValue="1" step="1" />
           </label>
         </form>
-        <button className="button button--invert button--lg" onClick={onSave}>
-          Save Report
-        </button>
-        <button className="button button--invert button--lg"
-          onClick={onAbort}>
-          Abort
-        </button>
+        <ul className="create-report--options">
+          <li>
+            <button className="button button--invert button--lg" onClick={onSave}>
+              Save
+            </button>
+          </li>
+          <li>
+            <button className="button button--invert button--lg"
+              onClick={onAbort}>
+              X
+            </button>
+          </li>
+        </ul>
       </div>
   );
 }

@@ -2,14 +2,27 @@
   display block
   width 100%
   height 100%
-  $form-height = 100px
-  &--forms
-    height $form-height
-    display flex
-    background-color $dark
-    flex-direction row
-    align-content flex-start
-    align-items flex-end
-    justify-content space-between
-  .mapbox-gl-container
-    height: "calc(100vh - %s)" % ($form-height + $nav-height)
+.c-report--forms
+  height $report-start-height
+  display flex
+  background-color $dark
+  flex-direction row
+  align-content flex-start
+  align-items flex-end
+  justify-content space-between
+.c-report .mapbox-gl-container
+  height "calc(100vh - %s)" % ($report-start-height + $nav-height)
+.c-report .mapbox-gl-container, .c-report--forms
+  transition height 300ms ease
+
+.c-report[data-state="isReporting"] .c-report--forms
+  height ($report-start-height + $report-create-form-height)
+.c-report[data-state="isReporting"] .mapbox-gl-container
+  height "calc(100vh - %s)" % ($report-start-height + $nav-height + $report-create-form-height)
+  & .reticle
+    transform "translate3d(0, %s, 0)" % ($report-create-form-height / -2)
+
+.create-report--options
+  display flex
+  flex-direction row
+  justify-content space-between

@@ -16,18 +16,18 @@ export default class CtaContainer extends Component {
     const {isAuthenticated} = this.props;
     let reportButton;
     if (isAuthenticated) {
-      reportButton = <Link className='button button--lg' to='/report'>
+      reportButton = <Link className="button button--lg" to="/report">
         Report a crane</Link>;
     } else {
-      reportButton = <LoginButton to='/report'>Sign in to report a crane
+      reportButton = <LoginButton to="/report">Sign in to report a crane
         </LoginButton>;
     }
     return reportButton;
   }
   render() {
     return (
-      <ul className='list--vertical'>
-        <Link to='/map' className='button button--lg'>
+      <ul className="list--vertical">
+        <Link to="/map" className="button button--lg">
           View the cranes
         </Link>
         {this.reportButton}
@@ -37,5 +37,5 @@ export default class CtaContainer extends Component {
 }
 
 CtaContainer.propTypes = {
-  isAuthenticated: PropTypes.boolean,
+  isAuthenticated: PropTypes.bool,
 };

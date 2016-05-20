@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Mapbox from 'mapbox-gl';
+import LoadingBar from 'components/LoadingSpinner';
 import isEqual from 'lodash/isEqual';
 const diff = (left, right) => !isEqual(left, right);
 
@@ -150,13 +151,14 @@ export default class Map extends Component {
   }
 
   render = () => {
+    const {loaded} = this.state;
     return (
       <div
         style={this.props.containerStyle || {}}
         ref={(c) => this.mapContainer = c}
         className="mapbox-gl-container"
       >
-        {this.props.children}
+        {!loaded ? <LoadingBar /> : this.props.children}
       </div>
     );
   };

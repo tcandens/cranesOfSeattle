@@ -12,23 +12,19 @@
   text-indent -9999px
   transition transform 300ms ease
   z-index 1000
-  &:before, &:after
+  &:before
     display block
     content ''
     position absolute
-    border-radius 50%
-  &:before
     top 0
     left 0
-    border 5px solid $dark
     width @width
     height @width
-  &:after
-    background-color $dark
-    width (@width / 2)
-    height (@height / 2)
-    top (@width / 2)
-    left (@height / 2)
+    background-image url('~/assets/compass.svg')
+    background-size contain
+    background-repeat no-repeat
 
-.geolocator:hover, .geolocator:active
+.geolocator:active
   transform scale(1.1)
+.geolocator:hover
+  transform scale(1.1) rotate(-30deg)

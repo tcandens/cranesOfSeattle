@@ -2,14 +2,35 @@
   background-color $white
   color $dark
   z-index $z-navigation
-  border-top 1px solid alpha($dark, 50%)
-  &--list
-    display flex
+  box-shadow 0px -5px 10px alpha($dark, 20%)
+.navigation--list
+  display flex
+  width 100%
+  height 100%
+  flex-direction row
+  align-items space-around
+  align-content space-around
+  justify-content space-between
+  font-size 1.2rem
+  li
+    display inherit
+    flex 1 1 auto
+  a
     width 100%
-    flex-direction row
-    align-items center
-    align-content center
-    justify-content space-around
-    font-size 1.2rem
-    li
-      display block
+    color transparent
+    background-size 50px 50px
+    background-repeat no-repeat
+    background-position center center
+    transition background-color 300ms ease
+    opacity 1
+    &[data-icon="home"]
+      background-image url('~/assets/home.svg')
+    &[data-icon="map"]
+      background-image url('~/assets/map.svg')
+    &[data-icon="report"]
+      background-image url('~/assets/plus.svg')
+.navigation--link-active
+  background-color $mint
+  &-home
+    opacity 0
+    background-color $salmon

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, IndexLink} from 'react-router';
 
 const ACTIVE = {display: 'none'};
 
@@ -7,9 +7,33 @@ export default function Navigation() {
   return (
     <nav className="navigation">
       <ul className="navigation--list">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/map" activeClass="">Map</Link></li>
-        <li><Link to="/report" activeStyle={ACTIVE}>Report</Link></li>
+        <li>
+          <IndexLink
+            data-icon="home"
+            to="/"
+            activeClassName="navigation--link-active-home"
+          >
+            Home
+          </IndexLink>
+        </li>
+        <li>
+          <Link
+            data-icon="map"
+            to="/map"
+            activeClassName="navigation--link-active"
+          >
+            Map
+          </Link>
+        </li>
+        <li>
+          <Link
+            data-icon="report"
+            to="/report"
+            activeClassName="navigation--link-active"
+          >
+            Report
+          </Link>
+        </li>
       </ul>
     </nav>
   );
