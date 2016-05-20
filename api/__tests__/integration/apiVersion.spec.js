@@ -1,27 +1,30 @@
-import test from 'ava';
-import request from 'supertest-as-promised';
-import Koa from 'koa';
-import apiVersion from '../../src/middleware/version';
-import Router from 'koa-router';
+/**
+ * Dependencies
+ */
+require('leaked-handles').set({
+  fullStack: true
+});
+import test from 'tape-dispenser'
+import supertest from 'co-supertest'
+import server from '../../src/server'
 import packageJSON from '../../package.json'
+
+const request = supertest.agent(server);
 
 const currentVersion = packageJSON.version;
 
-function buildApp() {
-  const app = new Koa();
-  app.use(apiVersion(currentVersion));
-  app.use(Router().get('/', ctx => {
-    ctx.status = 200;
-  }).routes());
-  return app;
-}
+test('CHECKING API VERSION IS IN RESPONSE HEADERS', function *(assert) {
+  const response = yield request
+    .get('/reports')
+    .expect(200)
+    .end();
 
-test('API Version is in response headers', async t => {
-  t.plan(2);
+  assert.equal(
+    response.headers['api-version'],
+    currentVersion,
+    'Should return header field with version matching current version.'
+  );
 
-  const res = await request(buildApp())
-    .get('/')
-
-  t.is(res.status, 200);
-  t.is(res.headers['api-version'], currentVersion);
 });
+
+server.close();
