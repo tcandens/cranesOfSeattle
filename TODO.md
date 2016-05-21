@@ -11,8 +11,11 @@ still be manually refreshed 'god-knows-when' on the remote server.
 * Testing must be redone with AVA.
 
 ## CLIENT
-* Crane map component
+* Colocate state selectors to ducks.
+* Normalize action creators to use 'payload' convention.
+* Crane map component.
 * React, redux and unit testing.
+* Validating jwt from rehydration.
 #### Perf
 * Code splitting and lazy loading of map and/or map heavy components.
 * Server-side rendering; perhaps not worth is if map component can be
