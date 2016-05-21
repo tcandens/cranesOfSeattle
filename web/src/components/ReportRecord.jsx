@@ -4,7 +4,7 @@ export default function ReportRecord(props) {
   return (
     <ul className="list--vertical">
       <li>
-        <em>ID:</em> <span>{props.id}</span>
+        <em>ID:</em> <span>{props.properties.id}</span>
       </li>
       <li>
         <em>longitude:</em> <span>{props.geometry.coordinates[0]}</span>

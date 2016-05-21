@@ -8,6 +8,7 @@ import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
 import Modal from 'components/Modal';
 import ReportRecord from 'components/ReportRecord';
+import LoadingBar from 'components/LoadingBar';
 
 import {
   fetchReports,
@@ -30,7 +31,8 @@ function selectReporting(state) {
     isReporting: state.reports.isReporting,
     longitude: state.map.location.lng,
     latitude: state.map.location.lat,
-    isSaved: state.reports.isSaved,
+    isSaveSuccess: state.reports.isSaveSuccess,
+    isSaving: state.reports.isSaving,
   };
 }
 
@@ -119,7 +121,8 @@ export default class ReportContainer extends Component {
       isReporting,
       longitude,
       latitude,
-      isSaved,
+      isSaveSuccess,
+      isSaving,
     } = this.props;
 
     const mapSources = {
@@ -166,22 +169,20 @@ export default class ReportContainer extends Component {
           <Reticle />
         </Map>
         <div className="c-report--forms">
+          { isSaving ? <LoadingBar /> : null }
           {
             isReporting ?
-            <CreateReport
-              onChange={this.handleChangeReport}
-              onSave={this.handleSaveReport}
-              onAbort={this.abortReport}
-            /> :
-            <StartReport
-              onStart={this.handleStartReport}
-            />
-          }
-          {
-            isSaved ? <div>Good Job</div> : null
+              <CreateReport
+                onChange={this.handleChangeReport}
+                onSave={this.handleSaveReport}
+                onAbort={this.abortReport}
+              /> :
+                <StartReport
+                  onStart={this.handleStartReport}
+                />
           }
         </div>
-        { isSaved ?
+        { isSaveSuccess ?
           <Modal type="success"
             action={this.handleConfirmSuccess}
           >

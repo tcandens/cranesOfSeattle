@@ -11,6 +11,7 @@ const ADD_REPORT = 'ADD_REPORT';
 const FINISH_REPORT = 'FINISH_REPORT';
 const REMOVE_REPORT = 'REMOVE_REPORT';
 const RESET_REPORT_STATE = 'RESET_REPORT_STATE';
+const BEGIN_SAVE_REPORT = 'BEGIN_SAVE_REPORT';
 const SUCCESS_SAVE_REPORT = 'SUCCESS_SAVE_REPORT';
 const CONFIRM_SAVE_SUCCESS = 'CONFIRM_SAVE_SUCCESS';
 const ERROR_SAVE_REPORT = 'ERROR_SAVE_REPORT';
@@ -18,12 +19,12 @@ const ERROR_SAVE_REPORT = 'ERROR_SAVE_REPORT';
 export default function reducer(state = {
   isFetching: false,
   isReporting: false,
-  isSaved: false,
+  isSaving: false,
+  isSaveSuccess: false,
   geojson: {
     features: [],
   },
   reported: [],
-  newReport: {},
 }, action) {
   switch (action.type) {
     case REQUEST_REPORTS:
@@ -49,6 +50,7 @@ export default function reducer(state = {
     case FINISH_REPORT:
       return assign({}, state, {
         isReporting: false,
+        report: {},
       });
     case REMOVE_REPORT:
       return assign({}, state, {
@@ -56,17 +58,23 @@ export default function reducer(state = {
           features: [...state.geojson.features],
         }),
       });
+    case BEGIN_SAVE_REPORT:
+      return assign({}, state, {
+        isSaving: true,
+      });
     case SUCCESS_SAVE_REPORT:
       return assign({}, state, {
-        isSaved: true,
-        reported: [action.report, ...state.reported],
+        isSaveSuccess: true,
+        isSaving: false,
+        reported: [action.payload.report, ...state.reported],
       });
     case CONFIRM_SAVE_SUCCESS:
       return assign({}, state, {
-        isSaved: false,
+        isSaveSuccess: false,
       });
     case RESET_REPORT_STATE:
       return assign({}, state, {
+        isSaving: false,
         isReporting: false,
         report: {},
       });
@@ -125,10 +133,22 @@ export function startReport(location) {
   };
 }
 
+export function beginSavingReport() {
+  return {
+    type: BEGIN_SAVE_REPORT,
+    payload: {
+      time: Date.now(),
+    },
+  };
+}
+
 export function successSavingReport(report) {
   return {
     type: SUCCESS_SAVE_REPORT,
-    report,
+    payload: {
+      report,
+      time: Date.now(),
+    },
   };
 }
 
@@ -142,6 +162,7 @@ export function errorSavingReport(error, report) {
   return {
     type: ERROR_SAVE_REPORT,
     payload: {
+      time: Date.now(),
       error,
       report,
     },
@@ -162,6 +183,7 @@ export function resetReportState() {
 
 export function saveReport(location, props) {
   return (dispatch, getState) => {
+    dispatch(beginSavingReport());
     const state = getState();
     const userId = state.user.profile.id || null;
     const token = state.user.token || null;
@@ -169,7 +191,6 @@ export function saveReport(location, props) {
       dispatch({error: 'Not Authorized'});
     }
     const report = geojson.pointFromLngLat(location, {userId, ...props});
-    dispatch(addReport(report));
     const requestConfig = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -177,8 +198,9 @@ export function saveReport(location, props) {
     };
     return axios.post('/api/reports', report, requestConfig)
       .then(response => {
-        dispatch(successSavingReport({...response.data, ...report}));
-        dispatch(resetReportState());
+        dispatch(addReport(response.data));
+        dispatch(successSavingReport(response.data));
+        dispatch(finishReport());
       })
       .catch(error => {
         dispatch(errorSavingReport(error, report));
