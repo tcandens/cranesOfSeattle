@@ -3,6 +3,8 @@
 ## API
 #### Features
 * Report confirmation and crane record creation.
+* Caching permits into a Redis would be a good idea. Should
+be ease to shim into permitModel.
 #### QA
 * SSL and Letsencrypt is still pretty hack-y in Docker. Certificates must
 still be manually refreshed 'god-knows-when' on the remote server.
