@@ -9,7 +9,7 @@ export default function ReportCreateForm(props) {
             <input name="cranesInView" type="number" min="1" max="5" defaultValue="1" step="1" />
           </label>
         </form>
-        <ul className="create-report--options">
+        <ul className="create-report--options list--row">
           <li>
             <button className="button button--invert button--lg" onClick={onSave}>
               Save
