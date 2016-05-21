@@ -41,9 +41,9 @@ export default Router()
   })
   .post('/reports', authMiddleware(), async (ctx) => {
     const report = ctx.request.body;
-    await confirmationService(report).then(reportConfidence => {
-      ctx.status = 200;
-      ctx.body = reportConfidence;
+    await confirmationService(report).then(confirmedReport => {
+      ctx.status = 201;
+      ctx.body = confirmedReport;
     })
   })
   .put('/reports/:id', authMiddleware(), async (ctx) => {
