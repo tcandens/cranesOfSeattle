@@ -23,7 +23,7 @@ services:
       - db
     depends_on:
       - db
-    entrypoint: ./wait-for-it.sh db:5432 --timeout=5 -- ./entry.sh
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=15 -- ./entry.sh
   webpack:
     build:
       context: ./web
