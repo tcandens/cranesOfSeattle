@@ -13,8 +13,8 @@ export function getNearbyPermits(report, opt) {
   return permitModel.fetchAll().then(permits => {
     return permits.filter(permit => {
       const {longitude, latitude} = permit;
-      const reportLng = report.geometry.coordinates[0];
-      const reportLat = report.geometry.coordinates[1];
+      const reportLng = report.geometry.coordinates[1];
+      const reportLat = report.geometry.coordinates[0];
       return geolib.isPointInCircle(
         {latitude: longitude, longitude: latitude},
         {latitude: reportLat, longitude: reportLng},
@@ -35,7 +35,20 @@ export function getNearbyReports(report, opt) {
   });
 }
 
-export function calculateReportConfidence(report, reports, permits) {
+export function filterUniqueId(id, reports) {
+  if (reports.features === null) {
+    return [];
+  }
+  const filtered = reports.features.filter(report => {
+    if (!report.properties || !report.properties['user_id']) {
+      return false;
+    }
+    report.properties['user_id'] !== id;
+  });
+  return filtered;
+}
+
+export function calculateConfidence(report, reports, permits) {
   let confidence;
   if (reports.length > 0 && permits.length > 0) {
     console.log('Nearby reports and permits')
@@ -50,30 +63,21 @@ export function calculateReportConfidence(report, reports, permits) {
     console.log('No reports or permits nearby')
     confidence = 1;
   }
-  const reportWithConfidence = Object.assign({}, report, {
-    properties: Object.assign({}, report.properties, {
-      confidence
-    })
-  });
-  console.log(reportWithConfidence)
-  return reportModel.create(reportWithConfidence).then(id => {
-    const reportWithId = Object.assign({}, reportWithConfidence, {
-      properties: Object.assign({}, reportWithConfidence.properties, {
-        id
-      })
-    })
-    console.log(reportWithId)
-    return reportWithId;
-  })
+  return confidence;
 }
 
-export default Promise.coroutine(function* confirmOrDenyReport(report) {
+export default Promise.coroutine(function* confirmReport(report) {
   const nearbyPermits = yield getNearbyPermits(report);
-  const nearbyReports = yield getNearbyReports(report);
-  const confidence = calculateReportConfidence(
+  const nearbyReports = yield getNearbyReports(report).then(nearbyReports => {
+    return filterUniqueId(report.properties['user_id'], nearbyReports)
+  });
+  const confidence = calculateConfidence(
     report,
     nearbyReports,
     nearbyPermits
   );
-  return Promise.resolve(confidence);
+  report.properties.confidence = confidence;
+  const saved = yield reportModel.create(report);
+  saved.properties.nearbyPermits = nearbyPermits;
+  return saved;
 });

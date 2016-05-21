@@ -12,7 +12,12 @@ reportModel.create = function(report) {
       $/user_id/,
       $/confidence/
     )
-    RETURNING ID`;
+    RETURNING
+    'Feature' AS type,
+    ST_AsGeoJSON(location)::json AS geometry,
+    json_build_object('id', id, 'user_id', user_id, 'confidence', confidence)
+    AS properties
+    `;
   return this.db.one(query, merge(report, report.properties))
 };
 
@@ -56,13 +61,13 @@ reportModel.findWithin = function(querystring) {
     array_to_json(array_agg(f)) as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
-      row_to_json((SELECT l FROM (SELECT id, user_id) AS l)) AS properties
+      COALESCE(row_to_json((SELECT l FROM (SELECT id, user_id) AS l))) AS properties
       FROM ${this.tableName} AS r WHERE ST_DWithin(
         r.location, 'POINT($/lng/ $/lat/)', $/radius/
       )
     ) AS f
   `;
-  return this.db.manyOrNone(query, options);
+  return this.db.one(query, options);
 }
 
 export default reportModel;

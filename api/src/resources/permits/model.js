@@ -3,6 +3,7 @@ import querystring from 'querystring';
 
 const baseUri = 'https://data.seattle.gov/resource/i5jq-ms7b.json';
 const queries = {
+  'status': 'Permit Issued',
   '$where': 'value > 1000000'
 }
 
