@@ -17,5 +17,5 @@ else
   echo "Running Production Server"
   echo "-------------------------"
   # Change this to PM2 or Forever task
-  exec node dist/server.js
+  npm run production
 fi
