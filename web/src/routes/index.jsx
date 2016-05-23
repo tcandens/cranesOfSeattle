@@ -3,7 +3,6 @@ import {Route, IndexRoute} from 'react-router';
 
 import MainLayout from 'layouts/Main';
 import Entry from 'components/Entry';
-import Report from 'containers/Report';
 
 import {
   resetReportState,
@@ -29,11 +28,21 @@ export default function CreateRoutes(store) {
   return (
     <Route path="/" component={MainLayout}>
       <IndexRoute component={Entry} />
-      <Route path="map" component={Report} />
+      <Route path="map"
+        getComponent={(next, cb) => {
+          require.ensure([], require => {
+            cb(null, require('containers/Report').default);
+          });
+        }}
+      />
       <Route path="report"
-        component={Report}
         onEnter={requireAuth}
         onLeave={resetReportOnExit}
+        getComponent={(next, cb) => {
+          require.ensure([], require => {
+            cb(null, require('containers/Report').default);
+          });
+        }}
       />
     </Route>
   );
