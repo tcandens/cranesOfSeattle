@@ -19,22 +19,23 @@ if (isDeveloping) {
       asssets: false,
       cachedAssets: false,
       cached: false,
-      colors: true
-    }
-  }).listen(port, function(error, result) {
+      colors: true,
+    },
+  }).listen(port, (error, result) => {
     if (error) {
-      return console.log(error)
+      return console.log(error);
     }
     console.info('== Developing with HMR ==>');
   });
 } else {
-  const distPath = path.join(__dirname, 'dist');
-  app.use('/dist', express.static(distPath));
-  app.get('*', (req, res) => {
+  // Match all routes except /assets*
+  app.get(/^((?!\/assets).)*$/, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
-  app.listen(9000, '0.0.0.0', function(err) {
-    if (err) {
+  const distPath = path.join(__dirname, 'dist/assets');
+  app.use('/assets', express.static(distPath));
+  app.listen(9000, '0.0.0.0', error => {
+    if (error) {
       console.log(err);
       return;
     }
