@@ -5,23 +5,23 @@ const createLoaders = (ROOT, isDeveloping) => {
   return [
     {
       test: /\.jsx?$/,
-      loaders: ['babel'],
+      loader: 'babel',
       include: path.resolve(ROOT, 'src'),
       exclude: /(node_modules)/,
+      query: {
+        cacheDirectory: true,
+      },
     },
     {
       test: /\.css$/,
       loader: (isDeveloping ?
         'style!css' :
-        ExtractTextPlugin.extract(['style', 'css'])
+        ExtractTextPlugin.extract('style', 'css')
       ),
     },
     {
       test: /\.styl$/,
-      loader: (isDeveloping ?
-        'style!css!stylus' :
-        ExtractTextPlugin.extract(['css', 'stylus'])
-      ),
+      loader: 'style!css!stylus',
       include: path.join(ROOT, 'src'),
     },
     {
@@ -30,18 +30,16 @@ const createLoaders = (ROOT, isDeveloping) => {
     },
     {
       test: /\.(jpe?g)$/,
-      loader: 'url?.[ext]&mimetype=image/jpeg',
-      include: path.join(ROOT, 'assets'),
+      loader: 'file?name=assets/[name].[ext]',
+    },
+    {
+      test: /\.svg$/,
+      loader: 'file?name=assets/[name].[ext]',
     },
     {
       test: /\.jade$/,
       loaders: ['jade'],
       include: path.join(ROOT, 'templates'),
-    },
-    {
-      test: /\.svg$/,
-      loaders: ['url?.[ext]&mimetype=image/svg'],
-      include: path.join(ROOT, 'assets'),
     },
   ];
 };

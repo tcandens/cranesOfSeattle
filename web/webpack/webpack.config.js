@@ -6,6 +6,8 @@ const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
 
+require('dotenv').config();
+
 const ROOT = path.resolve(process.cwd());
 const isDeveloping = process.env.NODE_ENV !== 'production';
 
@@ -28,13 +30,13 @@ const getPlugins = (isDeveloping) => {
     new HtmlWebpackPlugin({
       template: path.resolve(ROOT, 'templates', 'index.jade'),
       title: 'Cranes of Seattle',
-      filename: 'index.html'
-    })
+      filename: 'index.html',
+    }),
   ];
   const defaultGlobals = {
     GOOGLE_CLIENT_ID: JSON.stringify(process.env.GOOGLE_CLIENT_ID),
     GOOGLE_CLIENT_SECRET: JSON.stringify(process.env.GOOGLE_CLIENT_SECRET),
-    MAPBOX_TOKEN: JSON.stringify(process.env.MAPBOX_TOKEN)
+    MAPBOX_TOKEN: JSON.stringify(process.env.MAPBOX_TOKEN),
   };
   if (isDeveloping) {
     plugins.push(
@@ -50,7 +52,7 @@ const getPlugins = (isDeveloping) => {
         },
       })),
       new webpack.optimize.DedupePlugin(),
-      new ExtractTextPlugin('styles.css'),
+      new ExtractTextPlugin('assets/styles.css'),
       new webpack.optimize.UglifyJsPlugin({
         compress: {
           unused: true,
@@ -69,9 +71,9 @@ module.exports = {
   entry: getEntry(isDeveloping),
   output: {
     path: path.join(ROOT, 'dist'),
-    filename: '[name].js',
-    chunkFilename: '[id].chunk.js',
-    publicPath: isDeveloping ? '/' : 'dist/',
+    filename: 'assets/[name].js',
+    chunkFilename: 'assets/[id].chunk.js',
+    publicPath: isDeveloping ? '/' : '/',
   },
   plugins: getPlugins(isDeveloping),
   resolve: {
@@ -81,7 +83,7 @@ module.exports = {
     alias: merge(
       {
         'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
-        'mapbox-gl': (isDeveloping ?
+        'mapbox-gl/js': (isDeveloping ?
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
         ),
