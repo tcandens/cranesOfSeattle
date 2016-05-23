@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import Mapbox from 'mapbox-gl';
-import LoadingBar from 'components/LoadingSpinner';
+import Mapbox from 'mapbox-gl/js';
+import LoadingSpinner from 'components/LoadingSpinner';
 import isEqual from 'lodash/isEqual';
 const diff = (left, right) => !isEqual(left, right);
 
@@ -158,7 +158,7 @@ export default class Map extends Component {
         ref={(c) => this.mapContainer = c}
         className="mapbox-gl-container"
       >
-        {!loaded ? <LoadingBar /> : this.props.children}
+        {!loaded ? <LoadingSpinner /> : this.props.children}
       </div>
     );
   };
