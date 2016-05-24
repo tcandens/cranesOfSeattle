@@ -7,3 +7,4 @@ script:
   - docker -v
   - docker-compose -v
   - cd api; npm test
+  - cd ../web; npm test
