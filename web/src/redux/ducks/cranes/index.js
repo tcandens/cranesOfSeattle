@@ -2,9 +2,9 @@ import axios from 'axios';
 import geojson from 'lib/geojson';
 const assign = Object.assign;
 
-const REQUEST_CRANES = 'REQUEST_CRANES';
-const RECEIVE_CRANES = 'RECEIVE_CRANES';
-const ADD_CRANE = 'ADD_CRANE';
+export const REQUEST_CRANES = 'REQUEST_CRANES';
+export const RECEIVE_CRANES = 'RECEIVE_CRANES';
+export const ADD_CRANE = 'ADD_CRANE';
 
 export const initialState = {
   isFetching: false,

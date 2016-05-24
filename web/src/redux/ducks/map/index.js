@@ -1,18 +1,20 @@
 import {getUserPosition} from 'lib/geolocation';
 const assign = Object.assign;
 
-const RECORD_MAP_LOCATION = 'RECORD_MAP_LOCATION';
-const REQUEST_USER_LOCATION = 'REQUEST_USER_LOCATION';
-const RECEIVE_USER_LOCATION = 'RECEIVE_USER_LOCATION';
-const ERROR_USER_LOCATION = 'ERROR_USER_LOCATION';
+export const RECORD_MAP_LOCATION = 'RECORD_MAP_LOCATION';
+export const REQUEST_USER_LOCATION = 'REQUEST_USER_LOCATION';
+export const RECEIVE_USER_LOCATION = 'RECEIVE_USER_LOCATION';
+export const ERROR_USER_LOCATION = 'ERROR_USER_LOCATION';
 
-export default function reducer(state = {
+export const initialState = {
   location: {
     lng: null,
     lat: null,
     isFetching: false,
   },
-}, action) {
+};
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case RECORD_MAP_LOCATION:
       return assign({}, state, {
@@ -24,7 +26,6 @@ export default function reducer(state = {
     case REQUEST_USER_LOCATION:
       return assign({}, state, {
         location: {
-          ...state.location,
           isFetching: true,
         },
       });
