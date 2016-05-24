@@ -1,25 +1,34 @@
 import axios from 'axios';
-import querystring from 'querystring';
+import url from 'url';
 
-const baseUri = 'https://data.seattle.gov/resource/i5jq-ms7b.json';
 const queries = {
   'status': 'Permit Issued',
   '$where': 'value > 1000000'
 }
 
 export function buildEndpoint() {
-  let q;
-  try {
-    q = querystring.stringify(queries);
-  } catch(error) {
-    throw new Error(error);
+
+  const host = 'data.seattle.gov';
+  const pathname = 'resource/i5jq-ms7b.json';
+  const protocol = 'https';
+  const href = url.format({
+    protocol,
+    host,
+    pathname,
+    query: queries
+  })
+  return {
+    href,
+    hostname: `${protocol}://${host}`,
+    pathname,
+    queries
   }
-  const uri = `${baseUri}?${q}`;
-  return uri;
 }
 
+
 export function fetchAll() {
-  return axios.get(buildEndpoint())
+  const endpoint = buildEndpoint().href;
+  return axios.get(endpoint)
     .then(response => {
       return response.data;
     })
