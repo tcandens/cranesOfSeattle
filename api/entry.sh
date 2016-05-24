@@ -17,7 +17,6 @@ elif [ "$ENV" = 'TEST' ]; then
   export PORT=3333
   echo $'Running Tests\n-------------';
   npm run migrate:up;
-  npm install -G node-gyp;
   npm run tests;
 else
   echo "Running Production Server"
