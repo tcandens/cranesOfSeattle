@@ -6,10 +6,12 @@ const REQUEST_CRANES = 'REQUEST_CRANES';
 const RECEIVE_CRANES = 'RECEIVE_CRANES';
 const ADD_CRANE = 'ADD_CRANE';
 
-export default function reducer(state = {
+export const initialState = {
   isFetching: false,
   geojson: {},
-}, action) {
+};
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_CRANES:
       return assign({}, state, {

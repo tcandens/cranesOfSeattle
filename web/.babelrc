@@ -1,4 +1,16 @@
 {
   "presets": ["es2015", "react", "stage-0"],
-  "plugins": ["lodash", "react-hot-loader/babel", "syntax-decorators", "transform-decorators-legacy"]
+  "plugins": ["lodash", "react-hot-loader/babel", "syntax-decorators", "transform-decorators-legacy"],
+  "env": {
+    "test": {
+      "plugins": [
+        [ "babel-plugin-webpack-alias",
+          {
+            "config": "./webpack/webpack.config.js",
+            "findConfig": true
+          }
+        ]
+      ]
+    }
+  }
 }
