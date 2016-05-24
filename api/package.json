@@ -8,7 +8,8 @@
     "test": "./run-tests.sh",
     "tests": "ava",
     "production": "./node_modules/.bin/pm2 start ./src/server.js --name 'crane-api' --max-memory-restart 20M",
-    "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;"
+    "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;",
+    "migrate:up": "./node_modules/.bin/pg-migrate up"
   },
   "author": "",
   "license": "ISC",
