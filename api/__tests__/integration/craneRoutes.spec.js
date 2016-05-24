@@ -1,20 +1,16 @@
-/**
- * Dependencies
- */
-require('leaked-handles').set({
-  fullStack: true
-});
-import test from 'tape-dispenser'
-import supertest from 'co-supertest'
-import server from '../../src/server'
-import database from '../../src/connections/db'
-
-const request = supertest.agent(server);
+import test from 'ava';
+import request from 'supertest-as-promised';
+import nock from 'nock';
+import app from '../../src/app';
+import database from '../../src/connections/postgres';
+import jwt from 'jsonwebtoken';
+import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
 
 const db = database.init();
+const server = app.listen();
 
-async function clearTables () {
-  await db.instance.none('DELETE FROM cranes');
+function clearTables () {
+  db.instance.none('TRUNCATE cranes');
 }
 
 /**
@@ -34,111 +30,120 @@ const testCrane = {
   }
 }
 
-test('INSERTING A CRANE', function *(assert) {
+test.serial('INSERTING A CRANE', async t => {
+
   clearTables();
 
-  const response = yield request
+  const res = await request(server)
     .post('/cranes')
     .send(testCrane)
-    .expect(201)
-    .expect('Content-Type', /json/)
-    .end();
 
-  assert.ok(
-    response.body.id,
+  t.is(
+    res.status,
+    201,
+    'Should return status 201 for created resource.'
+  )
+  t.regex(
+    res.header['content-type'],
+    /json/
+  )
+  t.is(
+    (typeof res.body.id),
+    'number',
     'Should return the ID of new crane.'
   );
 
   // Stash returned ID to test later
-  testCrane.properties.id = response.body.id;
+  testCrane.properties.id = res.body.id;
 
 });
 
-test('FETCHING A CRANE BY ID', function *(assert) {
-  const response = yield request
+test.serial('FETCHING A CRANE BY ID', async t => {
+  const res = await request(server)
     .get('/cranes/' + testCrane.properties.id)
-    .expect(200)
-    .expect('Content-Type', /json/)
-    .end();
 
-  assert.deepEqual(
-    response.body,
+  t.deepEqual(
+    res.body,
     testCrane,
     'Should return a crane that matches test crane.'
   );
 
 });
 
-test('FETCH CRANES WITHIN RANGE', function *(assert) {
+test.serial('FETCH CRANES WITHIN RANGE', async t => {
   // Insert dummy crane outside of range
-  const response = yield request
+  const res = await request(server)
     .get('/cranes')
-    .query({lat: 47.68})
-    .query({lng: -122.38})
-    .end();
+    .query({
+      lat: 47.68,
+      lng: -122.38
+    })
 
-  const data = response.body;
-
-  assert.equal(
-    data.featureCollection.features.length,
+  t.is(
+    res.status,
+    200
+  )
+  t.is(
+    res.body.features.length,
     1,
     'Should return only the cranes within search radius.'
   );
 
-  assert.equal(
-    data.featureCollection.features[0].properties.id,
+  t.is(
+    res.body.features[0].properties.id,
     testCrane.properties.id,
     'ID of returned report should match our testCrane'
   );
 
 });
 
-test('FETCHING ALL CRANES', function *(assert) {
-  const response = yield request
+test.serial('FETCHING ALL CRANES', async t => {
+  const res = await request(server)
     .get('/cranes')
-    .expect(200)
-    .expect('Content-Type', /json/)
-    .end()
 
-    const data = response.body;
-
-    assert.equal(
-      data.type,
+    t.is(
+      res.status,
+      200
+    )
+    t.regex(
+      res.header['content-type'],
+      /json/
+    )
+    t.is(
+      res.body.type,
       'FeatureCollection',
       'Should return geoJSON featureCollections'
     );
-
-    assert.ok(
-      (data.features instanceof Array),
+    t.true(
+      (res.body.features instanceof Array),
       'Should return data as an array.'
     );
-
-    assert.equal(
-      data.properties.name,
+    t.is(
+      res.body.properties.name,
       'cranes',
       'Should return property name with value "cranes"'
     );
 
 });
 
-test('UPDATING A CRANE', function *(assert) {
+test.serial('UPDATING A CRANE', async t => {
   const updatedCrane = {
     key: 'permit',
     value: 2323,
     id: testCrane.properties.id
   };
-
-  yield request
+  const postedNearby = await request(server)
     .put('/cranes/' + testCrane.properties.id)
     .send(updatedCrane)
-    .expect(204)
-    .end();
 
-  const doubleCheck = yield request
+  const doubleCheck = await request(server)
     .get('/cranes/' + testCrane.properties.id)
-    .end();
 
-  assert.equal(
+  t.is(
+    postedNearby.status,
+    204
+  )
+  t.is(
     doubleCheck.body.properties.permit,
     updatedCrane.value,
     'Should now return with updated row.'
@@ -146,12 +151,14 @@ test('UPDATING A CRANE', function *(assert) {
 
 });
 
-test('DESTROYING A CRANE', function *(assert) {
-  yield request
+test.serial('DESTROYING A CRANE', async t => {
+  const res = await request(server)
     .del('/cranes/' + testCrane.properties.id)
-    .expect(204)
-    .end();
+
+  t.is(
+    res.status,
+    204,
+    'Should return code 204 for destroyed resource.'
+  )
 
 });
-
-server.close();

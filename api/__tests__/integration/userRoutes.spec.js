@@ -1,17 +1,13 @@
-/**
- * Dependencies
- */
-require('leaked-handles').set({
-  fullStack: true
-});
-import test from 'tape-dispenser'
-import supertest from 'co-supertest'
-import server from '../../src/server'
-import database from '../../src/connections/db'
-
-const request = supertest.agent(server);
+import test from 'ava';
+import request from 'supertest-as-promised';
+import nock from 'nock';
+import app from '../../src/app';
+import database from '../../src/connections/postgres';
+import jwt from 'jsonwebtoken';
+import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
 
 const db = database.init();
+const server = app.listen();
 
 function clearTables () {
   db.instance.query('TRUNCATE users');
@@ -27,42 +23,51 @@ const testUser = {
   image_url: 'https://test.user.com/image_url'
 }
 
-test('INSERTING A USER', function *(assert) {
+test.serial('INSERTING A USER', async t => {
+
   clearTables();
 
-  const response = yield request
+  const res = await request(server)
     .post('/users')
     .send(testUser)
-    .expect(201)
-    .expect('Content-Type', /json/)
-    .end();
 
-  assert.ok(
-    response.body.id,
+  t.is(
+    res.status,
+    201,
+    'Should return 201 for created resource.'
+  )
+  t.regex(
+    res.headers['content-type'],
+    /json/,
+    'Should return JSON.'
+  )
+  t.is(
+    (typeof res.body.id),
+    'number',
     'Should return the ID of new user.'
   );
 
   // Stash returned ID to test later
-  testUser.id = response.body.id;
+  testUser.id = res.body.id;
 
 });
 
-test('FETCHING A USER', function *(assert) {
-  const response = yield request
+test.serial('FETCHING A USER', async t => {
+  const res = await request(server)
     .get('/users/' + testUser.id)
-    .expect('Content-Type', /json/)
-    .expect(200)
-    .end();
 
-  assert.deepEqual(
+  t.regex(
+    res.headers['content-type'],
+    /json/
+  )
+  t.deepEqual(
     testUser,
-    response.body,
+    res.body,
     'Should return a user row that matches test user.'
   );
 
 });
 
-/*
 test.skip('UPDATING A USER', function *(assert) {
   const updatedUser = {};
 
@@ -78,10 +83,8 @@ test.skip('UPDATING A USER', function *(assert) {
   );
 
 });
-*/
 
-/*
-test('DESTROYING A USER', function *(assert) {
+test.skip('DESTROYING A USER', function *(assert) {
   const response = yield request
     .del('/user/' + testUser.id)
     .expect(200)
@@ -94,6 +97,3 @@ test('DESTROYING A USER', function *(assert) {
   );
 
 });
-*/
-
-server.close();
