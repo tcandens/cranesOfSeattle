@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-const TOKEN_SECRET = process.env.TOKEN_SECRET || 'Token Secret';
+export const TOKEN_SECRET = process.env.TOKEN_SECRET || 'Token Secret';
 
 export default function (options = {}) {
   return async (ctx, next) => {
@@ -10,7 +10,6 @@ export default function (options = {}) {
       }
     }
     const token = ctx.headers['authorization'].split(' ')[1];
-    console.log(token)
     let verified = false;
     try {
       verified = jwt.verify(token, TOKEN_SECRET);
