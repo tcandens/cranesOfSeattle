@@ -17,4 +17,4 @@ testapi:
     - ./:/var/www/api
   links:
     - testdb:db
-  entrypoint: ./wait-for-it.sh db:5432 --timeout=15 -- ./entry.sh
+  entrypoint: ./wait-for-it.sh db:5432 --timeout=45 -- ./entry.sh

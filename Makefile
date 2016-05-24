@@ -11,6 +11,10 @@ dev:
 	@ docker-compose build && \
 	docker-compose up
 
+test:
+	@ cd ${API_DIR} && npm test && cd .. && \
+	cd ${WEB_DIR} && npm test
+
 # Start containers for productions environment
 prod:
 	@ docker-compose -f docker-compose-production.yml build && \
@@ -20,4 +24,4 @@ prod:
 https:
 	@./ssl/get_certs.sh
 
-.PHONY: install dev prod https
+.PHONY: install dev test prod https

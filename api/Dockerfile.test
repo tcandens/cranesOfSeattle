@@ -10,6 +10,7 @@ WORKDIR /var/www/api/
 COPY . ./
 
 RUN npm install > /dev/null
+RUN npm install -G node-gyp
 
 EXPOSE 3000
 
