@@ -6,12 +6,14 @@ testdb:
 testapi:
   build: .
   dockerfile: Dockerfile.test
-  env_file: .env
   environment:
     - ENV=TEST
     - PGDATABASE=test
     - PGUSER=postgres
     - PGPASSWORD=mysecretpassword
+    - GOOGLE_OAUTH_ID=mygoogleid
+    - GOOGLE_OAUTH_SECRET=googlesupersecret
+    - TOKEN_SECRET=supersecret
   volumes:
     - ./:/var/www/api
   links:
