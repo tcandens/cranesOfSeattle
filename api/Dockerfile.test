@@ -2,6 +2,7 @@ FROM node:5.3
 
 # Install netcat for port listening between containers
 RUN apt-get update && apt-get install -y \
+  libavahi-compat-libdnssd-dev \
   netcat
 
 WORKDIR /var/www/api/
