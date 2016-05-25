@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test ava",
+    "test": "NODE_ENV=test ./node_modules/.bin/ava",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/webpack.config.js",
     "clean": "./node_modules/.bin/rimraf dist/"
   },

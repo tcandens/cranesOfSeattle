@@ -14,5 +14,5 @@ install: true
 script:
   - docker -v
   - docker-compose -v
-  - cd web; npm test
-  - cd ../api; npm test
+  - cd api; npm test
+  - cd ../web; npm test
