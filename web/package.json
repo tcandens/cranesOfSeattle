@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test ava",
+    "test": "NODE_ENV=test ./node_modules/.bin/ava",
+    "cover": "./node_modules/.bin/nyc npm test",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/webpack.config.js",
     "clean": "./node_modules/.bin/rimraf dist/"
   },
@@ -29,11 +30,13 @@
     "babel-preset-stage-0": "^6.5.0",
     "css-loader": "^0.23.1",
     "dotenv": "^2.0.0",
+    "enzyme": "^2.3.0",
     "eslint": "^2.10.2",
     "eslint-config-airbnb-base": "^3.0.1",
     "eslint-config-eslint": "^3.0.0",
     "eslint-plugin-import": "^1.8.0",
     "eslint-plugin-react": "^5.1.1",
+    "expect": "^1.20.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.15.0",
@@ -42,6 +45,8 @@
     "json-loader": "^0.5.4",
     "nock": "^8.0.0",
     "poststylus": "^0.2.3",
+    "react-addons-test-utils": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-hot-loader": "^1.3.0",
     "redux-devtools": "^3.0.2",
     "style-loader": "^0.13.0",
@@ -84,5 +89,10 @@
       "babel-register"
     ],
     "babel": "inherit"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov", "text", "html"
+    ]
   }
 }
