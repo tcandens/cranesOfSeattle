@@ -92,7 +92,10 @@
   },
   "nyc": {
     "reporter": [
-      "lcov", "text", "html"
+      "lcov", "text"
+    ],
+    "include": [
+      "./src/**/*.js"
     ]
   }
 }
