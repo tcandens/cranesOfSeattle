@@ -6,10 +6,9 @@ const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
 
-require('dotenv').config();
-
 const ROOT = path.resolve(process.cwd());
 const isDeveloping = process.env.NODE_ENV !== 'production';
+const isTesting = process.env.NODE_ENV === 'test';
 
 const getEntry = (isDeveloping) => {
   const entry = [];
@@ -83,7 +82,7 @@ module.exports = {
     alias: merge(
       {
         'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
-        'mapbox-gl/js': (isDeveloping ?
+        'mapbox-gl/js': ((isTesting || isDeveloping) ?
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
           path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
         ),

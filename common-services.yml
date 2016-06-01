@@ -1,0 +1,35 @@
+version: '2'
+services:
+  db:
+    image: mdillon/postgis:latest
+    ports:
+      - "5432:5432"
+  api:
+    build:
+      context: ./api
+    expose:
+      - "3000"
+    env_file: ./api/.env
+    environment:
+      - ENV=DEV
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=mysecretpassword
+      - HOSTURL=http://localhost:8080/
+    volumes:
+      - ./api:/var/www/api
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=35 -- ./entry.sh
+  web:
+    build:
+      context: ./web
+      dockerfile: ./docker/development
+    env_file: ./web/.env
+    expose:
+      - "9000"
+    volumes:
+      - ./web:/usr/src
+  proxy:
+    image: nginx:latest
+    ports:
+      - "8081:443"
+      - "8080:80"

@@ -1,0 +1,14 @@
+machine:
+  services:
+    - docker
+  dependencies:
+    pre:
+      - sudo pip install docker-compose
+    post:
+      - docker-compose -v
+  test:
+    pre:
+      - docker-compose -f docker-compose.test.yml build
+    override:
+      - docker-compose -f docker-compose.test.yml run test-api
+      # - docker-compose -f docker-compose.test.yml run test-web

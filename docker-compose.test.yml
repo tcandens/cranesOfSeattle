@@ -1,0 +1,36 @@
+version: '2'
+services:
+  test-db:
+    extends:
+      file: ./common-services.yml
+      service: db
+  test-api:
+    extends:
+      file: ./common-services.yml
+      service: api
+    build:
+      dockerfile: Dockerfile.prod
+    links:
+      - "test-db:db"
+    environment:
+      - ENV=TEST
+      - PGDATABASE=postgres
+      - PGUSER=postgres
+      - PGPASSWORD=mysecretpassword
+  test-web:
+    extends:
+      file: ./common-services.yml
+      service: web
+    build:
+      dockerfile: docker/testing
+    links:
+      - "test-api:api"
+  test-proxy:
+    extends:
+      file: ./common-services.yml
+      service: proxy
+    links:
+      - "test-web:web"
+      - "test-api:api"
+    volumes:
+      - ./proxy/nginx.dev.conf:/etc/nginx/nginx.conf:ro
