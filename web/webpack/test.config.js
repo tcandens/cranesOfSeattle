@@ -1,18 +1,32 @@
-'use strict';
-
 module.exports = {
-  output: {
-    libraryTarget: 'commonjs2',
-  },
-  modules: {
+  devtool: 'inline-source-map',
+  module: {
     loaders: [
       {
-        test: /\.css$/,
+        test: /\.js/,
         loaders: [
-          'style',
-          'css',
+          'babel',
         ],
+        exclude: /(node_modules)/,
+      },
+      {
+        test: /.json$/,
+        loaders: ['json'],
       },
     ],
+  },
+  resolve: {
+    extensions: [
+      '', '.js', '.jsx',
+    ],
+  },
+  node: {
+    fs: 'empty',
+  },
+  externals: {
+    'cheerio': 'window',
+    'react/addons': true,
+    'react/lib/ExecutionEnvironment': true,
+    'react/lib/ReactContext': true,
   },
 };
