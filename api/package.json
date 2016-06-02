@@ -5,8 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "start": "./node_modules/.bin/nodemon --exec ./node_modules/.bin/babel-node --debug --plugins syntax-async-functions --presets es2015,stage-0 -- src/server.js",
-    "test": "./run-tests.sh",
-    "tests": "ava",
+    "test": "./node_modules/.bin/ava",
     "production": "./node_modules/.bin/pm2 start ./src/server.js --name 'crane-api' --max-memory-restart 20M",
     "lint": "node ./node_modules/eslint/bin/eslint src/**; exit 0;"
   },
