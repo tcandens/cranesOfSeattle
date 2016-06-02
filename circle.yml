@@ -1,12 +1,12 @@
 machine:
   services:
     - docker
-  dependencies:
-    pre:
-      - sudo pip install docker-compose
-    post:
-      - docker -v
-      - docker-compose -v
+dependencies:
+  pre:
+    - sudo pip install docker-compose
+  post:
+    - docker -v
+    - docker-compose -v
 test:
   pre:
     - docker-compose -f docker-compose.test.yml build
