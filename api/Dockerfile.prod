@@ -1,4 +1,4 @@
-FROM node:5.3
+FROM node:4.4.5
 
 WORKDIR /var/www/api/
 COPY ./package.json package.json
