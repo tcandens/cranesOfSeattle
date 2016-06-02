@@ -15,6 +15,9 @@ services:
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
+      - GOOGLE_OAUTH_ID=1234
+      - GOOGLE_OAUTH_SECRET=testingSecret
+      - TOKEN_SECRET=testingSecret
     volumes:
       - ./api:/var/www/api
     entrypoint: ./wait-for-it.sh db:5432 --timeout=35 -- ./entry.sh
