@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/karma start --single-run --no-autowatch karma.config.js",
+    "test:watch": "NODE_ENV=test ./node_modules/.bin/karma start karma.config.js",
     "cover": "./node_modules/.bin/nyc npm test",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/webpack.config.js",
     "clean": "./node_modules/.bin/rimraf dist/"
@@ -51,6 +52,7 @@
     "karma-webpack": "^1.7.0",
     "mocha": "^2.5.3",
     "nock": "^8.0.0",
+    "null-loader": "^0.1.1",
     "poststylus": "^0.2.3",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",

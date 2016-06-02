@@ -13,12 +13,17 @@ module.exports = {
         test: /.json$/,
         loaders: ['json'],
       },
+      {
+        test: /.(css|styl)$/,
+        loaders: ['null'],
+      },
     ],
   },
   resolve: {
     extensions: [
       '', '.js', '.jsx',
     ],
+    alias: require('./webpack.config.js').resolve.alias,
   },
   node: {
     fs: 'empty',
