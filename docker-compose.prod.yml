@@ -1,18 +1,17 @@
 version: '2'
 services:
   db:
-    image: mdillon/postgis:latest
-    ports:
-      - "5432:5432"
+    extends:
+      file: ./common-services.yml
+      service: db
   api:
+    extends:
+      file: ./common-services.yml
+      service: api
     build:
-      context: ./api
       dockerfile: Dockerfile.prod
-    expose:
-      - "3000"
-    env_file: ./api/.env
     environment:
-      - ENV=DEV
+      - ENV=PROD
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
@@ -21,19 +20,17 @@ services:
       - db
     depends_on:
       - "db"
-    entrypoint: ./wait-for-it.sh db:5432 --timeout=5 -- ./entry.sh
   web:
-    build:
-      context: ./web
-      dockerfile: ./docker/production
-    expose:
-      - "9000"
-    env_file: ./web/.env
+    extends:
+      file: ./common-services.yml
+      service: web
     environment:
       - ENV=production
       - NODE_ENV=production
   proxy:
-    image: nginx:latest
+    extends:
+      file: ./common-services.yml
+      service: proxy
     volumes:
       - /etc/letsencrypt/archive/www.seattlecranes.site:/etc/letsencrypt
       - ./proxy:/etc/nginx

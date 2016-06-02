@@ -1,21 +1,13 @@
 version: '2'
 services:
   db:
-    image: mdillon/postgis:latest
-    ports:
-      - "5432:5432"
+    extends:
+      file: ./common-services.yml
+      service: db
   api:
-    build:
-      context: ./api
-    expose:
-      - "3000"
-    env_file: ./api/.env
-    environment:
-      - ENV=DEV
-      - PGDATABASE=postgres
-      - PGUSER=postgres
-      - PGPASSWORD=mysecretpassword
-      - HOSTURL=http://localhost:8080/
+    extends:
+      file: ./common-services.yml
+      service: api
     volumes:
       - ./api:/var/www/api
       - ./api/node_modules:/var/www/api/node_modules/
@@ -23,25 +15,20 @@ services:
       - db
     depends_on:
       - db
-    entrypoint: ./wait-for-it.sh db:5432 --timeout=15 -- ./entry.sh
   webpack:
-    build:
-      context: ./web
-      dockerfile: ./docker/development
-    env_file: ./web/.env
-    expose:
-      - "9000"
+    extends:
+      file: ./common-services.yml
+      service: web
     volumes:
       - ./web:/usr/src
       - ./web/node_modules:/usr/src/node_modules/
   proxy:
-    image: nginx:latest
+    extends:
+      file: ./common-services.yml
+      service: proxy
     volumes:
       - ./proxy/nginx.dev.conf:/etc/nginx/nginx.conf:ro
       - /etc/ssl/certs/localhost:/etc/ssl/certs/localhost
     links:
       - api:api
       - webpack:web
-    ports:
-      - "8081:443"
-      - "8080:80"
