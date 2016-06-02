@@ -1,6 +1,7 @@
 machine:
-  services:
-    - docker
+  pre:
+    - sudo curl -sSL https://get.docker.com/ | sh
+    - sudo service docker start
 dependencies:
   pre:
     - sudo pip install docker-compose
