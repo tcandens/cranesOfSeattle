@@ -12,6 +12,7 @@ services:
       dockerfile: Dockerfile.prod
     links:
       - "test-db:db"
+    env_file: ./.env.placeholder
     environment:
       - ENV=TEST
       - PGDATABASE=postgres
@@ -21,6 +22,7 @@ services:
     extends:
       file: ./common-services.yml
       service: web
+    env_file: ./.env.placeholder
     build:
       dockerfile: docker/testing
     links:
