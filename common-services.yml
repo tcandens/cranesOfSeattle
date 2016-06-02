@@ -2,8 +2,8 @@ version: '2'
 services:
   db:
     image: mdillon/postgis:latest
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432"
   api:
     build:
       context: ./api
