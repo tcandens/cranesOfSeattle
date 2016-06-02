@@ -2,29 +2,30 @@ version: '2'
 services:
   test-db:
     extends:
-      file: ./common-services.yml
+      file: common-services.yml
       service: db
   test-api:
-    extends:
-      file: ./common-services.yml
-      service: api
     build:
+      context: ./api
       dockerfile: Dockerfile.prod
     links:
       - "test-db:db"
-    env_file: ./.env.placeholder
     environment:
       - ENV=TEST
       - PGDATABASE=postgres
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
+    volumes:
+      - ./api:/var/www/api
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=35 -- ./entry.sh
   test-web:
-    extends:
-      file: ./common-services.yml
-      service: web
-    env_file: ./.env.placeholder
     build:
+      context: ./web
       dockerfile: docker/testing
+    volumes:
+      - ./web:/usr/src
+    expose:
+      - "9000"
     links:
       - "test-api:api"
   test-proxy:
