@@ -9,7 +9,7 @@ const createLoaders = (ROOT, isDeveloping) => {
       include: path.resolve(ROOT, 'src'),
       exclude: /(node_modules)/,
       query: {
-        cacheDirectory: true,
+        cacheDirectory: false,
       },
     },
     {

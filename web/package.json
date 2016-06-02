@@ -53,6 +53,7 @@
     "mocha": "^2.5.3",
     "nock": "^8.0.0",
     "null-loader": "^0.1.1",
+    "phantomjs-prebuilt": "^2.1.7",
     "poststylus": "^0.2.3",
     "react-addons-test-utils": "^15.1.0",
     "react-dom": "^15.1.0",
@@ -85,14 +86,5 @@
     "redux-logger": "^2.4.0",
     "redux-persist": "^2.0.1",
     "redux-thunk": "^1.0.3"
-  },
-  "nyc": {
-    "reporter": [
-      "lcov",
-      "text"
-    ],
-    "include": [
-      "./src/**/*.js"
-    ]
   }
 }

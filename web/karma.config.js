@@ -1,7 +1,7 @@
 module.exports = config => {
   config.set({
     frameworks: ['mocha'],
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     files: [
       'test/index.js',
     ],
@@ -11,7 +11,7 @@ module.exports = config => {
     reporters: ['spec'],
     plugins: [
       require('karma-webpack'),
-      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
       'karma-mocha',
       'karma-spec-reporter',
       'karma-sourcemap-loader',
