@@ -23,10 +23,6 @@ services:
     build:
       context: ./web
       dockerfile: docker/testing
-    volumes:
-      - ./web:/usr/src
-    expose:
-      - "9000"
     links:
       - "test-api:api"
   test-proxy:
