@@ -11,7 +11,6 @@ if [ "$ENV" = 'DEV' ]; then
 elif [ "$ENV" = 'TEST' ]; then
   export PORT=3333
   echo $'Running Tests\n-------------';
-  ls -a ./node_modules/.bin/
   ./node_modules/.bin/pg-migrate up;
   npm test;
 else

@@ -42,6 +42,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "eslint": "^1.10.3",
     "eslint-config-google": "^0.3.0",
+    "nock": "^8.0.0",
     "node-inspector": "^0.12.8",
     "node-pg-migrate": "0.0.9",
     "nodemon": "^1.8.1",
