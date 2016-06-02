@@ -11,6 +11,9 @@ dev:
 	@ docker-compose build && \
 	docker-compose up
 
+browser-sync:
+	@ ${WEB_DIR}/node_modules/.bin/browser-sync start --proxy 'localhost:8080'
+
 # Start containers with testing environment
 test:
 	@ docker-compose -f docker-compose.test.yml build && \
@@ -26,4 +29,4 @@ prod:
 https:
 	@./ssl/get_certs.sh
 
-.PHONY: install dev test prod https
+.PHONY: install dev browser-sync test prod https
