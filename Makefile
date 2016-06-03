@@ -12,7 +12,9 @@ dev:
 	docker-compose up
 
 browser-sync:
-	@ ${WEB_DIR}/node_modules/.bin/browser-sync start --proxy 'localhost:8080'
+	@ ${WEB_DIR}/node_modules/.bin/browser-sync start \
+		--proxy 'localhost:8080' \
+		--files 'web/src'
 
 # Start containers with testing environment
 test:
