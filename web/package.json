@@ -8,8 +8,9 @@
     "test": "NODE_ENV=test ./node_modules/.bin/karma start --single-run --no-autowatch karma.config.js",
     "test:watch": "NODE_ENV=test ./node_modules/.bin/karma start karma.config.js",
     "cover": "./node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.json -t json && node generate-coverage-report.js && rm test.context.js.map",
+    "test-cover": "npm test && npm run cover && sensible-browser coverage/index.html",
     "build": "NODE_ENV=production ./node_modules/.bin/webpack --config ./webpack/webpack.config.js",
-    "clean": "./node_modules/.bin/rimraf dist/"
+    "clean": "./node_modules/.bin/rimraf dist/ coverage test.context.js.map"
   },
   "author": "",
   "license": "ISC",
@@ -64,6 +65,7 @@
     "react-hot-loader": "^1.3.0",
     "redux-devtools": "^3.0.2",
     "remap-istanbul": "^0.6.4",
+    "setimmediate": "^1.0.4",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
     "svg-url-loader": "^1.0.3",

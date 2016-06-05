@@ -12,7 +12,6 @@ export default class Map extends Component {
   state = {
     loaded: false,
     sources: {},
-    layers: {},
   }
 
   queue = [];
@@ -124,6 +123,13 @@ export default class Map extends Component {
     const {map} = this;
     const {loaded} = this.state;
     if (loaded) {
+      this.setState({
+        ...this.state,
+        layers: [
+          ...this.state.layers,
+          layer,
+        ],
+      });
       map.addLayer(layer);
     } else {
       this.queue.push(() => this.addLayer(layer));
@@ -163,6 +169,12 @@ export default class Map extends Component {
     );
   };
 }
+
+Map.defaultProps = {
+  sources: {},
+  layers: [],
+  actions: {},
+};
 
 Map.propTypes = {
   accessToken: PropTypes.string.isRequired,

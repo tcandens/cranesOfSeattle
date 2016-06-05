@@ -28,7 +28,7 @@ module.exports = config => {
       'karma-sourcemap-writer',
       'karma-coverage',
     ],
-    webpack: require('./webpack/test.config.js'),
+    webpack: require('./webpack/test.config.js'), // eslint-disable-line
     webpackMiddleware: {
       noInfo: true,
       quiet: true,
