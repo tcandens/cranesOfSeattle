@@ -1,24 +1,37 @@
 module.exports = config => {
   config.set({
     frameworks: ['mocha'],
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
     files: [
-      'test/index.js',
+      'test.context.js',
     ],
     preprocessors: {
-      'test/**/*': ['webpack', 'sourcemap'],
+      'test.context.js': [
+        'webpack',
+        'sourcemap',
+        'sourcemap-writer',
+        'coverage',
+      ],
     },
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
+    coverageReporter: {
+      type: 'json',
+      file: 'coverage-final.json',
+      subdir: '.',
+    },
     plugins: [
-      require('karma-webpack'),
-      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
+      'karma-webpack',
       'karma-mocha',
       'karma-spec-reporter',
       'karma-sourcemap-loader',
+      'karma-sourcemap-writer',
+      'karma-coverage',
     ],
     webpack: require('./webpack/test.config.js'),
     webpackMiddleware: {
       noInfo: true,
+      quiet: true,
     },
   });
 };

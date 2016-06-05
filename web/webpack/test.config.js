@@ -3,11 +3,11 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js/,
+        test: /\.jsx?$/,
         loaders: [
           'babel',
         ],
-        exclude: /(node_modules)/,
+        exclude: /node_modules/,
       },
       {
         test: /.json$/,
@@ -20,6 +20,9 @@ module.exports = {
     ],
   },
   resolve: {
+    modulesDirectories: [
+      'node_modules',
+    ],
     extensions: [
       '', '.js', '.jsx',
     ],

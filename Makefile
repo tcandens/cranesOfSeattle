@@ -17,9 +17,10 @@ browser-sync:
 		--files 'web/src'
 
 # Start containers with testing environment
+test-build:
+	@ docker-compose -f docker-compose.test.yml build
 test:
-	@ docker-compose -f docker-compose.test.yml build && \
-	docker-compose -f docker-compose.test.yml run test-api && \
+	@ docker-compose -f docker-compose.test.yml run test-api && \
 	docker-compose -f docker-compose.test.yml run test-web
 
 # Start containers for productions environment
@@ -31,4 +32,4 @@ prod:
 https:
 	@./ssl/get_certs.sh
 
-.PHONY: install dev browser-sync test prod https
+.PHONY: install dev browser-sync test-build test prod https
