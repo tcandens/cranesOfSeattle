@@ -2,7 +2,7 @@ FROM node:5.3
 
 WORKDIR /var/www/api/
 COPY ./package.json package.json
-RUN npm install --production
+RUN npm install
 COPY ./migrations migrations/
 COPY ./src src/
 COPY ./.babelrc .babelrc
