@@ -7,7 +7,7 @@ services:
   test-api:
     build:
       context: ./api
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile.test
     links:
       - "test-db:db"
     environment:

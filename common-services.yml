@@ -16,8 +16,6 @@ services:
       - PGUSER=postgres
       - PGPASSWORD=mysecretpassword
       - HOSTURL=http://localhost:8080/
-    volumes:
-      - ./api:/var/www/api
     entrypoint: ./wait-for-it.sh db:5432 --timeout=35 -- ./entry.sh
   web:
     build:
@@ -26,8 +24,6 @@ services:
     env_file: ./web/.env
     expose:
       - "9000"
-    volumes:
-      - ./web:/usr/src
   proxy:
     image: nginx:latest
     ports:
