@@ -1,12 +1,23 @@
 form
-  font-size 1.8rem
+  font-size 1.2rem
 label
-  display block
+  display inherit
   padding 1rem 2rem
 input[type='number']
   color $salmon
   font-weight bold
-  font-size 1.8rem
+  max-width 3rem
+  font-size 1.4rem
   border none
   background transparent
   margin 0 1.5rem
+
+.form-group--row
+  display flex
+  flex-direction row
+  label
+    flex-direction row
+    justify-content space-around
+    align-items center
+    input
+      margin-right 0
