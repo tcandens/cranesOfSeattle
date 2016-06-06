@@ -24,6 +24,8 @@ services:
     extends:
       file: ./common-services.yml
       service: web
+    build:
+      dockerfile: docker/production
     environment:
       - ENV=production
       - NODE_ENV=production

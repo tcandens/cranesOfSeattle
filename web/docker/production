@@ -2,8 +2,14 @@ FROM node:5.3
 
 WORKDIR /usr/src/
 COPY ./package.json package.json
+COPY ./src src/
+COPY ./templates templates/
+COPY ./test test/
+COPY ./webpack webpack/
+COPY ./.babelrc .babelrc
+COPY ./karma.config.js karma.config.js
+COPY ./server.js server.js
 RUN npm install
-COPY . /usr/src/
 
 RUN npm run build
 
