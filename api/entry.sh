@@ -16,5 +16,5 @@ elif [ "$ENV" = 'TEST' ]; then
 else
   echo $'Running Production Server\n-------------------------'
   ./node_modules/.bin/pg-migrate up;
-  npm start;
+  npm run production;
 fi

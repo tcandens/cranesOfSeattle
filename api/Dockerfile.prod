@@ -8,6 +8,7 @@ COPY ./src src/
 COPY ./.babelrc .babelrc
 COPY ./entry.sh entry.sh
 COPY ./wait-for-it.sh wait-for-it.sh
+RUN npm run build
 
 EXPOSE 3000
 
