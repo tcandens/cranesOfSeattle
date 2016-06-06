@@ -26,6 +26,7 @@ export default function reducer(state = initialState, action) {
     case REQUEST_USER_LOCATION:
       return assign({}, state, {
         location: {
+          ...state.location,
           isFetching: true,
         },
       });

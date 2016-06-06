@@ -29,12 +29,19 @@ describe('Map reducer', () => {
     });
   });
 
-  it('Should return loading/fetching state', () => {
-    expect(reducer({}, {
+  it('Should return loading/fetching state without clobbering old location', () => {
+    expect(reducer({
+      location: {
+        lat: 42,
+        lng: 42,
+      },
+    }, {
       type: REQUEST_USER_LOCATION,
     })).toEqual({
       location: {
         isFetching: true,
+        lat: 42,
+        lng: 42,
       },
     });
   });
