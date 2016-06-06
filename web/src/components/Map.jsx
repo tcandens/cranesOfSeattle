@@ -12,15 +12,17 @@ export default class Map extends Component {
   state = {
     loaded: false,
     sources: {},
+    layers: [],
   }
 
   queue = [];
 
-  shouldComponentUpdate = (nextProps) => {
+  shouldComponentUpdate = (nextProps, nextState) => {
     return (
       nextProps.center !== this.props.center ||
       nextProps.sources !== this.props.sources ||
-      nextProps.layers !== this.props.layers
+      nextProps.layers !== this.props.layers ||
+      nextState.loaded !== this.state.loaded
     );
   }
 
@@ -57,7 +59,7 @@ export default class Map extends Component {
       this.addLayer(layer);
     });
 
-    map.on('style.load', () => {
+    map.on('load', () => {
       this.setState({
         ...this.state,
         loaded: true,
@@ -123,13 +125,6 @@ export default class Map extends Component {
     const {map} = this;
     const {loaded} = this.state;
     if (loaded) {
-      this.setState({
-        ...this.state,
-        layers: [
-          ...this.state.layers,
-          layer,
-        ],
-      });
       map.addLayer(layer);
     } else {
       this.queue.push(() => this.addLayer(layer));
