@@ -32,3 +32,6 @@ services:
     links:
       - api:api
       - webpack:web
+    ports:
+      - "8081:443"
+      - "8080:80"

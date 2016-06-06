@@ -34,3 +34,5 @@ services:
       - "test-api:api"
     volumes:
       - ./proxy/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"

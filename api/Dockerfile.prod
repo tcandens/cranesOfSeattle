@@ -3,7 +3,6 @@ FROM node:5.3
 WORKDIR /var/www/api/
 COPY ./package.json package.json
 RUN npm install --production
-COPY ./__tests__ __tests__/
 COPY ./migrations migrations/
 COPY ./src src/
 COPY ./.babelrc .babelrc

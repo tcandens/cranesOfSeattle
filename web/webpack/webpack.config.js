@@ -6,6 +6,8 @@ const merge = require('lodash/merge');
 const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
 
+require('dotenv').config();
+
 const ROOT = path.resolve(process.cwd());
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const isTesting = process.env.NODE_ENV === 'test';

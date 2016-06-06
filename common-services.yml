@@ -26,6 +26,3 @@ services:
       - "9000"
   proxy:
     image: nginx:latest
-    ports:
-      - "8081:443"
-      - "8080:80"
