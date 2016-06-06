@@ -13,6 +13,7 @@ dev:
 
 browser-sync:
 	@ ${WEB_DIR}/node_modules/.bin/browser-sync start \
+		--no-open \
 		--proxy 'localhost:8080' \
 		--files 'web/src'
 
