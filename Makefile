@@ -18,11 +18,23 @@ browser-sync:
 		--files 'web/src'
 
 # Start containers with testing environment
-test-build:
-	@ docker-compose -f docker-compose.test.yml build
-test:
-	@ docker-compose -f docker-compose.test.yml run test-api && \
-	docker-compose -f docker-compose.test.yml run test-web
+ci-build:
+	@ docker-compose -f docker-compose.test-ci.yml build
+ci:
+	@ docker-compose -f docker-compose.test-ci.yml run test-api && \
+	docker-compose -f docker-compose.test-ci.yml run test-web
+
+test-api:
+	@ docker-compose -f docker-compose.test.yml run --rm test-api
+
+test-api-watch:
+	@ docker-compose -f docker-compose.test.yml run --rm -e WATCH=TRUE test-api
+
+test-web:
+	@ docker-compose -f docker-compose.test.yml run --rm test-web
+
+test-web-watch:
+	@ docker-compose -f docker-compose.test.yml run --rm test-web npm run test:watch
 
 # Start containers for productions environment
 prod:
@@ -33,4 +45,5 @@ prod:
 https:
 	@./ssl/get_certs.sh
 
-.PHONY: install dev browser-sync test-build test prod https
+.PHONY: install dev browser-sync ci-build ci test-api test-api-watch \
+	test-web test-web-watch prod https

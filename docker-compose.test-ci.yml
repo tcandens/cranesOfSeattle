@@ -7,11 +7,9 @@ services:
   test-api:
     build:
       context: ./api
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.test
     links:
       - "test-db:db"
-    volumes:
-      - ./api:/var/www/api
     environment:
       - ENV=TEST
       - PGDATABASE=postgres
@@ -24,11 +22,9 @@ services:
   test-web:
     build:
       context: ./web
-      dockerfile: docker/development
+      dockerfile: docker/testing
     links:
       - "test-api:api"
-    volumes:
-      - ./web:/usr/src/
   test-proxy:
     extends:
       file: ./common-services.yml

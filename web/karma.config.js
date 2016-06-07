@@ -1,7 +1,7 @@
 module.exports = config => {
   config.set({
     frameworks: ['mocha'],
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
     files: [
       'test.context.js',
     ],
@@ -20,7 +20,7 @@ module.exports = config => {
       subdir: '.',
     },
     plugins: [
-      'karma-chrome-launcher',
+      'karma-phantomjs-launcher',
       'karma-webpack',
       'karma-mocha',
       'karma-spec-reporter',

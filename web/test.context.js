@@ -1,3 +1,6 @@
+// Shim object.assign from PhantomJS
+require('object-assign-shim');
+
 [
   require.context('./test', true, /.spec\.jsx?$/),
   require.context('./src/components/', true, /\.jsx?$/),

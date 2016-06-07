@@ -11,8 +11,6 @@ dependencies:
     - docker-compose -v
 test:
   pre:
-    - docker-compose -f docker-compose.test.yml build test-api
-    - docker-compose -f docker-compose.test.yml build test-web
+    - make ci-build
   override:
-    - docker-compose -f docker-compose.test.yml run test-api
-    - docker-compose -f docker-compose.test.yml run test-web
+    - make ci
