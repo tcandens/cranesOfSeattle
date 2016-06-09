@@ -13,7 +13,7 @@ elif [ "$ENV" = 'TEST' ]; then
   echo $'Running Tests\n-------------';
   ./node_modules/.bin/pg-migrate up;
   if [ "$WATCH" = 'TRUE' ]; then
-    npm test -- --watch;
+    npm test -- --watch --verbose;
   else
     npm test;
   fi

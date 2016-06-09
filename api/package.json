@@ -45,9 +45,10 @@
     "eslint": "^1.10.3",
     "eslint-config-google": "^0.3.0",
     "nock": "^8.0.0",
-    "nodemon": "^1.8.1",
     "node-inspector": "^0.12.8",
+    "nodemon": "^1.8.1",
     "rimraf": "^2.5.2",
+    "sinon": "^1.17.4",
     "supertest": "^1.2.0",
     "supertest-as-promised": "^3.1.0"
   },
