@@ -66,6 +66,8 @@ test.beforeEach('Setup', t => {
   t.context.token = jwt.sign(testUser, TOKEN_SECRET);
 });
 
+// Were goint to need some test stubs here
+// for reportConfirmationService
 test.serial('INSERTING A REPORT', async t => {
 
   clearTables();
@@ -76,7 +78,7 @@ test.serial('INSERTING A REPORT', async t => {
     .send(testReport)
 
   t.is(
-    res.body.type,
+    res.body.result.type,
     'Feature',
     'Should responsed with GeoJSON of new report'
   );
@@ -96,7 +98,7 @@ test.serial('INSERTING A REPORT', async t => {
 
 });
 
-test.serial('FETCHING REPORTS WITHIN RANGE',  async t => {
+test.serial('FETCHING REPORTS WITHIN RANGE', async t => {
   // Insert another report that should be outside search radius
   const postedNearby = await request(server)
     .post('/reports')

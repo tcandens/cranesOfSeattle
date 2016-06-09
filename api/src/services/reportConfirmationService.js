@@ -76,8 +76,61 @@ export function calculateConfidence(report, reports, permits, cranes) {
   return confidence;
 }
 
-export function reactToConfidence(confidence) {
-  // if confidence = 4
+export function respondToConfidence(confidence, report, nearbyEntities) {
+  switch (confidence) {
+    case 0:
+    case 1:
+    case 2:
+      return {
+        message: `Report created with confidence of ${confidence}.`,
+        result: reportModel.create(Object.assign({}, report, {
+          properties: {
+            ...report.properties,
+            confidence
+          }
+        }))
+      }
+    case 3:
+      let nearestPermit = geolib.findNearest({
+        latitude: report.geometry.latitude,
+        longitude: report.geometry.longitude
+      }, nearbyEntities.permits);
+      return {
+        message: 'Crane and report created.',
+        result: {
+          report: reportModel.create(Object.assign({}, report, {
+            properties: {
+              ...report.properties,
+              confidence
+            }
+          })),
+          crane: craneModel.create({
+            geometry: [nearestPermit.longitude, nearestPermit.latitude],
+            user_id: report.properties.user_id,
+            permit: nearestPermit,
+            expiration_date: nearestPermit.expiration_date,
+            address: nearestPermit.address
+          })
+        }
+      }
+    case 4:
+      const nearestCrane = geolib.findNearest({
+        latitude: report.geometry.latitude,
+        longitude: report.geometry.longitude
+      }, nearbyEntities.cranes.map(crane => ({
+        latitude: crane.geometry.latitude,
+        longitude: crane.geometry.longitude,
+        geometry: crane.geometry,
+        properties: crane.properties
+      })));
+      return {
+        message: 'Updated confidence of nearest crane.',
+        result: craneModel.update({
+          id: nearestCrane.properties.id,
+          confidence: nearestCrane.properties.confidence + report.properties.confidence
+        })
+      }
+  }
 }
 
 export default Promise.coroutine(function* confirmReport(report) {
@@ -92,9 +145,10 @@ export default Promise.coroutine(function* confirmReport(report) {
     nearbyPermits,
     nearbyCranes,
   );
-  report.properties.confidence = confidence;
-  // if confidence > 3, create a crane entry
-  const saved = yield reportModel.create(report);
-  saved.properties.nearbyPermits = nearbyPermits;
-  return saved;
+  const response = yield respondToConfidence(confidence, report, {
+    reports: nearbyReports,
+    permits: nearbyPermits,
+    cranes: nearbyCranes
+  })
+  return response;
 });
