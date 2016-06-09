@@ -12,8 +12,10 @@ import version from './middleware/version';
 import convert from 'koa-convert';
 import session from 'koa-session';
 
-app.use(logger());
 app.use(version(packageJSON.version));
+if (process.env.ENV !== 'TEST') {
+  app.use(logger());
+}
 
 app.keys = ['SECRET_HERE'];
 app.use(convert(session(app)));
