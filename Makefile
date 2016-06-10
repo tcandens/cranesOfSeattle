@@ -8,8 +8,7 @@ install:
 
 # Start containers with docker compose for development environment
 dev:
-	@ docker-compose build && \
-	docker-compose up
+	@ docker-compose up
 
 browser-sync:
 	@ ${WEB_DIR}/node_modules/.bin/browser-sync start \
