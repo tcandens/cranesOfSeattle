@@ -13,9 +13,9 @@ elif [ "$ENV" = 'TEST' ]; then
   echo $'Running Tests\n-------------';
   ./node_modules/.bin/pg-migrate up;
   if [ "$WATCH" = 'TRUE' ]; then
-    npm test -- --watch --verbose;
+    npm test -- --watch --verbose --serial;
   else
-    npm test;
+    npm test -- --serial;
   fi
 else
   echo $'Running Production Server\n-------------------------'
