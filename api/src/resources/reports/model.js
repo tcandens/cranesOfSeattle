@@ -58,7 +58,7 @@ reportModel.findWithin = function(querystring) {
   });
   const query = `
     SELECT 'FeatureCollection' as type,
-    array_to_json(array_agg(f)) as features FROM (
+    COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
       COALESCE(row_to_json((SELECT l FROM (SELECT id, user_id) AS l))) AS properties

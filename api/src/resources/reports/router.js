@@ -47,6 +47,7 @@ export default Router()
         ctx.body = confirmedReport;
       })
       .catch(error => {
+        throw error;
         ctx.status = 500;
         ctx.body = error.toString();
       });
