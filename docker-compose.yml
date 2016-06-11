@@ -19,6 +19,8 @@ services:
     extends:
       file: ./common-services.yml
       service: web
+    build:
+      dockerfile: docker/development
     volumes:
       - ./web:/usr/src
       - ./web/node_modules:/usr/src/node_modules/
