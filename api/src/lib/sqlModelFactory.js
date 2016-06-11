@@ -33,7 +33,6 @@ const prototype = {
       UPDATE ${this.tableName} SET $/key~/ = $/value/ WHERE id = $/id/
     `;
     const response = this.db.none(query, fieldObject)
-      .finally(this.close());
     return response;
   },
   destroy(id) {
