@@ -9,8 +9,7 @@ import craneModel from '../../../src/resources/cranes/model';
 function report(options) {
   return Object.assign({}, options, {
     geometry: {
-      longitude: -122.3868,
-      latitude: 47.6825
+      coordinates: [-122.3868, 47.6826]
     },
     properties: {
       user: 1337
@@ -28,7 +27,9 @@ const reportsFakeObject = {
   },
   geometry: {
     type: 'Point',
-    geometry: [report().longitude, report().latitude]
+    geometry: {
+      coordinates: [-122, 47]
+    }
   }
 }
 const cranesFakeObject = {
@@ -38,7 +39,9 @@ const cranesFakeObject = {
   },
   geometry: {
     type: 'Point',
-    geometry: [report().longitude, report().latitude]
+    geometry: {
+      coordinates: [-22, 46]
+    }
   }
 }
 
@@ -67,7 +70,7 @@ test.beforeEach(() => {
 })
 
 import isArray from 'lodash/isArray';
-function withConfidenceOf(confidence, entities = {}) {
+async function withConfidenceOf(confidence, entities = {}) {
   const testEntities = ['permits', 'cranes', 'reports'].reduce((prev, val) => {
     if (entities[val] && isArray(entities[val])) {
       prev[val] = entities[val];
@@ -76,10 +79,16 @@ function withConfidenceOf(confidence, entities = {}) {
     }
     return prev;
   }, {})
-  const response = respondToConfidence(confidence, report(), testEntities);
-  return {
+  let response;
+  try {
+    response = await respondToConfidence(confidence, report(), testEntities);
+  } catch(error) {
+    response = error;
+    console.error(error.toString())
+  }
+  return Promise.resolve({
     t: undefined,
-    capture(context) {
+    capture: function (context) {
       this.t = context;
       return this;
     },
@@ -115,63 +124,67 @@ function withConfidenceOf(confidence, entities = {}) {
       );
       return this;
     }
-  }
+  });
 }
 
 test.serial('#respondToConfidence when 0', async t => {
-  withConfidenceOf(0)
-    .capture(t)
-    .expectCreated({crane: 0, report: 1})
-    .expectResult(reportsFakeObject)
-    .expectMessage('Report created with confidence of 0.')
+  await withConfidenceOf(0).then(context => {
+    context.capture(t)
+      .expectCreated({crane: 0, report: 1})
+      .expectResult(reportsFakeObject)
+      .expectMessage('Report created with confidence of 0.')
+  });
 });
 
 test.serial('#respondToConfidence when 1', async t => {
-  withConfidenceOf(1)
-    .capture(t)
-    .expectCreated({crane: 0, report: 1})
-    .expectResult(reportsFakeObject)
-    .expectMessage('Report created with confidence of 1.');
+  await withConfidenceOf(1).then(context => {
+    context.capture(t)
+      .expectCreated({crane: 0, report: 1})
+      .expectResult(reportsFakeObject)
+      .expectMessage('Report created with confidence of 1.');
+  });
 });
 
 test.serial('#respondToConfidence when 2', async t => {
-  withConfidenceOf(2)
-    .capture(t)
-    .expectCreated({crane: 0, report: 1})
-    .expectResult(reportsFakeObject)
-    .expectMessage('Report created with confidence of 2.');
+  await withConfidenceOf(2).then(context => {
+    context.capture(t)
+      .expectCreated({crane: 0, report: 1})
+      .expectResult(reportsFakeObject)
+      .expectMessage('Report created with confidence of 2.');
+  });
 });
 
 test.serial('#respondToConfidence when 3', async t => {
-  withConfidenceOf(3, {
+  await withConfidenceOf(3, {
     permits: [{
       longitude: 44,
       latitude: 43
     }]
+  }).then(context => {
+    context.capture(t)
+      .expectCreated({crane: 1, report: 1})
+      .expectResult({
+        crane: cranesFakeObject,
+        report: reportsFakeObject
+      })
+      .expectMessage('Crane and report created.');
   })
-    .capture(t)
-    .expectCreated({crane: 1, report: 1})
-    .expectResult({
-      crane: cranesFakeObject,
-      report: reportsFakeObject
-    })
-    .expectMessage('Crane and report created.');
 });
 
 test.serial('#respondToConfidence when 4', async t => {
-  withConfidenceOf(4, {
+  await withConfidenceOf(4, {
     cranes: [{
       geometry: {
-        latitude: 44,
-        longitude: 42
+        coordinates: [42, 42]
       },
       properties: {
         id: 999
       }
     }]
+  }).then(context => {
+    context.capture(t)
+      .expectCreated({crane: 0, report: 0})
+      .expectUpdated({crane: 1})
+      .expectMessage('Updated confidence of nearest crane.')
   })
-    .capture(t)
-    .expectCreated({crane: 0, report: 0})
-    .expectUpdated({crane: 1})
-    .expectMessage('Updated confidence of nearest crane.')
 })

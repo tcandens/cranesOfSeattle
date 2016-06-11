@@ -64,7 +64,7 @@ craneModel.findWithin = function(querystring) {
   });
   const query = `
     SELECT 'FeatureCollection' as type,
-    array_to_json(array_agg(f)) as features FROM (
+    COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
       row_to_json((SELECT l FROM (SELECT id, user_id) AS l)) AS properties
@@ -73,7 +73,7 @@ craneModel.findWithin = function(querystring) {
       )
     ) AS f
   `;
-  const response = this.db.manyOrNone(query, options)
+  const response = this.db.one(query, options)
   return response;
 }
 
