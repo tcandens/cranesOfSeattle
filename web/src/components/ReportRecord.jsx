@@ -1,29 +1,49 @@
 import React, {PropTypes} from 'react';
 
-export default function ReportRecord(props) {
+function Report({record}) {
+  const {
+    id,
+  } = record.properties;
+  return (
+    <ul>
+      <li><h4>Report</h4></li>
+      <li><span>ID:</span><em>{id}</em></li>
+    </ul>
+  );
+}
+
+function Crane({record}) {
+  return (
+    <ul>
+      <li><h4>Crane</h4></li>
+      <li>{record.toString()}</li>
+    </ul>
+  );
+}
+
+export default function ReportRecord({message, result}) {
+  let record;
+  if (result.report && result.crane) {
+    record = (
+      <div>
+        <Report record={result.report} />
+        <Crane record={result.crane} />
+      </div>
+    );
+  } else if (!result.report && result.crane) {
+    record = <Crane record={result.crane} />;
+  } else if (result.report && !result.crane) {
+    record = <Report record={result.report} />;
+  }
   return (
     <ul className="list--vertical">
-      <li>
-        <em>ID:</em> <span>{props.properties.id}</span>
-      </li>
-      <li>
-        <em>longitude:</em> <span>{props.geometry.coordinates[0]}</span>
-      </li>
-      <li>
-        <em>latitude:</em> <span>{props.geometry.coordinates[1]}</span>
-      </li>
-      <li>
-        <em>confidence:</em> <span>{props.properties.confidence}</span>
-      </li>
+      <li><h3>{message}</h3></li>
+      {record}
     </ul>
   );
 }
 
 ReportRecord.propTypes = {
-  id: PropTypes.number.isRequired,
-  geometry: PropTypes.shape({
-    coordinates: PropTypes.array.isRequired,
-    type: PropTypes.string.isRequired,
-  }),
-  properties: PropTypes.object,
+  message: PropTypes.string.isRequired,
+  result: PropTypes.object.isRequired,
 };

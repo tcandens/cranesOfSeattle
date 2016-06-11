@@ -5,16 +5,9 @@ import calculateConfidence from './calculateConfidence';
 import respondToConfidence from './respondToConfidence';
 
 export default async function confirmReport(report) {
-  let nearbyPermits;
-  let nearbyCranes;
-  let nearbyReports;
-  try {
-    nearbyPermits = await getNearby.permits(report);
-    nearbyReports = await getNearby.reports(report);
-    nearbyCranes = await getNearby.cranes(report);
-  } catch (error) {
-    console.error(error)
-  }
+  const nearbyPermits = await getNearby.permits(report);
+  const nearbyReports = await getNearby.reports(report);
+  const nearbyCranes = await getNearby.cranes(report);
   const confidence = calculateConfidence(
     report,
     nearbyReports,

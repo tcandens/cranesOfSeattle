@@ -26,37 +26,40 @@ export default async function respondToConfidence(confidence, report, nearbyEnti
       }));
       return {
         message: `Report created with confidence of ${confidence}.`,
-        result: createdReport
+        result: {
+          report: createdReport,
+          crane: null
+        }
       }
     case 3:
       nearestPermit = geolib.findNearest({
         longitude: report.geometry.coordinates[0],
         latitude: report.geometry.coordinates[1]
       }, nearbyEntities.permits);
-
+      createdReport = await reportModel.create(Object.assign({}, report, {
+        properties: {
+          ...report.properties,
+          confidence
+        }
+      }))
+      createdCrane = await craneModel.create({
+        geometry: {
+          type: 'Point',
+          coordinates: [nearestPermit.longitude, nearestPermit.latitude]
+        },
+        properties: {
+          user_id: report.properties.user_id,
+          permit: nearestPermit.master_use_permit,
+          expiration_date: nearestPermit.expiration_date,
+          address: nearestPermit.address,
+          confidence: confidence
+        }
+      })
       return {
         message: 'Crane and report created.',
         result: {
-          report: reportModel.create(Object.assign({}, report, {
-            properties: {
-              ...report.properties,
-              confidence
-            }
-          })),
-          crane: craneModel.create({
-            // Geometry must be a GeoJSON point
-            geometry: {
-              type: 'Point',
-              coordinates: [nearestPermit.longitude, nearestPermit.latitude]
-            },
-            properties: {
-              user_id: report.properties.user_id,
-              permit: nearestPermit,
-              expiration_date: nearestPermit.expiration_date,
-              address: nearestPermit.address,
-              confidence: confidence
-            }
-          })
+          report: createdReport,
+          crane: createdCrane
         }
       }
     case 4:
@@ -75,7 +78,10 @@ export default async function respondToConfidence(confidence, report, nearbyEnti
       });
       return {
         message: 'Updated confidence of nearest crane.',
-        result: createdCrane
+        result: {
+          crane: createdCrane,
+          report: null
+        }
       }
   }
 }

@@ -19,6 +19,10 @@ import {
 } from 'ducks/reports';
 
 import {
+  fetchCranes,
+} from 'ducks/cranes';
+
+import {
   recordMapLocation,
   fetchUserLocation,
 } from 'ducks/map';
@@ -33,6 +37,7 @@ function selectReporting(state) {
     latitude: state.map.location.lat,
     isSaveSuccess: state.reports.isSaveSuccess,
     isSaving: state.reports.isSaving,
+    cranes: state.cranes.geojson,
   };
 }
 
@@ -49,6 +54,7 @@ export default class ReportContainer extends Component {
   }
   componentDidMount() {
     const {dispatch} = this.props;
+    dispatch(fetchCranes());
     dispatch(fetchReports());
     dispatch(fetchUserLocation());
   }
@@ -123,6 +129,7 @@ export default class ReportContainer extends Component {
       latitude,
       isSaveSuccess,
       isSaving,
+      cranes,
     } = this.props;
 
     const mapSources = {
@@ -132,6 +139,10 @@ export default class ReportContainer extends Component {
         cluster: true,
         maxzoom: 17,
         clusterRadius: 50,
+      },
+      cranes: {
+        type: 'geojson',
+        data: cranes,
       },
     };
     const mapLayers = [
@@ -143,6 +154,15 @@ export default class ReportContainer extends Component {
           'circle-color': '#ffcc66',
           'circle-radius': 50,
           'circle-blur': 1.5,
+        },
+      },
+      {
+        id: 'cranes',
+        source: 'cranes',
+        type: 'symbol',
+        layout: {
+          'icon-image': 'cranes',
+          'icon-offset': [-10, -10],
         },
       },
     ];

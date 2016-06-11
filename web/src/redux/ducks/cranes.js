@@ -8,7 +8,9 @@ export const ADD_CRANE = 'ADD_CRANE';
 
 export const initialState = {
   isFetching: false,
-  geojson: {},
+  geojson: {
+    features: [],
+  },
 };
 
 export default function reducer(state = initialState, action) {
@@ -24,10 +26,12 @@ export default function reducer(state = initialState, action) {
         lastUpdated: action.receivedAt,
       });
     case ADD_CRANE:
-      const crane = geojson.pointFromLngLat(action.location);
       return assign({}, state, {
         geojson: assign({}, state.geojson, {
-          features: [...state.geojson.features, crane],
+          features: [
+            ...state.geojson.features,
+            geojson.pointFromLngLat(action.location),
+          ],
         }),
       });
     default:
@@ -68,19 +72,5 @@ export function addCrane(location) {
   return {
     type: ADD_CRANE,
     location,
-  };
-}
-
-export function saveCrane(location) {
-  return (dispatch) => {
-    dispatch(addCrane(location));
-    const crane = geojson.pointFromLngLat(location);
-    return axios.post('/api/cranes', crane)
-      .then(response => {
-        window.console.log(response);
-      })
-      .catch(error => {
-        window.console.log(error);
-      });
   };
 }

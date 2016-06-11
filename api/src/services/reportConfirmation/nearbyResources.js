@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import defaults from 'lodash/defaults';
 import craneModel from '../../resources/cranes/model';
 import reportModel from '../../resources/reports/model';
@@ -38,17 +39,18 @@ export async function permits(report, opt) {
   const options = defaults({}, opt, {
     radius: RADIUS_TO_SEARCH_IN_METERS
   });
-  const permitCollection = await permitModel.fetchAll().then(permits => {
-    return permits.filter(permit => {
-      const {longitude, latitude} = permit;
-      const [reportLng, reportLat] = report.geometry.coordinates;
-      return geolib.isPointInCircle(
-        {latitude: longitude, longitude: latitude},
-        {latitude: reportLat, longitude: reportLng},
-        options.radius
-      )
-    });
-  });
+  const permitCollection = await permitModel.fetchAll()
+    .then(permits => {
+      return permits.filter(permit => {
+        const {longitude, latitude} = permit;
+        const [reportLng, reportLat] = report.geometry.coordinates;
+        return geolib.isPointInCircle(
+          {latitude: latitude, longitude: longitude},
+          {latitude: reportLat, longitude: reportLng},
+          options.radius
+        );
+      });
+    })
   return permitCollection;
 }
 

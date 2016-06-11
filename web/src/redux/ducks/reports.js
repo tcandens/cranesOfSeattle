@@ -16,7 +16,7 @@ const SUCCESS_SAVE_REPORT = 'SUCCESS_SAVE_REPORT';
 const CONFIRM_SAVE_SUCCESS = 'CONFIRM_SAVE_SUCCESS';
 const ERROR_SAVE_REPORT = 'ERROR_SAVE_REPORT';
 
-export default function reducer(state = {
+export const initialState = {
   isFetching: false,
   isReporting: false,
   isSaving: false,
@@ -25,7 +25,9 @@ export default function reducer(state = {
     features: [],
   },
   reported: [],
-}, action) {
+};
+
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_REPORTS:
       return assign({}, state, {
@@ -66,7 +68,7 @@ export default function reducer(state = {
       return assign({}, state, {
         isSaveSuccess: true,
         isSaving: false,
-        reported: [action.payload.report, ...state.reported],
+        reported: [...state.reported, action.payload],
       });
     case CONFIRM_SAVE_SUCCESS:
       return assign({}, state, {
@@ -142,11 +144,12 @@ export function beginSavingReport() {
   };
 }
 
-export function successSavingReport(report) {
+export function successSavingReport(message, result) {
   return {
     type: SUCCESS_SAVE_REPORT,
     payload: {
-      report,
+      message,
+      result,
       time: Date.now(),
     },
   };
@@ -181,6 +184,8 @@ export function resetReportState() {
   };
 }
 
+import {addCrane} from 'ducks/cranes';
+
 export function saveReport(location, props) {
   return (dispatch, getState) => {
     dispatch(beginSavingReport());
@@ -198,8 +203,16 @@ export function saveReport(location, props) {
     };
     return axios.post('/api/reports', report, requestConfig)
       .then(response => {
-        dispatch(addReport(response.data));
-        dispatch(successSavingReport(response.data));
+        // response will be conditional and will need to be tested
+        console.log(response.data);
+        const {message, result} = response.data;
+        if (result && result.report) {
+          dispatch(addReport(result.report));
+        }
+        if (result && result.crane) {
+          dispatch(addCrane(result.crane));
+        }
+        dispatch(successSavingReport(message, result));
         dispatch(finishReport());
       })
       .catch(error => {
