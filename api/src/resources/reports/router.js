@@ -4,7 +4,7 @@ import json from '../../middleware/json_response';
 import jsonBody from 'koa-json-body';
 import authMiddleware from '../../middleware/jwt_auth';
 
-import confirmationService from '../../services/reportConfirmationService';
+import confirmationService from '../../services/reportConfirmation';
 
 export default Router()
   .use(json(), jsonBody())

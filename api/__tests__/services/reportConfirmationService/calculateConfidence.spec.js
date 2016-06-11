@@ -1,7 +1,5 @@
 import test from 'ava';
-import {
-  calculateConfidence,
-} from '../../../src/services/reportConfirmationService';
+import calculateConfidence from '../../../src/services/reportConfirmation/calculateConfidence';
 
 function report(options) {
   return Object.assign({}, options, {

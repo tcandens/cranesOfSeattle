@@ -1,8 +1,6 @@
 import test from 'ava';
 import {stub} from 'sinon';
-import {
-  respondToConfidence
-} from '../../../src/services/reportConfirmationService';
+import respondToConfidence from '../../../src/services/reportConfirmation/respondToConfidence';
 import reportModel from '../../../src/resources/reports/model';
 import craneModel from '../../../src/resources/cranes/model';
 
