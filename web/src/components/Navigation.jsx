@@ -19,7 +19,7 @@ export default function Navigation() {
         <li>
           <Link
             data-icon="map"
-            to="/map"
+            to="/explore"
             activeClassName="navigation--link-active"
           >
             Map

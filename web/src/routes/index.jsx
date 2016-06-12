@@ -28,10 +28,10 @@ export default function CreateRoutes(store) {
   return (
     <Route path="/" component={MainLayout}>
       <IndexRoute component={Entry} />
-      <Route path="map"
+      <Route path="explore"
         getComponent={(next, cb) => {
           require.ensure([], require => {
-            cb(null, require('containers/Report').default);
+            cb(null, require('containers/Explore').default);
           });
         }}
       />
