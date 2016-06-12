@@ -29,7 +29,8 @@ reportModel.read = function(id) {
       (SELECT l FROM
         (SELECT
           user_id,
-          id
+          id,
+          confidence
         ) AS l
       )
     ) AS properties
@@ -45,7 +46,7 @@ reportModel.readAll = function() {
     COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
-      row_to_json((SELECT l FROM (SELECT id, user_id) AS l)) AS properties
+      row_to_json((SELECT l FROM (SELECT id, user_id, confidence) AS l)) AS properties
       FROM ${this.tableName} AS r
     ) AS f
   `;
@@ -61,7 +62,7 @@ reportModel.findWithin = function(querystring) {
     COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
-      COALESCE(row_to_json((SELECT l FROM (SELECT id, user_id) AS l))) AS properties
+      COALESCE(row_to_json((SELECT l FROM (SELECT id, user_id, confidence) AS l))) AS properties
       FROM ${this.tableName} AS r WHERE ST_DWithin(
         r.location, 'POINT($/lng/ $/lat/)', $/radius/
       )
