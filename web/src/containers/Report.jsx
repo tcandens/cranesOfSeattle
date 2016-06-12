@@ -7,7 +7,7 @@ import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
 import Modal from 'components/Modal';
-import ReportRecord from 'components/ReportRecord';
+import ReportResponse from 'components/ReportResponse';
 import LoadingBar from 'components/LoadingBar';
 
 import {
@@ -206,7 +206,7 @@ export default class ReportContainer extends Component {
           <Modal type="success"
             action={this.handleConfirmSuccess}
           >
-            <ReportRecord
+            <ReportResponse
               {...reported[reported.length - 1]}
             />
           </Modal>

@@ -4,6 +4,7 @@
   min-width 250px
   width 50%
   height auto
+  max-height 92vh
   top 10vh
   right 10%
   flex-direction column
@@ -12,6 +13,8 @@
   border-radius 0px
   padding 1.2em
   box-shadow 10px 10px 0px alpha($dark, 0.3)
+  overflow-y auto
+  overflow-x hidden
   z-index $z-modal
   &--success
     background linear-gradient(30deg, alpha($mint, 0.99), alpha($yellow, 0.99))

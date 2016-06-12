@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import Map from 'components/Map';
 import Geolocator from 'components/Geolocator';
 import Reticle from 'components/Reticle';
-import Button from 'components/Button';
 import Modal from 'components/Modal';
+import ReportRecord from 'components/ReportRecord';
+import CraneRecord from 'components/CraneRecord';
 
 import {
   fetchReports,
@@ -33,8 +34,7 @@ function selectExploring(state) {
 )
 export default class ExploreContainer extends Component {
   state = {
-    isViewing: false,
-    entities: [],
+    viewing: [],
   }
   static defaultProps = {
     latitude: 47.44,
@@ -69,8 +69,7 @@ export default class ExploreContainer extends Component {
           {layers: ['reports', 'cranes']}
         );
         this.setState({
-          isViewing: true,
-          entities: features,
+          viewing: features,
         });
       },
     };
@@ -78,15 +77,20 @@ export default class ExploreContainer extends Component {
 
   renderViewing = () => {
     const {
-      entities,
+      viewing,
     } = this.state;
-    const features = entities.map((entity, index) => {
-      console.log(entity);
-      return <li key={index}>{entity.toString()}</li>;
+    const features = viewing.map((entity, index) => {
+      let feature;
+      if (entity.layer.id === 'reports') {
+        feature = <ReportRecord key={index} record={entity} />;
+      } else if (entity.layer.id === 'cranes') {
+        feature = <CraneRecord key={index} record={entity} />;
+      }
+      return feature;
     });
     return (
       <Modal type="success" action={() => {
-        this.setState({isViewing: false});
+        this.setState({viewing: []});
       }}>
         <h3>Nearby:</h3>
         <ol>
@@ -156,7 +160,7 @@ export default class ExploreContainer extends Component {
           <Geolocator onClick={this.getUserPosition} />
           <Reticle />
         </Map>
-        {this.state.isViewing ? this.renderViewing() : null}
+        {this.state.viewing.length ? this.renderViewing() : null}
       </section>
     );
   }
