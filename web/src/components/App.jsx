@@ -1,6 +1,6 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
-import store from '../redux/store';
+import store from '../state/store';
 import {syncHistoryWithStore} from 'react-router-redux';
 import makeRoutes from '../routes';
 import Root from 'components/Root';

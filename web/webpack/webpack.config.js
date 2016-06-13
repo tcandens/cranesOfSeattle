@@ -100,7 +100,7 @@ module.exports = {
       createAliasesFrom(path.resolve(ROOT)).to([
         'assets',
       ]),
-      createAliasesFrom(path.resolve(ROOT, 'src', 'redux')).to([
+      createAliasesFrom(path.resolve(ROOT, 'src', 'state')).to([
         'ducks',
       ])
     ),
