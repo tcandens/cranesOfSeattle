@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
+import Button from 'components/Button';
 
 import {
   userLogin,
@@ -20,19 +22,28 @@ export default class LoginButton extends Component {
     e.preventDefault();
     dispatch(userLogin({redirect: to}));
   }
-  render = () => {
-    const {children} = this.props;
+  renderIsAuthenticated = () => {
     return (
-      <button
-        onClick={this.handleLoginSubmit}
-        className='login button button--lg'>
-          {children || 'Sign in'}
-      </button>
+      <Button>
+        <Link to={this.props.to}>{this.props.children}</Link>
+      </Button>
     );
   }
+  renderIsUnauthenticated = () => {
+    return (
+      <Button
+        onClick={this.handleLoginSubmit}
+        className="login button button-l"
+      >
+        {this.props.children || 'Sign in'}
+      </Button>
+    );
+  }
+  render = () => {
+    if (this.props.isAuthenticated) {
+      return this.renderIsAuthenticated();
+    } else {
+      return this.renderIsUnauthenticated();
+    }
+  }
 }
-
-LoginButton.propTypes = {
-  isAuthenticated: PropTypes.boolean,
-  isFetching: PropTypes.boolean,
-};

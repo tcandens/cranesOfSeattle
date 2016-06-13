@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import CallToAction from 'containers/CallToAction';
+import CallToAction from 'components/CallToAction';
 
 export default function EntryLayout() {
   const entryClass = classNames({
@@ -8,7 +8,7 @@ export default function EntryLayout() {
   });
   return (
     <section className={entryClass}>
-      <div className='c-headline c-headline--lg'>
+      <div className="c-headline c-headline--lg">
         <h2>Help us find where the cranes roost.</h2>
       </div>
       <CallToAction />
