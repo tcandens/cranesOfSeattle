@@ -1,9 +1,9 @@
 import React from 'react';
 
 export default function CraneRecord({record}) {
-  const properties = Object.keys(record.properties).map((prop, index) => {
-    return <li key={index}><span>{prop}:</span><em>{record.properties[prop]}</em></li>;
-  });
+  const {
+    permit,
+  } = record.properties;
   return (
     <ul className="list--vertical c-crane-record">
       <li>
@@ -11,7 +11,10 @@ export default function CraneRecord({record}) {
       </li>
       <li>
         <ul className="list--row">
-          {properties}
+          <li>
+            <span>Permit</span>
+            <em><a target="_blank" href={`http://web6.seattle.gov/dpd/PermitStatus/Project.aspx?id=${permit}`}>{permit}</a></em>
+          </li>
         </ul>
       </li>
     </ul>
