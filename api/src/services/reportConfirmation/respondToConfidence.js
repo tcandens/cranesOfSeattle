@@ -49,7 +49,7 @@ export default async function respondToConfidence(confidence, report, nearbyEnti
         },
         properties: {
           user_id: report.properties.user_id,
-          permit: nearestPermit.master_use_permit,
+          permit: nearestPermit.application_permit_number,
           expiration_date: nearestPermit.expiration_date,
           address: nearestPermit.address,
           confidence: confidence
