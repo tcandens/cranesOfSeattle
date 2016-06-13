@@ -3,7 +3,6 @@ const assign = Object.assign;
 const REQUEST_LOGIN = 'REQUEST_LOGIN';
 const RECEIVE_LOGIN = 'RECIEVE_LOGIN';
 const ERROR_LOGIN = 'ERROR_LOGIN';
-import {REHYDRATE} from 'redux-persist/constants';
 
 export default function reducer(state = {
   isFetching: false,
@@ -28,17 +27,8 @@ export default function reducer(state = {
       return assign({}, state, {
         isFetching: false,
         isAuthenticated: false,
-        error: action.message,
+        error: action.error,
       });
-    case REHYDRATE:
-      const incoming = action.payload.user;
-      if (incoming) {
-        return {
-          ...state,
-          ...incoming,
-        };
-      }
-      return state;
     default:
       return state;
   }
@@ -47,16 +37,12 @@ export default function reducer(state = {
 export function requestLogin() {
   return {
     type: REQUEST_LOGIN,
-    isFetching: true,
-    isAuthenticated: false,
   };
 }
 
 export function receiveLogin(profile) {
   return {
     type: RECEIVE_LOGIN,
-    isFetching: false,
-    isAuthenticated: true,
     profile,
   };
 }
@@ -64,9 +50,7 @@ export function receiveLogin(profile) {
 export function errorLogin(error) {
   return {
     type: ERROR_LOGIN,
-    isFetching: false,
-    isAuthenticated: false,
-    message: error.message,
+    error,
   };
 }
 
@@ -81,6 +65,8 @@ export function userLogin(options) {
       if (options.redirect) {
         browserHistory.push(options.redirect);
       }
+    }).catch(error => {
+      dispatch(errorLogin(error.toString()));
     });
   };
 }

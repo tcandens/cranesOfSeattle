@@ -185,6 +185,7 @@ export function resetReportState() {
 }
 
 import {addCrane} from 'ducks/cranes';
+import {errorLogin} from 'ducks/user';
 
 export function saveReport(location, props) {
   return (dispatch, getState) => {
@@ -193,7 +194,7 @@ export function saveReport(location, props) {
     const userId = state.user.profile.id || null;
     const token = state.user.token || null;
     if (!userId || !token) {
-      dispatch({error: 'Not Authorized'});
+      dispatch(errorLogin('User is not logged in.'));
     }
     const report = geojson.pointFromLngLat(location, {userId, ...props});
     const requestConfig = {
@@ -203,8 +204,6 @@ export function saveReport(location, props) {
     };
     return axios.post('/api/reports', report, requestConfig)
       .then(response => {
-        // response will be conditional and will need to be tested
-        console.log(response.data);
         const {message, result} = response.data;
         if (result && result.report) {
           dispatch(addReport(result.report));
