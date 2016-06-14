@@ -5,9 +5,13 @@ export default function ReportCreateForm(props) {
   return (
       <div className="create-report u-dark-bg">
         <form className="form-group--row" onChange={onChange}>
-          <label>How many cranes do you see?
-            <input name="cranesInView" type="number" min="1" max="5" defaultValue="1" step="1" />
-          </label>
+          <label>How many cranes do you see?</label>
+          <div className="form-group--radio">
+            <input id="r1" type="radio" name="visible_cranes" value="1" />
+            <label htmlFor="r1">1</label>
+            <input id="r2" type="radio" name="visible_cranes" value="2" />
+            <label htmlFor="r2">2</label>
+          </div>
         </form>
         <ul className="create-report--options list--row">
           <li>

@@ -12,6 +12,34 @@ input[type='number']
   background transparent
   margin 0 1.5rem
 
+.form-group--radio
+  display flex
+  flex-direction row
+  input[type="radio"]
+    display none
+  label:first-of-type
+    border-radius 0.5rem 0 0 0.5rem
+  label:last-of-type
+    border-left none
+    border-radius 0 0.5rem 0.5rem 0
+  input[type="radio"]:checked + label
+    background-color $mint
+    border-color lighten(@background-color, 30%)
+    color $dark
+  label
+    flex-direction row
+    justify-content space-between
+    align-items center
+    cursor pointer
+    text-align center
+    margin 0.5em 0
+    padding 1rem
+    color $white
+    border 1px solid $white
+    border-radius 0.5rem
+    background-color $dark
+    transition background-color 300ms ease-in-out
+
 .form-group--row
   display flex
   flex-direction row
