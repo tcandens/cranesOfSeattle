@@ -1,13 +1,17 @@
-.list
-  &--row
-    list-style none
-    display flex
-    flex-direction row
-    justify-content space-between
-  &--vertical
-    list-style none
-    display flex
-    flex-direction column
-    align-items center
-    li
-      margin 1em
+$list--row()
+  list-style none
+  display flex
+  flex-direction row
+  justify-content space-between
+$list--vertical()
+  list-style none
+  display flex
+  flex-direction column
+  align-items center
+  li
+    margin 1em
+
+.list--vertical
+  $list--vertical()
+.list--row
+  $list--row()

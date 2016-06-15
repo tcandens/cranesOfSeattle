@@ -1,25 +1,20 @@
 .c-report-record, .c-crane-record
+  $list--vertical()
+  align-items flex-start
   position relative
-  margin-top 1rem
-  padding-left 2em
+  width 100%
+  padding-left 1em
+  border-left-width 1rem
+  border-left-style solid
   li
-    padding 1rem
+    width 100%
+    margin 0
+    padding 0.5em
   span
     margin-right 1rem
-  &:before
-    display block
-    position absolute
-    font-family $display-font
-    color $white
-    left 0
-    top @margin-top
-    height 1.2em
-    border-bottom 3px solid
-    transform-origin 1.4em 100%
-    transform rotate(-90deg)
-.c-report-record:before
-    content 'Report'
-    border-color $yellow
-.c-crane-record:before
-    content 'Crane'
-    border-color $mint
+.c-report-record
+  border-left-color $yellow
+.c-crane-record
+  border-left-color $mint
+li:nth-of-type(2n) .c-report-record
+  border-left-color darken($yellow, 10)

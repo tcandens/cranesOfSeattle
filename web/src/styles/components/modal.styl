@@ -1,20 +1,44 @@
 .modal
   display flex
   position absolute
-  min-width 250px
-  width 50%
-  height auto
-  max-height 92vh
-  top 10vh
-  right 10%
   flex-direction column
-  align-items center
   justify-content center
+  align-items stretch
+  align-content flex-start
+  min-width 250px
+  width 80%
+  max-width 400px
+  min-height 10%
+  max-height 80%
+  top 20px
+  right 40px
   border-radius 0px
   padding 1.2em
   box-shadow 10px 10px 0px alpha($dark, 0.3)
-  overflow-y auto
-  overflow-x hidden
   z-index $z-modal
+  &--header
+    flex 1 0 auto
+    padding 1rem
+    width 100%
+    color $white
+    background-color $dark
+  &--body
+    flex-basis auto
+    width 100%
+    overflow-y auto
+  &--button
+    display flex
+    flex-direction column
+    flex 1 0 auto
+    justify-content flex-end
+    align-content stretch
+    button
+      padding 0.4rem
   &--success
     background linear-gradient(30deg, alpha($mint, 0.99), alpha($yellow, 0.99))
+  &--list
+    padding 0
+    background linear-gradient(30deg, alpha($white, 0.89), alpha($dark, 0.48))
+    ul, ol
+      width 100%
+      list-style none
