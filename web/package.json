@@ -80,7 +80,7 @@
     "bluebird": "^3.1.5",
     "classnames": "^2.2.3",
     "express": "^4.13.4",
-    "fastclick": "^1.0.6",
+    "hammer-timejs": "^1.1.0",
     "jwt-decode": "^2.0.1",
     "lodash": "^4.13.1",
     "mapbox-gl": "^0.18.0",
@@ -94,7 +94,6 @@
     "redux": "^3.1.2",
     "redux-logger": "^2.4.0",
     "redux-persist": "^2.0.1",
-    "redux-thunk": "^1.0.3",
-    "turf-point": "^2.0.1"
+    "redux-thunk": "^1.0.3"
   }
 }
