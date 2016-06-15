@@ -65,7 +65,7 @@ export default class ExploreContainer extends Component {
           [x - threshold / 2, y - threshold / 2],
           [x + threshold / 2, y - threshold / 2],
         ],
-        {layers: ['reports', 'cranes']}
+        {layers: ['reports--high', 'reports--low', 'cranes']}
       );
       this.setState({
         viewing: features,
@@ -75,9 +75,10 @@ export default class ExploreContainer extends Component {
       click: (map, event) => {
         setViewing.call(this, map, event);
       },
-      touchend: (map, event) => {
-        setViewing.call(this, map, event);
-      },
+      // touchend: (map, event) => {
+      //   console.log(map, event);
+      //   setViewing.call(this, map, event);
+      // },
     };
   }
 
@@ -87,21 +88,20 @@ export default class ExploreContainer extends Component {
     } = this.state;
     const features = viewing.map((entity, index) => {
       let feature;
-      if (entity.layer.id === 'reports') {
-        feature = <ReportRecord key={index} record={entity} />;
-      } else if (entity.layer.id === 'cranes') {
-        feature = <CraneRecord key={index} record={entity} />;
+      if (entity.layer.id.match(/report/)) {
+        feature = <ReportRecord record={entity} />;
+      } else if (entity.layer.id.match(/crane/)) {
+        feature = <CraneRecord record={entity} />;
       }
-      return feature;
+      return <li key={index}>{feature}</li>;
     });
     return (
-      <Modal type="success" action={() => {
+      <Modal type="list" title="Nearby" action={() => {
         this.setState({viewing: []});
       }}>
-        <h3>Nearby:</h3>
-        <ol>
+        <ul>
           {features}
-        </ol>
+        </ul>
       </Modal>
     );
   }
@@ -119,8 +119,9 @@ export default class ExploreContainer extends Component {
         type: 'geojson',
         data: reports,
         cluster: true,
-        maxzoom: 17,
-        clusterRadius: 50,
+        maxzoom: 18,
+        clusterMaxZoom: 17,
+        clusterRadius: 30,
       },
       cranes: {
         type: 'geojson',
@@ -129,7 +130,18 @@ export default class ExploreContainer extends Component {
     };
     const mapLayers = [
       {
-        id: 'reports',
+        id: 'reports--high',
+        source: 'reports',
+        type: 'circle',
+        paint: {
+          'circle-color': '#ff5566',
+          'circle-radius': 25,
+          'circle-blur': 1,
+        },
+        filter: ['>', 'confidence', 2],
+      },
+      {
+        id: 'reports--low',
         source: 'reports',
         type: 'circle',
         paint: {
@@ -137,6 +149,7 @@ export default class ExploreContainer extends Component {
           'circle-radius': 50,
           'circle-blur': 1.5,
         },
+        filter: ['<=', 'confidence', 2],
       },
       {
         id: 'cranes',

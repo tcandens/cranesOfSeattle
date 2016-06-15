@@ -7,15 +7,24 @@ export default function Modal(props) {
     type,
     children,
     action,
+    title,
   } = props;
   const className = classNames({
     'modal': true,
-    'modal--success': type ? 'success' : false,
+    'modal--list': type === 'list',
+    'modal--success': type === 'success',
   });
   return (
     <div className={className}>
-      {children}
-      <Button onClick={action} >OK</Button>
+      {title &&
+        <div className="modal--header"><h4>{title}</h4></div>
+      }
+      <div className="modal--body">
+        {children}
+      </div>
+      <div className="modal--button">
+        <Button onClick={action} >OK</Button>
+      </div>
     </div>
   );
 }

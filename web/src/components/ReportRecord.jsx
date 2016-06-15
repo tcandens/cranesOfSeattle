@@ -6,7 +6,7 @@ export default function ReportRecord({record}) {
     confidence,
   } = record.properties;
   return (
-    <ul className="c-report-record list--row">
+    <ul className="c-report-record">
       <li><span>ID:</span><em>{id}</em></li>
       <li><span>Confidence:</span><em>{confidence}</em></li>
     </ul>
