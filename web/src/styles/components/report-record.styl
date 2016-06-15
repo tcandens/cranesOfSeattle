@@ -1,10 +1,25 @@
 .c-report-record, .c-crane-record
-  margin-top 0.5em
-  li:first-of-type
-    margin-bottom 0
-.c-report-record
-  background-color alpha($white, 0.8)
-  color $dark
-.c-crane-record
-  background-color alpha($mint, 0.7)
-  color $dark
+  position relative
+  margin-top 1rem
+  padding-left 2em
+  li
+    padding 1rem
+  span
+    margin-right 1rem
+  &:before
+    display block
+    position absolute
+    font-family $display-font
+    color $white
+    left 0
+    top @margin-top
+    height 1.2em
+    border-bottom 3px solid
+    transform-origin 1.4em 100%
+    transform rotate(-90deg)
+.c-report-record:before
+    content 'Report'
+    border-color $yellow
+.c-crane-record:before
+    content 'Crane'
+    border-color $mint

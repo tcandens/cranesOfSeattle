@@ -57,20 +57,26 @@ export default class ExploreContainer extends Component {
     dispatch(fetchUserLocation());
   }
   mapActions = () => {
+    function setViewing(map, event) {
+      const threshold = 10;
+      const {x, y} = event.point;
+      const features = map.queryRenderedFeatures(
+        [
+          [x - threshold / 2, y - threshold / 2],
+          [x + threshold / 2, y - threshold / 2],
+        ],
+        {layers: ['reports', 'cranes']}
+      );
+      this.setState({
+        viewing: features,
+      });
+    }
     return {
       click: (map, event) => {
-        const threshold = 10;
-        const {x, y} = event.point;
-        const features = map.queryRenderedFeatures(
-          [
-            [x - threshold / 2, y - threshold / 2],
-            [x + threshold / 2, y - threshold / 2],
-          ],
-          {layers: ['reports', 'cranes']}
-        );
-        this.setState({
-          viewing: features,
-        });
+        setViewing.call(this, map, event);
+      },
+      touchend: (map, event) => {
+        setViewing.call(this, map, event);
       },
     };
   }
