@@ -3,9 +3,9 @@ import Hero from 'components/EntryHero';
 
 export default function EntryLayout(props) {
   return (
-    <div className='l-entry'>
+    <div className="l-entry">
       <Hero />
-      <section>
+      <section className="u-padded">
         <h2>Here is how you can help</h2>
         <p>If you see a crane, drop a pin on the map and report it</p>
       </section>
