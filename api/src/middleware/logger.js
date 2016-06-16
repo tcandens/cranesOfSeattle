@@ -11,11 +11,11 @@ export const winstonInstance = new (winston.Logger)({
     }),
     new (winston.transports.File)({
       level: 'info',
-      filename: path.resolve(process.cwd(), '.logs/api.log'),
+      filename: path.resolve(process.cwd(), 'api.log'),
       prettyPrint: true,
       depth: null,
       zippedArchive: true
-    })
+    });
   ]
 });
 
@@ -24,7 +24,7 @@ export default function Logger(options = {}) {
     case 'TEST':
       return (ctx, next) => next();
     case 'DEV':
-      // return developmentLogger;
+      return developmentLogger;
     case 'PROD':
       return async function productionLogger(ctx, next) {
         if (!ctx.log) ctx.log = winstonInstance;

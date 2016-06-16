@@ -10,6 +10,8 @@ services:
       service: api
     build:
       dockerfile: Dockerfile.prod
+    volumes:
+      - /var/log/api.log:./api/api.log
     environment:
       - ENV=PROD
       - PGDATABASE=postgres
