@@ -126,15 +126,28 @@ export default class ExploreContainer extends Component {
       cranes: {
         type: 'geojson',
         data: cranes,
+        maxzoom: 20,
+        cluster: false,
       },
     };
     const mapLayers = [
+      {
+        id: 'report-cluster',
+        source: 'reports',
+        type: 'circle',
+        paint: {
+          'circle-color': '#ffcc66',
+          'circle-radius': 60,
+          'circle-blur': 1.5,
+        },
+        filter: ['>=', 'point_count', 3],
+      },
       {
         id: 'reports--high',
         source: 'reports',
         type: 'circle',
         paint: {
-          'circle-color': '#ff5566',
+          'circle-color': '#CD836A',
           'circle-radius': 25,
           'circle-blur': 1,
         },
