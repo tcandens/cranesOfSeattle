@@ -15,7 +15,7 @@ export const winstonInstance = new (winston.Logger)({
       prettyPrint: true,
       depth: null,
       zippedArchive: true
-    });
+    })
   ]
 });
 
