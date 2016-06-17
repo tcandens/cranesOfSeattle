@@ -9,13 +9,6 @@ export const winstonInstance = new (winston.Logger)({
     new (winston.transports.Console)({
       colorize: true
     }),
-    new (winston.transports.File)({
-      level: 'info',
-      filename: path.resolve(process.cwd(), 'api.log'),
-      prettyPrint: true,
-      depth: null,
-      zippedArchive: true
-    })
   ]
 });
 
