@@ -6,7 +6,7 @@ require('object-assign-shim');
   require.context('./src/components/', true, /\.jsx?$/),
   require.context('./src/containers/', true, /\.jsx?$/),
   require.context('./src/lib/', true, /\.jsx?$/),
-  require.context('./src/redux/', true, /\.jsx?$/),
+  require.context('./src/state/', true, /\.jsx?$/),
   require.context('./src/layouts/', true, /\.jsx?$/),
 ].forEach(context => context.keys().forEach(context));
 
