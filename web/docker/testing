@@ -10,6 +10,9 @@ COPY ./.babelrc .babelrc
 COPY ./karma.config.js karma.config.js
 COPY ./test.context.js test.context.js
 COPY ./server.js server.js
+
+RUN npm config set registry http://registry.npmjs.org/
+
 RUN npm install
 
 EXPOSE 9000
