@@ -8,6 +8,7 @@ COPY ./test test/
 COPY ./webpack webpack/
 COPY ./.babelrc .babelrc
 COPY ./karma.config.js karma.config.js
+COPY ./test.context.js test.context.js
 COPY ./server.js server.js
 RUN npm install
 
