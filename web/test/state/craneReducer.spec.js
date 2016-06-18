@@ -4,7 +4,7 @@ import reducer, {
   REQUEST_CRANES,
   RECEIVE_CRANES,
   ADD_CRANE,
-} from '../../src/redux/ducks/cranes.js';
+} from '../../src/state/ducks/cranes.js';
 
 describe('Cranes Reducer', () => {
   it('should have a certain initial state.', () => {

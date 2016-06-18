@@ -5,7 +5,7 @@ import reducer, {
   REQUEST_USER_LOCATION,
   RECEIVE_USER_LOCATION,
   ERROR_USER_LOCATION,
-} from '../../src/redux/ducks/map.js';
+} from '../../src/state/ducks/map.js';
 
 describe('Map reducer', () => {
   it('Should return proper initial state.', () => {
