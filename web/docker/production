@@ -12,6 +12,8 @@ COPY ./server.js server.js
 COPY ./.env .env
 RUN npm install
 
+RUN npm config set registry http://registry.npmjs.org/
+
 RUN npm run build
 
 EXPOSE 9000
