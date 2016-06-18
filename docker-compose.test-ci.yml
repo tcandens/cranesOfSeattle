@@ -18,7 +18,7 @@ services:
       - GOOGLE_OAUTH_ID=1234
       - GOOGLE_OAUTH_SECRET=testingSecret
       - TOKEN_SECRET=testingSecret
-    entrypoint: ./wait-for-it.sh db:5432 --timeout=35 -- ./entry.sh
+    entrypoint: ./wait-for-it.sh db:5432 --timeout=120 -- ./entry.sh
   test-web:
     build:
       context: ./web
