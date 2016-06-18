@@ -83,12 +83,12 @@ test.serial('INSERTING A REPORT', async t => {
 
   t.true(isObject(res.body.result));
 
-  t.true(isNumber(res.body.result.properties.id));
+  t.true(isNumber(res.body.result.report.properties.id));
 
-  t.true(isNumber(res.body.result.properties.confidence))
+  t.true(isNumber(res.body.result.report.properties.confidence))
 
   // Stash ID on testReport to test later
-  testReport.properties.id = res.body.result.properties.id;
+  testReport.properties.id = res.body.result.report.properties.id;
 
 });
 
@@ -176,11 +176,16 @@ test.serial('FETCHING A REPORT BY ID', async t => {
   t.is(
     res.status,
     200
-  )
+  );
+
+  t.is(
+    res.body.properties.id,
+    testReport.properties.id,
+  );
+
   t.deepEqual(
-    testReport,
-    res.body,
-    'Should return a report object that matches test report.'
+    res.body.properties.geometry,
+    testReport.properties.geometry
   );
 
 });

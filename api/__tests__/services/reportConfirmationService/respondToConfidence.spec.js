@@ -129,7 +129,10 @@ test.serial('#respondToConfidence when 0', async t => {
   await withConfidenceOf(0).then(context => {
     context.capture(t)
       .expectCreated({crane: 0, report: 1})
-      .expectResult(reportsFakeObject)
+      .expectResult({
+        report: reportsFakeObject,
+        crane: null
+      })
       .expectMessage('Report created with confidence of 0.')
   });
 });
@@ -138,7 +141,10 @@ test.serial('#respondToConfidence when 1', async t => {
   await withConfidenceOf(1).then(context => {
     context.capture(t)
       .expectCreated({crane: 0, report: 1})
-      .expectResult(reportsFakeObject)
+      .expectResult({
+        report: reportsFakeObject,
+        crane: null
+      })
       .expectMessage('Report created with confidence of 1.');
   });
 });
@@ -147,7 +153,10 @@ test.serial('#respondToConfidence when 2', async t => {
   await withConfidenceOf(2).then(context => {
     context.capture(t)
       .expectCreated({crane: 0, report: 1})
-      .expectResult(reportsFakeObject)
+      .expectResult({
+        report: reportsFakeObject,
+        crane: null
+      })
       .expectMessage('Report created with confidence of 2.');
   });
 });
@@ -162,8 +171,8 @@ test.serial('#respondToConfidence when 3', async t => {
     context.capture(t)
       .expectCreated({crane: 1, report: 1})
       .expectResult({
-        crane: cranesFakeObject,
-        report: reportsFakeObject
+        report: reportsFakeObject,
+        crane: cranesFakeObject
       })
       .expectMessage('Crane and report created.');
   })
