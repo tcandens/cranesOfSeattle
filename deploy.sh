@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env bash
 #
 # create git remote using env variables to keep deployment info private.
 git remote add deploy ${PROD_SERVER_URL}
