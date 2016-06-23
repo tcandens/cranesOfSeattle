@@ -21,3 +21,15 @@
   &--invert
     &:hover
       background-color alpha($colors-mint, 0.5)
+  &--facebook
+    $color = mix($colors-dark, $colors-salmon)
+    background radial-gradient(circle at 50% 100%, $color, $color)
+    border transparent !important
+    &:hover
+      background radial-gradient(circle at 50% 100%, lighten($color, 20%), $color)
+  &--google
+    $color = mix($colors-dark, $colors-dark)
+    background radial-gradient(circle at 50% 100%, $color, $color)
+    border transparent !important
+    &:hover
+      background radial-gradient(circle at 50% 100%, lighten($color, 20%), $color)

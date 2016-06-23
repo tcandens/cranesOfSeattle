@@ -16,25 +16,28 @@ import {
   }
 )
 export default class LoginContainer extends Component {
-  handleLoginSubmit = (e) => {
-
-  }
   render = () => {
     return (
       <section className="l-login">
         <h1>Login</h1>
         <p>Use your prefered sign-in method.</p>
         <div className="form-group--column">
-          <Button
+          <Button className="button--google"
             onClick={() => {
-              this.props.dispatch(userLogin({provider: 'google'}));
+              this.props.dispatch(userLogin({
+                provider: 'google',
+                redirect: '/report',
+              }));
             }}
           >
             Login with Google
           </Button>
-          <Button
+          <Button className="button--facebook"
             onClick={() => {
-              this.props.dispatch(userLogin({provider: 'facebook'}));
+              this.props.dispatch(userLogin({
+                provider: 'facebook',
+                redirect: '/report',
+              }));
             }}
           >
             Login with Facebook
