@@ -5,9 +5,10 @@ const userModel = modelFactory('users');
 userModel.create = function(user) {
   const query = `
     INSERT INTO ${this.tableName}
-    (google_id, name, email, image_url)
+    (auth_provider, auth_provider_id, name, email, image_url)
     VALUES (
-      $/google_id/,
+      $/auth_provider/,
+      $/auth_provider_id/,
       $/name/,
       $/email/,
       $/image_url/
@@ -23,7 +24,8 @@ userModel.findOrCreate = function(user) {
   const query = `
     SELECT *
     FROM ${this.tableName}
-    WHERE google_id = $/google_id/
+    WHERE auth_provider = $/auth_provider/
+    AND auth_provider_id = $/auth_provider_id/
   `;
   const response = this.db.one(query, user)
     .then(foundUser => {

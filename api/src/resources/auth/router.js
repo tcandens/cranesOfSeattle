@@ -5,8 +5,7 @@ const TOKEN_SECRET = process.env.TOKEN_SECRET || 'Token Secret';
 
 export default function googleAuthRoutesFactory(passport) {
   return Router()
-    .get(
-      '/auth/google',
+    .get('/auth/google',
       passport.authenticate(
         'google',
         {
@@ -15,8 +14,7 @@ export default function googleAuthRoutesFactory(passport) {
         }
       )
     )
-    .get(
-      '/auth/google/callback',
+    .get('/auth/google/callback',
       passport.authenticate(
         'google',
         {
@@ -33,6 +31,26 @@ export default function googleAuthRoutesFactory(passport) {
           <p>Redirecting...</p>
         `;
         // Create & sign JWT token encoding user info
+        const token = jwt.sign(user, TOKEN_SECRET, {expiresIn: '100 days'});
+        ctx.redirect(`/api/auth#token=${token}`);
+      }
+    )
+    .get('/auth/facebook',
+      passport.authenticate(
+        'facebook', {
+          session: false,
+          scope: ['email']
+        }
+      )
+    )
+    .get('/auth/facebook/callback',
+      passport.authenticate(
+        'facebook', {
+          session: false
+        }
+      ),
+      async (ctx) => {
+        const user = ctx.req.user;
         const token = jwt.sign(user, TOKEN_SECRET, {expiresIn: '100 days'});
         ctx.redirect(`/api/auth#token=${token}`);
       }
