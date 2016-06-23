@@ -17,7 +17,7 @@ export default function CreateRoutes(store) {
     const {isAuthenticated} = state.user;
     if (!isAuthenticated) {
       replace({
-        pathname: '/',
+        pathname: '/login',
         state: {nextPathname: nextState.location.pathname},
       });
     }
