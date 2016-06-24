@@ -1,10 +1,7 @@
 import test from 'ava';
 import request from 'supertest-as-promised';
-import nock from 'nock';
 import app from '../../src/app';
 import database from '../../src/connections/postgres';
-import jwt from 'jsonwebtoken';
-import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
 
 const db = database.init();
 const server = app.listen();
@@ -18,7 +15,8 @@ function clearTables () {
  */
 const testUser = {
   name: 'Douglas Adams',
-  google_id: '999999',
+  auth_provider: 'fakeProvider',
+  auth_provider_id: 1234,
   email: 'douglas.adams@test.com',
   image_url: 'https://test.user.com/image_url'
 }
