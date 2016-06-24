@@ -14,14 +14,14 @@
   right 40px
   border-radius 0px
   padding 1.2em
-  box-shadow 10px 10px 0px alpha($dark, 0.3)
+  box-shadow 10px 10px 0px alpha($colors-dark, 0.3)
   z-index $z-modal
   &--header
     flex 1 0 auto
     padding 1rem
     width 100%
-    color $white
-    background-color $dark
+    color $colors-white
+    background-color $colors-dark
   &--body
     flex-basis auto
     width 100%
@@ -35,10 +35,10 @@
     button
       padding 0.4rem
   &--success
-    background linear-gradient(30deg, alpha($mint, 0.99), alpha($yellow, 0.99))
+    background linear-gradient(30deg, alpha($colors-mint, 0.99), alpha($colors-yellow, 0.99))
   &--list
     padding 0
-    background linear-gradient(30deg, alpha($white, 0.89), alpha($dark, 0.48))
+    background linear-gradient(30deg, alpha($colors-white, 0.89), alpha($colors-dark, 0.48))
     ul, ol
       width 100%
       list-style none

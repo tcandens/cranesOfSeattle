@@ -2,6 +2,7 @@ import React from 'react';
 import {Route, IndexRoute} from 'react-router';
 
 import MainLayout from 'layouts/Main';
+import LoginContainer from 'containers/Login';
 import Entry from 'components/Entry';
 
 import {
@@ -16,7 +17,7 @@ export default function CreateRoutes(store) {
     const {isAuthenticated} = state.user;
     if (!isAuthenticated) {
       replace({
-        pathname: '/',
+        pathname: '/login',
         state: {nextPathname: nextState.location.pathname},
       });
     }
@@ -28,6 +29,7 @@ export default function CreateRoutes(store) {
   return (
     <Route path="/" component={MainLayout}>
       <IndexRoute component={Entry} />
+      <Route path="login" component={LoginContainer}/>
       <Route path="explore"
         getComponent={(next, cb) => {
           require.ensure([], require => {

@@ -1,22 +1,23 @@
 import jwtDecode from 'jwt-decode';
 import {
   listenForToken,
+  getPopupDimensions,
 } from './utils';
 
 const POPUP_NAME = 'Sign In Popup';
-const GOOGLE_OAUTH_WINDOW_FEATURES = `
-  width=320,
-  height=570,
-  scrollbars=no,
-  locationbar=no
-`;
 
-export function loginPopup() {
+const endpoints = {
+  google: '/api/auth/google',
+  facebook: '/api/auth/facebook',
+};
+
+export function loginPopup(provider) {
   const protocol = window.location.protocol;
   const host = window.location.host;
-  const endpoint = '/api/auth/google';
+  const endpoint = endpoints[provider];
   const authEndpoint = `${protocol}//${host}${endpoint}`;
-  const popup = window.open(authEndpoint, POPUP_NAME, GOOGLE_OAUTH_WINDOW_FEATURES);
+  const windowSettings = getPopupDimensions(provider);
+  const popup = window.open(authEndpoint, POPUP_NAME, windowSettings);
   return listenForToken(popup).then(token => {
     const decoded = jwtDecode(token);
     const profile = {

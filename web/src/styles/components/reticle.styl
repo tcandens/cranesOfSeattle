@@ -6,7 +6,7 @@ $width = 5px
   width $width
   height $width
   border-radius floor($width / 2)
-  background-color $magenta
+  background-color $colors-magenta
   transition transform 300ms ease
   z-index 1000
   &:after
@@ -16,7 +16,7 @@ $width = 5px
     height @width
     margin-left -((@width - $width) / 2)
     margin-top -((@width - $width) / 2)
-    background-color alpha($magenta, 80%)
+    background-color alpha($colors-magenta, 80%)
     border-radius 50%
     animation location_pinging 2000ms ease infinite
 

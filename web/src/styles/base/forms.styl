@@ -3,14 +3,13 @@ form
 label
   display inherit
 input[type='number']
-  color $salmon
+  color $colors-salmon
   font-weight bold
   max-width 3rem
   font-size 1.4rem
   border none
   background transparent
   margin 0 1.5rem
-
 .form-group--radio
   display flex
   flex-direction row
@@ -22,9 +21,10 @@ input[type='number']
     border-left none
     border-radius 0 0.5rem 0.5rem 0
   input[type="radio"]:checked + label
-    background-color $mint
+    background-color $colors-mint
+    background-color coral
     border-color lighten(@background-color, 30%)
-    color $dark
+    color $colors-dark
   label
     flex-direction row
     justify-content space-between
@@ -34,12 +34,14 @@ input[type='number']
     text-align center
     margin 0.5em 0
     padding 1rem
-    color $white
-    border 1px solid $white
+    color $colors-white
+    border 1px solid $colors-white
     border-radius 0.5rem
-    background-color $dark
+    background-color $colors-dark
     transition background-color 300ms ease-in-out
-
+.form-group--column
+  display flex
+  flex-direction column
 .form-group--row
   display flex
   flex-direction row
