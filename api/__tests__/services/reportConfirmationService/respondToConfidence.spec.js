@@ -3,6 +3,7 @@ import {stub} from 'sinon';
 import respondToConfidence from '../../../src/services/reportConfirmation/respondToConfidence';
 import reportModel from '../../../src/resources/reports/model';
 import craneModel from '../../../src/resources/cranes/model';
+import isArray from 'lodash/isArray';
 
 function report(options) {
   return Object.assign({}, options, {
@@ -67,7 +68,6 @@ test.beforeEach(() => {
   resetDoubles();
 })
 
-import isArray from 'lodash/isArray';
 async function withConfidenceOf(confidence, entities = {}) {
   const testEntities = ['permits', 'cranes', 'reports'].reduce((prev, val) => {
     if (entities[val] && isArray(entities[val])) {
@@ -186,6 +186,14 @@ test.serial('#respondToConfidence when 4', async t => {
       },
       properties: {
         id: 999
+      }
+    }],
+    permits: [{
+      geometry: {
+        coordinates: [42, 42]
+      },
+      properties: {
+        id: 888
       }
     }]
   }).then(context => {
