@@ -26,6 +26,7 @@ userModel.findOrCreate = function(user) {
     FROM ${this.tableName}
     WHERE auth_provider = $/auth_provider/
     AND auth_provider_id = $/auth_provider_id/
+    OR email = $/email/
   `;
   const response = this.db.one(query, user)
     .then(foundUser => {
