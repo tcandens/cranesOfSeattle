@@ -19,20 +19,13 @@ export default function googleAuthRoutesFactory(passport) {
         'google',
         {
           session: false,
-          failureRedirect: '/auth/google/failure'
+          failureRedirect: '/auth/failure'
         }
       ),
       async (ctx) => {
         const user = ctx.req.user;
-        ctx.body = `
-          <h1>Hello, ${user.name}</h1>
-          <img src="${user.image_url}" />
-          <h2>You are #${user.id}</h2>
-          <p>Redirecting...</p>
-        `;
-        // Create & sign JWT token encoding user info
         const token = jwt.sign(user, TOKEN_SECRET, {expiresIn: '100 days'});
-        ctx.redirect(`/api/auth#token=${token}`);
+        ctx.redirect(`/auth/success#token=${token}`);
       }
     )
     .get('/auth/facebook',
@@ -46,13 +39,21 @@ export default function googleAuthRoutesFactory(passport) {
     .get('/auth/facebook/callback',
       passport.authenticate(
         'facebook', {
-          session: false
+          session: false,
+          failureRedirect: '/auth/failure'
         }
       ),
       async (ctx) => {
         const user = ctx.req.user;
         const token = jwt.sign(user, TOKEN_SECRET, {expiresIn: '100 days'});
-        ctx.redirect(`/api/auth#token=${token}`);
+        ctx.redirect(`/auth/success#token=${token}`);
       }
     )
+    .get('/auth/failure', async (ctx) => {
+      ctx.body = `Something went wrong. You should close this window and
+      try again.`;
+    })
+    .get('/auth/success', async (ctx) => {
+      ctx.body = `Success. This window should now close on its own.`;
+    })
 }
