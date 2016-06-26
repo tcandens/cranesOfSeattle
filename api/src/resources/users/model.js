@@ -46,10 +46,10 @@ userModel.addPoints = function(userId, points) {
     UPDATE ${this.tableName}
     SET points = points + $/points/
     WHERE id = $/userId/
-    RETURNING points
+    RETURNING points AS points
   `;
   return this.db.one(query, {userId, points})
-    .then(updatedPoints => updatedPoints)
+    .then(returned => returned.points)
     .catch(error => error)
     .finally(this.close())
 }

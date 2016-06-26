@@ -1,6 +1,7 @@
 import geolib from 'geolib';
 import reportModel from '../../resources/reports/model';
 import craneModel from '../../resources/cranes/model';
+import userModel from '../../resources/users/model';
 
 function findNearestToReport(report, nearby) {
   return geolib.findNearest({
@@ -18,6 +19,26 @@ function flattenGeoJSON(items) {
   }));
 }
 
+const mapConfidenceToPoints = {
+  0: 1,
+  1: 10,
+  2: 10,
+  3: 60,
+  4: 10
+}
+
+export async function addUserPoints(userId, confidence) {
+  if (!mapConfidenceToPoints[confidence]) {
+    throw new Error('No score found for confidence level.');
+  }
+  const added = mapConfidenceToPoints[confidence];
+  const total = await userModel.addPoints(userId, mapConfidenceToPoints[confidence]);
+  return {
+    total,
+    added
+  };
+}
+
 export function createReportWithConfidence(confidence, report) {
   return reportModel.create(Object.assign({}, report, {
     properties: {
@@ -28,19 +49,27 @@ export function createReportWithConfidence(confidence, report) {
 }
 
 export async function respondWithReport(confidence, report) {
+  const userId = report.properties.user_id;
   const createdReport = await createReportWithConfidence(confidence, report);
+  const userPoints = await addUserPoints(userId, confidence);
   return {
-    message: `Report created with confidence of ${confidence}.`,
+    message: `
+      Thanks for contributing!
+      A report was added and you have gained ${userPoints.added} points!
+    `,
     result: {
       report: createdReport,
-      crane: undefined
+      crane: undefined,
+      user: userPoints
     }
   };
 }
 
 export async function respondWithReportAndCrane(confidence, report, nearby) {
+  const userId = report.properties.user_id;
   const nearestPermit = findNearestToReport(report, nearby.permits);
   const createdReport = await createReportWithConfidence(confidence, report);
+  const userPoints = await addUserPoints(userId, confidence);
   const createdCrane = await craneModel.create({
     geometry: {
       type: 'Point',
@@ -55,26 +84,36 @@ export async function respondWithReportAndCrane(confidence, report, nearby) {
     }
   });
   return {
-    message: 'Crane and report created.',
+    message: `
+      Congratulations!
+      You have discovered a new crane gaining ${userPoints} points!
+    `,
     result: {
       report: createdReport,
-      crane: createdCrane
+      crane: createdCrane,
+      user: userPoints
     }
   };
 }
 
 export async function respondWithUpdatingCrane(confidence, report, nearby) {
+  const userId = report.properties.user_id;
   const flattened = flattenGeoJSON(nearby.permits);
   const nearestCrane = findNearestToReport(report, flattened);
   const createdCrane = await craneModel.update({
     id: nearestCrane.properties.id,
     confidence: nearestCrane.properties.confidence + report.properties.confidence
   });
+  const userPoints = addUserPoints(userId, confidence);
   return {
-    message: 'Updated confidence of nearest crane.',
+    message: `
+      Thank you!
+      Your report has increased the confidence level of a nearby crane.
+    `,
     result: {
       crane: createdCrane,
-      report: undefined
+      report: undefined,
+      user: userPoints
     }
   };
 }
