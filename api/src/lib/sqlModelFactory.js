@@ -33,11 +33,12 @@ const prototype = {
       UPDATE ${this.tableName} SET $/key~/ = $/value/ WHERE id = $/id/
     `;
     const response = this.db.none(query, fieldObject)
+      .finally(this.close());
     return response;
   },
   destroy(id) {
     const query = `
-      DELETE FROM ${this.tableName} WHERE id = $1
+      DELETE FROM ${this.tableName} WHERE id = $1^
     `;
     const response = this.db.none(query, id)
       .finally(this.close());

@@ -3,13 +3,14 @@ export const TOKEN_SECRET = process.env.TOKEN_SECRET || 'Token Secret';
 
 export default function (options = {}) {
   return async (ctx, next) => {
-    if (!ctx.headers || !ctx.headers.authorization) {
+    if (!ctx.headers || !ctx.headers['Authorization']) {
       ctx.status = 501;
       ctx.body = {
         error: 'Not Authorized'
       }
+      return next();
     }
-    const token = ctx.headers['authorization'].split(' ')[1];
+    const token = ctx.headers['Authorization'].split(' ')[1];
     let verified = false;
     try {
       verified = jwt.verify(token, TOKEN_SECRET);

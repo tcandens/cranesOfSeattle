@@ -15,9 +15,7 @@ userModel.create = function(user) {
     )
     RETURNING ID
   `;
-  const response = this.db.one(query, user)
-    .finally(this.close());
-  return response;
+  return this.db.one(query, user)
 }
 
 userModel.findOrCreate = function(user) {
@@ -39,8 +37,21 @@ userModel.findOrCreate = function(user) {
         return user;
       })
     })
-    .finally(this.close());
+    .finally(this.close())
   return response;
+}
+
+userModel.addPoints = function(userId, points) {
+  const query = `
+    UPDATE ${this.tableName}
+    SET points = points + $/points/
+    WHERE id = $/userId/
+    RETURNING points
+  `;
+  return this.db.one(query, {userId, points})
+    .then(updatedPoints => updatedPoints)
+    .catch(error => error)
+    .finally(this.close())
 }
 
 export default userModel;

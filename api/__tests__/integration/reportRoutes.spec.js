@@ -70,6 +70,10 @@ test.beforeEach('Setup', t => {
   t.context.token = jwt.sign(testUser, TOKEN_SECRET);
 });
 
+test.after('Clean database', t => {
+  clearTables();
+});
+
 test.serial('INSERTING A REPORT', async t => {
 
   clearTables();
@@ -93,7 +97,6 @@ test.serial('INSERTING A REPORT', async t => {
 });
 
 test.skip.serial('FETCHING REPORTS WITHIN RANGE', async t => {
-  // Insert another report that should be outside search radius
   const postedNearby = await request(server)
     .post('/reports')
     .set({
@@ -200,10 +203,9 @@ test.serial('UPDATING A REPORT', async t => {
   const res = await request(server)
     .put('/reports/' + testReport.properties.id)
     .set({
-      'authorization': `Bearer ${t.context.token}`
+      'Authorization': `Bearer ${t.context.token}`
     })
     .send(updatedReport)
-    .expect(204)
 
   const doubleCheck = await request(server)
     .get('/reports/' + testReport.properties.id)
@@ -224,7 +226,7 @@ test.serial('DESTROYING A REPORT', async t => {
   const res = await request(server)
     .del('/reports/' + testReport.properties.id)
     .set({
-      'authorization': `Bearer ${t.context.token}`
+      'Authorization': `Bearer ${t.context.token}`
     });
 
   t.is(
