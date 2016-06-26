@@ -55,7 +55,8 @@ export async function respondWithReport(confidence, report) {
   return {
     message: `
       Thanks for contributing!
-      A report was added and you have gained ${userPoints.added} points!
+      A report was added and you have gained ${userPoints.added}
+      ${userPoints.added > 1 ? 'points' : 'point'}!
     `,
     result: {
       report: createdReport,

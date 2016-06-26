@@ -61,7 +61,8 @@ reportModel.readAll = function() {
 
 reportModel.findWithin = function(querystring) {
   const options = defaults(querystring, {
-    radius: 1
+    radius: 1,
+    userId: null
   });
   const query = `
     SELECT 'FeatureCollection' as type,
@@ -72,6 +73,7 @@ reportModel.findWithin = function(querystring) {
       FROM ${this.tableName} AS r WHERE ST_DWithin(
         r.location, 'POINT($/lng/ $/lat/)', $/radius/
       )
+      AND r.user_id != $/userId/
     ) AS f
   `;
   return this.db.one(query, options);

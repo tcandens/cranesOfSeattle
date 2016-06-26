@@ -5,7 +5,7 @@ import reportModel from '../../resources/reports/model';
 import permitModel from '../../resources/permits/model';
 import geolib from 'geolib';
 
-const RADIUS_TO_SEARCH_IN_METERS = 500;
+const RADIUS_TO_SEARCH_IN_METERS = 60;
 
 /**
  * Retrieves and filters cranes to within a given radius of report.
