@@ -60,7 +60,7 @@ import {browserHistory} from 'react-router';
 export function userLogin(options) {
   return dispatch => {
     dispatch(requestLogin());
-    loginPopup().then(profile => {
+    loginPopup(options.provider).then(profile => {
       dispatch(receiveLogin(profile));
       if (options.redirect) {
         browserHistory.push(options.redirect);

@@ -1,40 +1,8 @@
 import Promise from 'bluebird';
-import axios from 'axios';
-import defaults from 'lodash/defaults';
 import queryString from 'query-string';
 
 export function parsePopupLocation(popup) {
   return queryString.parse(popup.location.hash);
-}
-
-export function fetchGoogleProfile(token) {
-  const googleApiUrl = 'https://www.googleapis.com/userinfo/v2/me';
-  return axios.get(googleApiUrl, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then(response => {
-    return Promise.resolve(response.data);
-  });
-}
-
-export function createGoogleTokenUrl(queries) {
-  if (!GOOGLE_CLIENT_ID) {
-    return console.warn('Google Client ID required.');
-  }
-  const defaultQueries = defaults(queries, {
-    redirect_uri: `${window.location.host}/api/auth/google/callback`,
-    response_type: 'token',
-    state: 'profile',
-    scope: 'email',
-  });
-  defaultQueries.client_id = GOOGLE_CLIENT_ID;
-  const protocol = window.location.protocol;
-  if (queries.redirect_uri) {
-    defaultQueries.redirect_uri = `${protocol}//${queries.redirect_uri}`;
-  }
-  const qstring = queryString.stringify(defaultQueries);
-  return `https://accounts.google.com/o/oauth2/v2/auth?${qstring}`;
 }
 
 export function listenForToken(popup) {
@@ -57,4 +25,43 @@ export function listenForToken(popup) {
     }
     tryParsing(popup);
   });
+}
+
+export function getPopupSize(provider) {
+  switch (provider) {
+    case 'google':
+      return {width: 452, height: 633};
+    case 'facebook':
+      return {width: 580, height: 400};
+    default:
+      return {width: 1020, height: 618};
+  }
+}
+
+export function getPopupOffset({width, height}) {
+  const windowX = window.screenLeft ? window.screenLeft : window.screenX;
+  const windowY = window.screenTop ? window.screenTop : window.screenY;
+  const x = windowX + (window.innerWidth / 2) - (width / 2);
+  const y = windowY + (window.innerHeight / 2) - (height / 2);
+  return {x, y};
+}
+
+export function getPopupDimensions(provider) {
+  const popupSettings = `
+    scrollbars=no,
+    toolbar=no,
+    location=no,
+    titlebar=no,
+    menubar=no,
+    status=no
+  `;
+  const {width, height} = getPopupSize(provider);
+  const {x, y} = getPopupOffset({width, height});
+  return `
+    width=${width},
+    height=${height},
+    top=${y},
+    left=${x},
+    ${popupSettings}
+  `;
 }

@@ -1,8 +1,8 @@
 .button
   display block
   margin 1rem
-  color $white
-  border 3px solid $white
+  color $colors-white
+  border 3px solid $colors-white
   background-color transparent
   max-width 320px
   text-decoration none
@@ -10,14 +10,26 @@
   cursor pointer
   transition all 500ms ease-in-out
   &:hover
-    background-color alpha($dark, 0.8)
+    background-color alpha($colors-dark, 0.8)
     border 3px solid transparent
   a
-    color $white
+    color $colors-white
     text-decoration none
   &--lg
     font-size 1.50em
     padding 1rem 1rem
   &--invert
     &:hover
-      background-color alpha($mint, 0.5)
+      background-color alpha($colors-mint, 0.5)
+  &--facebook
+    $color = mix($colors-dark, $colors-salmon)
+    background radial-gradient(circle at 50% 100%, $color, $color)
+    border transparent !important
+    &:hover
+      background radial-gradient(circle at 50% 100%, lighten($color, 20%), $color)
+  &--google
+    $color = mix($colors-dark, $colors-dark)
+    background radial-gradient(circle at 50% 100%, $color, $color)
+    border transparent !important
+    &:hover
+      background radial-gradient(circle at 50% 100%, lighten($color, 20%), $color)

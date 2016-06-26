@@ -5,25 +5,26 @@ const userModel = modelFactory('users');
 userModel.create = function(user) {
   const query = `
     INSERT INTO ${this.tableName}
-    (google_id, name, email, image_url)
+    (auth_provider, auth_provider_id, name, email, image_url)
     VALUES (
-      $/google_id/,
+      $/auth_provider/,
+      $/auth_provider_id/,
       $/name/,
       $/email/,
       $/image_url/
     )
     RETURNING ID
   `;
-  const response = this.db.one(query, user)
-    .finally(this.close());
-  return response;
+  return this.db.one(query, user)
 }
 
 userModel.findOrCreate = function(user) {
   const query = `
     SELECT *
     FROM ${this.tableName}
-    WHERE google_id = $/google_id/
+    WHERE auth_provider = $/auth_provider/
+    AND auth_provider_id = $/auth_provider_id/
+    OR email = $/email/
   `;
   const response = this.db.one(query, user)
     .then(foundUser => {
@@ -36,8 +37,21 @@ userModel.findOrCreate = function(user) {
         return user;
       })
     })
-    .finally(this.close());
+    .finally(this.close())
   return response;
+}
+
+userModel.addPoints = function(userId, points) {
+  const query = `
+    UPDATE ${this.tableName}
+    SET points = points + $/points/
+    WHERE id = $/userId/
+    RETURNING points AS points
+  `;
+  return this.db.one(query, {userId, points})
+    .then(returned => returned.points)
+    .catch(error => error)
+    .finally(this.close())
 }
 
 export default userModel;

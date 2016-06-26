@@ -32,6 +32,7 @@ module.exports = config => {
     webpackMiddleware: {
       noInfo: true,
       quiet: true,
+      stats: 'errors-only',
     },
   });
 };

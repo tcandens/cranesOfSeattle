@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginButton from 'containers/LoginButton';
+import Button from 'components/Button';
 import {Link} from 'react-router';
 
 export default function CallToAction() {
@@ -8,7 +8,9 @@ export default function CallToAction() {
       <Link to="/explore" className="button button--lg">
         View the cranes
       </Link>
-      <LoginButton to="/report">Login to Report</LoginButton>
+      <Link to="/login">
+        <Button>Login to Report</Button>
+      </Link>
     </ul>
   );
 }

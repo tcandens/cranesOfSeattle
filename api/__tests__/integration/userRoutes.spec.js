@@ -1,6 +1,5 @@
 import test from 'ava';
 import request from 'supertest-as-promised';
-import nock from 'nock';
 import app from '../../src/app';
 import database from '../../src/connections/postgres';
 import jwt from 'jsonwebtoken';
@@ -10,7 +9,7 @@ const db = database.init();
 const server = app.listen();
 
 function clearTables () {
-  db.instance.query('TRUNCATE users');
+  return db.instance.query('TRUNCATE users');
 }
 
 /**
@@ -18,17 +17,31 @@ function clearTables () {
  */
 const testUser = {
   name: 'Douglas Adams',
-  google_id: '999999',
+  auth_provider: 'fakeProvider',
+  auth_provider_id: 1234,
   email: 'douglas.adams@test.com',
-  image_url: 'https://test.user.com/image_url'
+  image_url: 'https://test.user.com/image_url',
+  points: 0
 }
+
+test.beforeEach('Setup auth', t => {
+  const token = jwt.sign({}, TOKEN_SECRET);
+  t.context.headers = {
+    'Authorization': `Bearer ${token}`
+  }
+});
+
+test.after('Cleanup database', t => {
+  clearTables();
+})
 
 test.serial('INSERTING A USER', async t => {
 
-  clearTables();
+  await clearTables();
 
   const res = await request(server)
     .post('/users')
+    .set(t.context.headers)
     .send(testUser)
 
   t.is(
@@ -55,11 +68,8 @@ test.serial('INSERTING A USER', async t => {
 test.serial('FETCHING A USER', async t => {
   const res = await request(server)
     .get('/users/' + testUser.id)
+    .set(t.context.headers)
 
-  t.regex(
-    res.headers['content-type'],
-    /json/
-  )
   t.deepEqual(
     testUser,
     res.body,
@@ -68,32 +78,47 @@ test.serial('FETCHING A USER', async t => {
 
 });
 
-test.skip('UPDATING A USER', function *(assert) {
-  const updatedUser = {};
+test.serial('UPDATING A USER', async t => {
+  const updatedUser = {
+    key: 'points',
+    value: 2
+  };
 
-  const response = yield request
+  const response = await request(server)
     .put('/users/' + testUser.id)
+    .set(t.context.headers)
     .send(updatedUser)
-    .end();
 
-  assert.equal(
+  t.is(
+    response.status,
+    200
+  );
+  t.is(
     response.body.message,
     'User updated.',
     'Should return a message with status.'
   );
 
+  const doubleCheckUser = Object.assign({}, testUser, {
+    [updatedUser.key]: updatedUser.value
+  })
+  const doubleCheck = await request(server)
+    .get('/users/' + testUser.id)
+    .set(t.context.headers)
+
+  t.deepEqual(
+    doubleCheckUser,
+    doubleCheck.body,
+  );
 });
 
-test.skip('DESTROYING A USER', function *(assert) {
-  const response = yield request
-    .del('/user/' + testUser.id)
-    .expect(200)
-    .end();
+test('DESTROYING A USER', async t => {
+  const response = await request(server)
+    .del('/users/' + testUser.id)
+    .set(t.context.headers)
 
-  assert.equal(
-    response.body.message,
-    'User destroyed',
-    'Should return a message with status.'
+  t.is(
+    response.status,
+    204
   );
-
 });

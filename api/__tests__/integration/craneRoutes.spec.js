@@ -10,7 +10,7 @@ const db = database.init();
 const server = app.listen();
 
 function clearTables () {
-  db.instance.none('TRUNCATE cranes');
+  return db.instance.none('TRUNCATE cranes');
 }
 
 /**
@@ -30,12 +30,24 @@ const testCrane = {
   }
 }
 
+test.beforeEach('Setup Auth', t => {
+  const token = jwt.sign({}, TOKEN_SECRET);
+  t.context.headers = {
+    'Authorization': `Bearer ${token}`
+  }
+})
+
+test.after('Cleanup database', t => {
+  clearTables();
+})
+
 test.serial('INSERTING A CRANE', async t => {
 
-  clearTables();
+  await clearTables();
 
   const res = await request(server)
     .post('/cranes')
+    .set(t.context.headers)
     .send(testCrane)
 
   t.is(
@@ -129,11 +141,11 @@ test.serial('FETCHING ALL CRANES', async t => {
 test.serial('UPDATING A CRANE', async t => {
   const updatedCrane = {
     key: 'permit',
-    value: 2323,
-    id: testCrane.properties.id
+    value: 2323
   };
   const postedNearby = await request(server)
     .put('/cranes/' + testCrane.properties.id)
+    .set(t.context.headers)
     .send(updatedCrane)
 
   const doubleCheck = await request(server)
@@ -154,6 +166,7 @@ test.serial('UPDATING A CRANE', async t => {
 test.serial('DESTROYING A CRANE', async t => {
   const res = await request(server)
     .del('/cranes/' + testCrane.properties.id)
+    .set(t.context.headers)
 
   t.is(
     res.status,

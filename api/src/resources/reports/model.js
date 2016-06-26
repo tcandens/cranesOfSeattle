@@ -29,12 +29,17 @@ reportModel.read = function(id) {
       (SELECT l FROM
         (SELECT
           user_id,
-          id,
-          confidence
+          l.id,
+          confidence,
+          image_url AS user_image_url,
+          points AS user_points,
+          name AS user_name
         ) AS l
       )
     ) AS properties
-    FROM ${this.tableName} AS l WHERE l.id = $1
+    FROM ${this.tableName} AS l
+    INNER JOIN users AS u ON l.user_id = u.id
+    WHERE l.id = $1
   `;
   return this.db.one(query, id);
 }
@@ -46,8 +51,9 @@ reportModel.readAll = function() {
     COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
-      row_to_json((SELECT l FROM (SELECT id, user_id, confidence) AS l)) AS properties
+      row_to_json((SELECT l FROM (SELECT r.id, user_id, confidence, image_url AS user_image_url, name AS user_name, points AS user_points) AS l)) AS properties
       FROM ${this.tableName} AS r
+      INNER JOIN users AS u ON r.user_id = u.id
     ) AS f
   `;
   return this.db.one(query);
@@ -55,7 +61,8 @@ reportModel.readAll = function() {
 
 reportModel.findWithin = function(querystring) {
   const options = defaults(querystring, {
-    radius: 1
+    radius: 1,
+    userId: null
   });
   const query = `
     SELECT 'FeatureCollection' as type,
@@ -66,6 +73,7 @@ reportModel.findWithin = function(querystring) {
       FROM ${this.tableName} AS r WHERE ST_DWithin(
         r.location, 'POINT($/lng/ $/lat/)', $/radius/
       )
+      AND r.user_id != $/userId/
     ) AS f
   `;
   return this.db.one(query, options);
