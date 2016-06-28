@@ -24,7 +24,7 @@ const reportsFakeObject = {
   type: 'Feature',
   properties: {
     id: 99999,
-    user_id: 88888
+    user_id: 88888,
   },
   geometry: {
     type: 'Point',
@@ -121,11 +121,16 @@ async function withConfidenceOf(confidence, entities = {}) {
       );
       return this;
     },
-    expectResult(expectedResult) {
-      this.t.deepEqual(
-        response.result,
-        expectedResult
-      );
+    expectResult({report, crane, user}) {
+      if (report) {
+        this.t.true((typeof report === 'object'), 'Result should contain a report.');
+      }
+      if (crane) {
+        this.t.true((typeof crane === 'object'), 'Result should contain a crane.');
+      }
+      if (user) {
+        this.t.true(!!user, 'Result should contain a user.');
+      }
       return this;
     },
     expectMessage(expectedMessage) {
