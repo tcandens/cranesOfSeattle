@@ -41,7 +41,7 @@ reportModel.read = function(id) {
     INNER JOIN users AS u ON l.user_id = u.id
     WHERE l.id = $1
   `;
-  return this.db.one(query, id);
+  return this.db.oneOrNone(query, id);
 }
 
 reportModel.readAll = function() {

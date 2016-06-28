@@ -10,12 +10,13 @@ import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
+import userModel from '../../src/resources/users/model';
 
 const db = database.init();
 const server = app.listen();
 
 function clearTables () {
-  db.instance.query('TRUNCATE reports');
+  return db.instance.query('TRUNCATE reports');
 }
 
 /**
@@ -27,9 +28,16 @@ const testReport = {
     type: 'Point',
     coordinates: [-122.386444, 47.682961]
   },
-  properties: {
-    user_id: 1
-  }
+  properties: {}
+}
+
+const testUser = {
+  image_url: 'testUrl',
+  points: 0,
+  email: 'test@test.com',
+  name: 'Dr. Testnik',
+  auth_provider: 'test_provider',
+  auth_provider_id: 12
 }
 
 const testPermits = [
@@ -57,10 +65,10 @@ const testPermits = [
   }
 ];
 
-const testUser = {
-  id: '0',
-  name: 'Test User',
-};
+test.before('Add test user', async t => {
+  const user = await userModel.create(testUser);
+  testReport.properties.user_id = user.id;
+})
 
 test.beforeEach('Setup', t => {
   const endpoint = buildEndpoint();
@@ -70,13 +78,13 @@ test.beforeEach('Setup', t => {
   t.context.token = jwt.sign(testUser, TOKEN_SECRET);
 });
 
-test.after('Clean database', t => {
-  clearTables();
+test.after('Clean database', async t => {
+  await clearTables();
 });
 
 test.serial('INSERTING A REPORT', async t => {
 
-  clearTables();
+  await clearTables();
 
   const res = await request(server)
     .post('/reports')
@@ -122,12 +130,12 @@ test.skip.serial('FETCHING REPORTS WITHIN RANGE', async t => {
   t.is(
     res.status,
     200
-  )
+  );
   t.regex(
     res.headers['content-type'],
     /json/,
     'Should return JSON.'
-  )
+  );
   t.is(
     data.features.length,
     1,
@@ -195,9 +203,8 @@ test.serial('FETCHING A REPORT BY ID', async t => {
 
 test.serial('UPDATING A REPORT', async t => {
   const updatedReport = {
-    key: 'user_id',
+    key: 'confidence',
     value: 9999,
-    id: testReport.properties.id
   };
 
   const res = await request(server)
@@ -213,13 +220,12 @@ test.serial('UPDATING A REPORT', async t => {
   t.is(
     res.status,
     204
-  )
+  );
   t.is(
-    doubleCheck.body.properties.user_id,
+    doubleCheck.body.properties.confidence,
     updatedReport.value,
     'Should now return with updated row.'
   );
-
 });
 
 test.serial('DESTROYING A REPORT', async t => {
