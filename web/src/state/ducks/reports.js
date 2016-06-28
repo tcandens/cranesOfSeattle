@@ -70,6 +70,11 @@ export default function reducer(state = initialState, action) {
         isSaving: false,
         reported: [...state.reported, action.payload],
       });
+    case ERROR_SAVE_REPORT:
+      return assign({}, state, {
+        isSaveSuccess: false,
+        isSaving: false,
+      });
     case CONFIRM_SAVE_SUCCESS:
       return assign({}, state, {
         isSaveSuccess: false,
