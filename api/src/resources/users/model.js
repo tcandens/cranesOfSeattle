@@ -31,13 +31,11 @@ userModel.findOrCreate = function(user) {
       return foundUser;
     })
     .catch(error => {
-      console.warn('User not found. Creating user %s', user.name)
-      return this.create(user).then(id => {
-        user.id = id;
+      return this.create(user).then(returned => {
+        user.id = returned.id;
         return user;
       })
     })
-    .finally(this.close())
   return response;
 }
 
