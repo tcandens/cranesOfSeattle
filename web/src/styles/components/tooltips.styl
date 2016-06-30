@@ -1,0 +1,57 @@
+.c-tooltips
+  position absolute
+  left 0
+  top 0
+  width 100%
+  height 100%
+  background alpha($colors-white, 20%)
+  transition background 400ms ease
+  &--reticle
+    display flex
+    flex-direction column
+    align-items center
+    position absolute
+    left 50%
+    top 50%
+    width 12em
+    padding 1em
+    border-radius 3px
+    transform translate3d(-50%, 0, 0)
+    color $colors-dark
+    &:after
+      content ''
+      display block
+      position absolute
+      top -0.7em
+      left calc(50% - 0.3em)
+      width 0
+      height 0
+      border-style solid
+      border-width 0.0em 0.5em 0.5em 0.5em
+      border-color transparent transparent $colors-dark transparent
+  &--markers
+    display flex
+    flex-direction column
+    align-items center
+    position absolute
+    max-width calc(100% - 4em)
+    top 2em
+    right 2em
+  &--confidence-scale
+    position relative
+    width 100%
+    height 2em
+    margin 1.5em 0 1em 0
+    background linear-gradient(90deg, $colors-yellow, $colors-salmon, $colors-mint)
+    box-shadow 0px 0px 40px 10px $colors-white
+    border-radius 3px
+    &:before, &:after
+      position absolute
+      bottom 0.5rem
+      margin 0 0.5rem
+    &:before
+      content 'low'
+      left 0
+    &:after
+      content 'high'
+      right 0
