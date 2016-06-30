@@ -67,6 +67,7 @@
     "redux-devtools": "^3.0.2",
     "remap-istanbul": "^0.6.4",
     "setimmediate": "^1.0.4",
+    "sinon": "^2.0.0-pre",
     "style-loader": "^0.13.0",
     "stylus-loader": "^1.5.1",
     "svg-url-loader": "^1.0.3",
