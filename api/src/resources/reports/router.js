@@ -18,16 +18,6 @@ export default Router()
         ctx.body = error.toString();
       });
   })
-  // .get('/reports/within', async (ctx) => {
-  //   await reportModel.findWithin(ctx.query)
-  //     .then(data => {
-  //       ctx.body = data;
-  //     })
-  //     .catch(error => {
-  //       ctx.status = 500;
-  //       ctx.body = error.toString();
-  //     });
-  // })
   .get('/reports/:id', async (ctx) => {
     await reportModel.read(ctx.params.id)
       .then(data => {
@@ -47,7 +37,6 @@ export default Router()
         ctx.body = confirmedReport;
       })
       .catch(error => {
-        throw error;
         ctx.status = 500;
         ctx.body = error.toString();
       });

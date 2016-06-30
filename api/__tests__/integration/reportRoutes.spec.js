@@ -5,12 +5,14 @@ import app from '../../src/app';
 import database from '../../src/connections/postgres';
 import jwt from 'jsonwebtoken';
 import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
+import {RADIUS} from '../../src/services/reportConfirmation/nearbyResources';
 import {buildEndpoint} from '../../src/resources/permits/model';
 import isNumber from 'lodash/isNumber';
 import isString from 'lodash/isString';
 import isObject from 'lodash/isObject';
 import isArray from 'lodash/isArray';
 import userModel from '../../src/resources/users/model';
+import destination from 'turf-destination';
 
 const db = database.init();
 const server = app.listen();
@@ -26,7 +28,7 @@ const testReport = {
   type: 'Feature',
   geometry: {
     type: 'Point',
-    coordinates: [-122.386444, 47.682961]
+    coordinates: [-122.386444444444, 47.6829614444444]
   },
   properties: {}
 }
@@ -70,11 +72,15 @@ test.before('Add test user', async t => {
   testReport.properties.user_id = user.id;
 })
 
-test.beforeEach('Setup', t => {
+function mockPermitApi() {
   const endpoint = buildEndpoint();
   nock(endpoint.hostname)
     .get(/resource/)
     .reply(200, testPermits);
+}
+
+test.beforeEach('Setup', t => {
+  mockPermitApi();
   t.context.token = jwt.sign(testUser, TOKEN_SECRET);
 });
 
@@ -82,7 +88,30 @@ test.after('Clean database', async t => {
   await clearTables();
 });
 
-test.serial('INSERTING A REPORT', async t => {
+test.serial('INSERT A REPORT WITH REPORT(S) FROM USER NEARBY', async t => {
+  await clearTables();
+
+  const firstReport = await request(server)
+    .post('/reports')
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(testReport)
+
+  const testRadius = (RADIUS - 1) / 1000;
+  const secondTestReport = destination(testReport, testRadius, 0);
+  secondTestReport.properties.user_id = testReport.properties.user_id;
+
+  mockPermitApi();
+
+  const secondReport = await request(server)
+    .post('/reports')
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(secondTestReport)
+
+  t.truthy(firstReport.body.result);
+  t.falsy(secondReport.body.result);
+});
+
+test.serial('INSERTING A REPORT WITH NO REPORTS FROM USER NEARBY', async t => {
 
   await clearTables();
 

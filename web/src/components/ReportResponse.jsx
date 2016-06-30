@@ -4,7 +4,9 @@ import CraneRecord from 'components/CraneRecord';
 
 export default function ReportResponse({message, result}) {
   let record;
-  if (result.report && result.crane) {
+  if (!result) {
+    record = null;
+  } else if (result.report && result.crane) {
     record = (
       <div>
         <ReportRecord record={result.report} />
