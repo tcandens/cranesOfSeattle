@@ -65,11 +65,23 @@ export async function reports(report, options = defaultOptions) {
     lat,
     radius: options.radius
   })
-  const filtered = filterUniqueId(report.properties.user_id, reportsCollection.features);
-  return filtered.features || [];
+  return reportsCollection;
 }
 
-function filterUniqueId(id, reports) {
+export function findUserReports(report, nearby) {
+  if (nearby.length === 0) {
+    return [];
+  }
+  const userReports = nearby.filter(item => {
+    if (!item.properties || !item.properties['user_id']) {
+      return false;
+    }
+    return item.properties['user_id'] === report.properties['user_id'];
+  });
+  return userReports;
+}
+
+export function filterUniqueById(id, reports) {
   if (reports.length === 0) {
     return [];
   }
