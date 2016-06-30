@@ -38,7 +38,7 @@ test-web-watch:
 # Start containers for productions environment
 prod:
 	@ docker-compose -f docker-compose.prod.yml build && \
-	docker-compose -f docker-compose.prod.yml up
+	docker-compose -f docker-compose.prod.yml up -d
 
 # Get SSL/HTTPS Certificates via Let's Encrypt
 https:
