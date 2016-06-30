@@ -5,7 +5,9 @@ import reportModel from '../../resources/reports/model';
 import permitModel from '../../resources/permits/model';
 import geolib from 'geolib';
 
-const RADIUS_TO_SEARCH_IN_METERS = 60;
+const defaultOptions = {
+  radius: 60
+}
 
 /**
  * Retrieves and filters cranes to within a given radius of report.
@@ -15,10 +17,7 @@ const RADIUS_TO_SEARCH_IN_METERS = 60;
  * @return {Array} A promise that returns an array
  *  of nearby cranes as GeoJSON features.
  */
-export async function cranes(report, opt) {
-  const options = defaults({}, opt, {
-    radius: RADIUS_TO_SEARCH_IN_METERS
-  });
+export async function cranes(report, options = defaultOptions) {
   const [lng, lat] = report.geometry.coordinates;
   const cranesCollection = await craneModel.findWithin({
     lng,
@@ -35,10 +34,7 @@ export async function cranes(report, opt) {
  * @param  {Number} Opt.radius - search radius in meters.
  * @return {<Array>} A promise the returns an array of permit objects.
  */
-export async function permits(report, opt) {
-  const options = defaults({}, opt, {
-    radius: RADIUS_TO_SEARCH_IN_METERS
-  });
+export async function permits(report, options = defaultOptions) {
   const permitCollection = await permitModel.fetchAll()
     .then(permits => {
       return permits.filter(permit => {
@@ -62,10 +58,7 @@ export async function permits(report, opt) {
  * @return {<Array>} - A promise that returns an array of nearby
  * reports as GeoJSON features.
  */
-export async function reports(report, opt) {
-  const options = defaults({}, opt, {
-    radius: RADIUS_TO_SEARCH_IN_METERS
-  });
+export async function reports(report, options = defaultOptions) {
   const [lng, lat] = report.geometry.coordinates;
   const reportsCollection = await reportModel.findWithin({
     lng,
