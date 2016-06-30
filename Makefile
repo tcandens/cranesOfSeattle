@@ -30,7 +30,7 @@ test-api-watch:
 	@ docker-compose -f docker-compose.test.yml run --rm -e WATCH=TRUE test-api
 
 test-web:
-	@ docker-compose -f docker-compose.test.yml run --rm test-web
+	@ docker-compose -f docker-compose.test.yml run --rm test-web npm test
 
 test-web-watch:
 	@ docker-compose -f docker-compose.test.yml run --rm test-web npm run test:watch

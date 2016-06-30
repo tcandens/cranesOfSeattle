@@ -6,6 +6,9 @@ import Reticle from 'components/Reticle';
 import Modal from 'components/Modal';
 import ReportRecord from 'components/ReportRecord';
 import CraneRecord from 'components/CraneRecord';
+import Tooltips from 'components/Tooltips';
+import config from '../config/colors.json';
+const {$colors} = config;
 
 import {
   fetchReports,
@@ -19,6 +22,10 @@ import {
   fetchUserLocation,
 } from 'ducks/map';
 
+import {
+  finishTooltips,
+} from 'ducks/tooltips';
+
 function selectExploring(state) {
   return {
     reports: state.reports.geojson,
@@ -26,6 +33,7 @@ function selectExploring(state) {
     longitude: state.map.location.lng,
     latitude: state.map.location.lat,
     map: state.map,
+    toolTips: state.toolTips.isFinished,
   };
 }
 
@@ -35,6 +43,7 @@ function selectExploring(state) {
 export default class ExploreContainer extends Component {
   state = {
     viewing: [],
+    tooltips: true,
   }
   static defaultProps = {
     latitude: 47.44,
@@ -55,6 +64,9 @@ export default class ExploreContainer extends Component {
   getUserPosition = () => {
     const {dispatch} = this.props;
     dispatch(fetchUserLocation());
+  }
+  handleFinishTooltips = () => {
+    this.props.dispatch(finishTooltips());
   }
   mapActions = () => {
     function setViewing(map, event) {
@@ -81,7 +93,6 @@ export default class ExploreContainer extends Component {
       // },
     };
   }
-
   renderViewing = () => {
     const {
       viewing,
@@ -132,24 +143,35 @@ export default class ExploreContainer extends Component {
     };
     const mapLayers = [
       {
+        id: 'report-cluster-big',
+        source: 'reports',
+        type: 'circle',
+        paint: {
+          'circle-color': $colors.mint,
+          'circle-radius': 60,
+          'circle-blur': 1.5,
+        },
+        filter: ['>=', 'point_count', 4],
+      },
+      {
         id: 'report-cluster',
         source: 'reports',
         type: 'circle',
         paint: {
-          'circle-color': '#ffcc66',
+          'circle-color': $colors.salmon,
           'circle-radius': 60,
           'circle-blur': 1.5,
         },
-        filter: ['>=', 'point_count', 3],
+        filter: ['<=', 'point_count', 3],
       },
       {
         id: 'reports--high',
         source: 'reports',
         type: 'circle',
         paint: {
-          'circle-color': '#CD836A',
-          'circle-radius': 25,
-          'circle-blur': 1,
+          'circle-color': $colors.mint,
+          'circle-radius': 15,
+          'circle-blur': 0.2,
         },
         filter: ['>', 'confidence', 2],
       },
@@ -158,7 +180,7 @@ export default class ExploreContainer extends Component {
         source: 'reports',
         type: 'circle',
         paint: {
-          'circle-color': '#ffcc66',
+          'circle-color': $colors.yellow,
           'circle-radius': 50,
           'circle-blur': 1.5,
         },
@@ -193,6 +215,9 @@ export default class ExploreContainer extends Component {
           <Reticle />
         </Map>
         {this.state.viewing.length ? this.renderViewing() : null}
+        {!this.props.toolTips &&
+          <Tooltips closeAction={this.handleFinishTooltips}/>
+        }
       </section>
     );
   }
