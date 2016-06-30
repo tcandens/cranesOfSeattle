@@ -22,6 +22,10 @@ import {
   fetchUserLocation,
 } from 'ducks/map';
 
+import {
+  finishTooltips,
+} from 'ducks/tooltips';
+
 function selectExploring(state) {
   return {
     reports: state.reports.geojson,
@@ -29,6 +33,7 @@ function selectExploring(state) {
     longitude: state.map.location.lng,
     latitude: state.map.location.lat,
     map: state.map,
+    toolTips: state.toolTips.isFinished,
   };
 }
 
@@ -60,6 +65,9 @@ export default class ExploreContainer extends Component {
     const {dispatch} = this.props;
     dispatch(fetchUserLocation());
   }
+  handleFinishTooltips = () => {
+    this.props.dispatch(finishTooltips());
+  }
   mapActions = () => {
     function setViewing(map, event) {
       const threshold = 10;
@@ -85,7 +93,6 @@ export default class ExploreContainer extends Component {
       // },
     };
   }
-
   renderViewing = () => {
     const {
       viewing,
@@ -208,13 +215,8 @@ export default class ExploreContainer extends Component {
           <Reticle />
         </Map>
         {this.state.viewing.length ? this.renderViewing() : null}
-        {this.state.tooltips &&
-          <Tooltips closeAction={() => {
-            this.setState({
-              ...this.state,
-              tooltips: false,
-            });
-          }}/>
+        {!this.props.toolTips &&
+          <Tooltips closeAction={this.handleFinishTooltips}/>
         }
       </section>
     );
