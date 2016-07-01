@@ -45,10 +45,6 @@ export default class ExploreContainer extends Component {
     viewing: [],
     tooltips: true,
   }
-  static defaultProps = {
-    latitude: 47.44,
-    longitude: 122.66,
-  }
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(fetchCranes());
@@ -123,6 +119,7 @@ export default class ExploreContainer extends Component {
       cranes,
       longitude,
       latitude,
+      map,
     } = this.props;
 
     const mapSources = {
@@ -211,7 +208,7 @@ export default class ExploreContainer extends Component {
           sources={mapSources}
           layers={mapLayers}
         >
-          <Geolocator onClick={this.getUserPosition} />
+          <Geolocator error={map.location.error} onClick={this.getUserPosition} />
           <Reticle />
         </Map>
         {this.state.viewing.length ? this.renderViewing() : null}

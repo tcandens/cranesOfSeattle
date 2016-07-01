@@ -48,10 +48,6 @@ export default class ReportContainer extends Component {
   state = {
     report: {},
   }
-  static defaultProps = {
-    latitude: 47.44,
-    longitude: 122.66,
-  }
   componentDidMount() {
     const {dispatch} = this.props;
     dispatch(fetchCranes());

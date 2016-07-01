@@ -1,32 +1,58 @@
-.geolocator
-  display block
+.c-geolocator
   position absolute
   bottom 2rem
   right 1.5rem
-  width 40px
-  height @width
-  border none
-  background transparent
-  overflow hidden
-  outline 0
-  cursor pointer
-  text-indent -9999px
-  transition transform 300ms ease
-  z-index 1000
-  &:before
-    display block
-    content ''
+  height 40px
+  width auto
+  min-width 50%
+  max-width 100%
+  z-index $z-overlay
+  &--error
     position absolute
+    right @height
+    bottom 0px
+    margin-right 2em
+    text-align right
+    font-family $display-font
+    font-size 2em
+    font-style italic
+    animation fade_out 400ms ease-out
+    animation-delay 5s
+    animation-fill-mode both
+  &--button
+    display block
+    position absolute
+    right 0
     top 0
-    left 0
-    outline 0
-    width @width
+    width @height
     height @width
-    background-image url('~assets/compass.svg')
-    background-size contain
-    background-repeat no-repeat
+    border none
+    background transparent
+    overflow hidden
+    outline 0
+    cursor pointer
+    text-indent -9999px
+    transition transform 300ms ease
+    &:before
+      display block
+      content ''
+      position absolute
+      top 0
+      left 0
+      outline 0
+      width @width
+      height @width
+      background-image url('~assets/compass.svg')
+      background-size contain
+      background-repeat no-repeat
 
-.geolocator:active
+.c-geolocator--button:active
   transform scale(1.1)
-.geolocator:hover
+.c-geolocator--button:hover
   transform scale(1.1) rotate(-30deg)
+
+@keyframes fade_out
+  from
+    opacity 1
+  to
+    opacity 0
