@@ -42,7 +42,7 @@ passport.use(new FacebookStrategy({
     auth_provider_id: profile.id,
     name: profile.name,
     email: profile.email,
-    image_url: profile.picture.url
+    image_url: profile.picture.data.url
   }
   userModel.findOrCreate(_user).then(user => {
     callback(null, user);
