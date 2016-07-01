@@ -8,9 +8,10 @@ export const ERROR_USER_LOCATION = 'ERROR_USER_LOCATION';
 
 export const initialState = {
   location: {
-    lng: null,
-    lat: null,
+    lat: 47.60841305322171,
+    lng: -122.3344039336499,
     isFetching: false,
+    error: 0,
   },
 };
 
@@ -43,7 +44,7 @@ export default function reducer(state = initialState, action) {
         location: {
           ...state.location,
           isFetching: false,
-          error: action.error,
+          error: action.error.code,
         },
       });
     default:
