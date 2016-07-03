@@ -7,7 +7,7 @@ export default function Geolocator({onClick, error}) {
   return (
     <div className="c-geolocator">
       <button className="c-geolocator--button" onClick={onClick}>Go to my position</button>
-      {error &&
+      {!!error &&
         <span className="c-geolocator--error">
           {errorCodes[error]}
         </span>
