@@ -5,7 +5,7 @@ import {Link} from 'react-router';
 export default function CallToAction() {
   return (
     <ul className="list--vertical">
-      <Link to="/explore" className="button button--lg">
+      <Link to="/report" className="button button--lg">
         View the cranes
       </Link>
       <Link to="/login">

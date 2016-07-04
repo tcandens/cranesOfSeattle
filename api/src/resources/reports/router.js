@@ -4,6 +4,7 @@ import json from '../../middleware/json_response';
 import jsonBody from 'koa-json-body';
 import authMiddleware from '../../middleware/jwt_auth';
 
+import sockets from '../../sockets';
 import confirmationService from '../../services/reportConfirmation';
 
 export default Router()
@@ -23,6 +24,7 @@ export default Router()
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
+        sockets.emit('report/add', data);
       })
       .catch(error => {
         ctx.status = 500;

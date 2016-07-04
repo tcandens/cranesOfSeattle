@@ -7,8 +7,14 @@ import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
 import Modal from 'components/Modal';
-import ReportResponse from 'components/ReportResponse';
 import LoadingBar from 'components/LoadingBar';
+import ReportResponse from 'components/ReportResponse';
+import ReportRecord from 'components/ReportRecord';
+import CraneRecord from 'components/CraneRecord';
+import Tooltips from 'components/Tooltips';
+import {Link} from 'react-router';
+import Button from 'components/Button';
+import {createSources, layers} from './mapStyles';
 import socketIO from 'socket.io-client';
 const io = socketIO(window.location.origin, {path: '/api/socket.io'});
 
@@ -31,6 +37,10 @@ import {
   fetchUserLocation,
 } from 'ducks/map';
 
+import {
+  finishTooltips,
+} from 'ducks/tooltips';
+
 function selectReporting(state) {
   return {
     reports: state.reports.geojson,
@@ -38,10 +48,12 @@ function selectReporting(state) {
     reported: state.reports.reported,
     map: state.map,
     isReporting: state.reports.isReporting,
+    isAuthenticated: state.user.isAuthenticated,
     longitude: state.map.location.lng,
     latitude: state.map.location.lat,
     isSaveSuccess: state.reports.isSaveSuccess,
     isSaving: state.reports.isSaving,
+    toolTips: state.toolTips.isFinished,
   };
 }
 
@@ -50,7 +62,9 @@ function selectReporting(state) {
 )
 export default class ReportContainer extends Component {
   state = {
+    viewing: [],
     report: {},
+    toolTips: true,
   }
   componentDidMount() {
     const {dispatch} = this.props;
@@ -99,82 +113,83 @@ export default class ReportContainer extends Component {
     const {dispatch} = this.props;
     dispatch(confirmSaveSuccess());
   }
+  handleFinishTooltips = () => {
+    this.props.dispatch(finishTooltips());
+  }
   getUserPosition = () => {
     const {dispatch} = this.props;
     dispatch(fetchUserLocation());
   }
   mapActions = () => {
     const {dispatch} = this.props;
-    const sendMapCenter = (map) => dispatch(recordMapLocation(map.getCenter()));
+    function setViewing(map, event) {
+      const threshold = 10;
+      const {x, y} = event.point;
+      const features = map.queryRenderedFeatures(
+        [
+          [x - threshold / 2, y - threshold / 2],
+          [x + threshold / 2, y - threshold / 2],
+        ],
+        {layers: ['reports--high', 'reports--low', 'cranes']}
+      );
+      this.setState({
+        viewing: features,
+      });
+    }
+    function sendMapCenter(map) {
+      dispatch(recordMapLocation(map.getCenter()));
+    }
     return {
       moveend: (map) => {
         // Pop to the end of the stack for zoom events to avoid loop
         window.setTimeout(() => sendMapCenter(map), 0);
       },
       click: (map, event) => {
-        const threshold = 10;
-        const {x, y} = event.point;
-        const features = map.queryRenderedFeatures(
-          [
-            [x - threshold / 2, y - threshold / 2],
-            [x + threshold / 2, y + threshold / 2],
-          ],
-          {layers: ['reports']}
-        );
-        console.log(features);
+        setViewing.call(this, map, event);
       },
     };
   }
-
+  renderViewing = () => {
+    const {
+      viewing,
+    } = this.state;
+    const features = viewing.map((entity, index) => {
+      let feature;
+      if (entity.layer.id.match(/report/)) {
+        feature = <ReportRecord record={entity} />;
+      } else if (entity.layer.id.match(/crane/)) {
+        feature = <CraneRecord record={entity} />;
+      }
+      return <li key={index}>{feature}</li>;
+    });
+    return (
+      <Modal type="list" title="Nearby" action={() => {
+        this.setState({viewing: []});
+      }}>
+        <ul>
+          {features}
+        </ul>
+      </Modal>
+    );
+  }
   render = () => {
     const {
       reports,
       reported,
       isReporting,
+      isAuthenticated,
       longitude,
       latitude,
       isSaveSuccess,
       isSaving,
       cranes,
+      map,
+      toolTips,
     } = this.props;
 
-    const mapSources = {
-      reports: {
-        type: 'geojson',
-        data: reports,
-        cluster: true,
-        maxzoom: 17,
-        clusterRadius: 50,
-      },
-      cranes: {
-        type: 'geojson',
-        data: cranes,
-      },
-    };
-    const mapLayers = [
-      {
-        id: 'reports',
-        source: 'reports',
-        type: 'circle',
-        paint: {
-          'circle-color': '#ffcc66',
-          'circle-radius': 50,
-          'circle-blur': 1.5,
-        },
-      },
-      {
-        id: 'cranes',
-        source: 'cranes',
-        type: 'symbol',
-        layout: {
-          'icon-image': 'cranes',
-          'icon-offset': [-10, -10],
-        },
-      },
-    ];
-
     const containerState = classNames({
-      isReporting,
+      'isAuthenticated': isAuthenticated,
+      'isReporting': isReporting,
     });
 
     return (
@@ -188,27 +203,31 @@ export default class ReportContainer extends Component {
           center={[longitude, latitude]}
           actions={this.mapActions()}
           maxBounds={[[-122.57107, 47.16157], [-122.01602, 47.78269]]}
-          sources={mapSources}
-          layers={mapLayers}
+          sources={createSources({reports, cranes})}
+          layers={layers}
         >
-          <Geolocator onClick={this.getUserPosition} />
+          <Geolocator error={map.location.error} onClick={this.getUserPosition} />
           <Reticle />
         </Map>
         <div className="c-report--forms">
-          { isSaving ? <LoadingBar /> : null }
-          {
-            isReporting ?
-              <CreateReport
-                onChange={this.handleChangeReport}
-                onSave={this.handleSaveReport}
-                onAbort={this.abortReport}
-              /> :
-                <StartReport
-                  onStart={this.handleStartReport}
-                />
+          {!isAuthenticated &&
+            <Link to="/login"><Button>Login to report</Button></Link>
+          }
+          {isSaving && <LoadingBar />}
+          {isReporting && isAuthenticated &&
+            <CreateReport
+              onChange={this.handleChangeReport}
+              onSave={this.handleSaveReport}
+              onAbort={this.abortReport}
+            />
+          }
+          {!isReporting && isAuthenticated &&
+            <StartReport
+              onStart={this.handleStartReport}
+            />
           }
         </div>
-        { isSaveSuccess ?
+        {isSaveSuccess &&
           <Modal type="success"
             action={this.handleConfirmSuccess}
           >
@@ -216,7 +235,10 @@ export default class ReportContainer extends Component {
               {...reported[reported.length - 1]}
             />
           </Modal>
-          : null
+        }
+        {this.state.viewing.length && this.renderViewing()}
+        {!toolTips &&
+          <Tooltips closeAction={this.handleFinishTooltips} />
         }
       </section>
     );

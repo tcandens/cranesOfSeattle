@@ -30,19 +30,18 @@ export default function CreateRoutes(store) {
     <Route path="/" component={MainLayout}>
       <IndexRoute component={Entry} />
       <Route path="login" component={LoginContainer}/>
-      <Route path="explore"
-        getComponent={(next, cb) => {
-          require.ensure([], require => {
-            cb(null, require('containers/Explore').default);
-          });
-        }}
-      />
       <Route path="report"
-        onEnter={requireAuth}
         onLeave={resetReportOnExit}
         getComponent={(next, cb) => {
           require.ensure([], require => {
             cb(null, require('containers/Report').default);
+          });
+        }}
+      />
+      <Route path="user"
+        getComponent={(next, cb) => {
+          require.ensure([], require => {
+            cb(null, require('containers/User').default);
           });
         }}
       />

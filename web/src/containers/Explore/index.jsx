@@ -7,8 +7,7 @@ import Modal from 'components/Modal';
 import ReportRecord from 'components/ReportRecord';
 import CraneRecord from 'components/CraneRecord';
 import Tooltips from 'components/Tooltips';
-import config from '../config/colors.json';
-const {$colors} = config;
+import {createSources, layers} from './mapStyles';
 
 import {
   fetchReports,
@@ -83,10 +82,6 @@ export default class ExploreContainer extends Component {
       click: (map, event) => {
         setViewing.call(this, map, event);
       },
-      // touchend: (map, event) => {
-      //   console.log(map, event);
-      //   setViewing.call(this, map, event);
-      // },
     };
   }
   renderViewing = () => {
@@ -122,78 +117,6 @@ export default class ExploreContainer extends Component {
       map,
     } = this.props;
 
-    const mapSources = {
-      reports: {
-        type: 'geojson',
-        data: reports,
-        cluster: true,
-        maxzoom: 18,
-        clusterMaxZoom: 17,
-        clusterRadius: 30,
-      },
-      cranes: {
-        type: 'geojson',
-        data: cranes,
-        maxzoom: 20,
-        cluster: false,
-      },
-    };
-    const mapLayers = [
-      {
-        id: 'report-cluster-big',
-        source: 'reports',
-        type: 'circle',
-        paint: {
-          'circle-color': $colors.mint,
-          'circle-radius': 60,
-          'circle-blur': 1.5,
-        },
-        filter: ['>=', 'point_count', 4],
-      },
-      {
-        id: 'report-cluster',
-        source: 'reports',
-        type: 'circle',
-        paint: {
-          'circle-color': $colors.salmon,
-          'circle-radius': 60,
-          'circle-blur': 1.5,
-        },
-        filter: ['<=', 'point_count', 3],
-      },
-      {
-        id: 'reports--high',
-        source: 'reports',
-        type: 'circle',
-        paint: {
-          'circle-color': $colors.mint,
-          'circle-radius': 15,
-          'circle-blur': 0.2,
-        },
-        filter: ['>', 'confidence', 2],
-      },
-      {
-        id: 'reports--low',
-        source: 'reports',
-        type: 'circle',
-        paint: {
-          'circle-color': $colors.yellow,
-          'circle-radius': 50,
-          'circle-blur': 1.5,
-        },
-        filter: ['<=', 'confidence', 2],
-      },
-      {
-        id: 'cranes',
-        source: 'cranes',
-        type: 'symbol',
-        layout: {
-          'icon-image': 'cranes',
-          'icon-offset': [-10, -10],
-        },
-      },
-    ];
-
     return (
       <section className="c-explore">
         <Map
@@ -205,11 +128,11 @@ export default class ExploreContainer extends Component {
           center={[longitude, latitude]}
           actions={this.mapActions()}
           maxBounds={[[-122.57107, 47.16157], [-122.01602, 47.78269]]}
-          sources={mapSources}
-          layers={mapLayers}
+          sources={createSources({reports, cranes})}
+          layers={layers}
         >
           <Geolocator error={map.location.error} onClick={this.getUserPosition} />
-          <Reticle />
+          <Reticle/>
         </Map>
         {this.state.viewing.length ? this.renderViewing() : null}
         {!this.props.toolTips &&

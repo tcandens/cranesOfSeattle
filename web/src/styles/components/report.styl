@@ -15,9 +15,9 @@
 .c-report .mapbox-gl-container, .c-report--forms
   transition height 300ms ease
 
-.c-report[data-state="isReporting"] .c-report--forms
+.c-report[data-state~="isReporting"] .c-report--forms
   height ($report-start-height + $report-create-form-height)
-.c-report[data-state="isReporting"] .mapbox-gl-container
+.c-report[data-state~="isReporting"] .mapbox-gl-container
   height "calc(100% - %s)" % ($report-start-height + $report-create-form-height)
   & .reticle
     transform "translate3d(0, %s, 0)" % ($report-create-form-height / -2)

@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link, IndexLink} from 'react-router';
 
-const ACTIVE = {display: 'none'};
-
 export default function Navigation() {
   return (
     <nav className="navigation">
@@ -19,19 +17,19 @@ export default function Navigation() {
         <li>
           <Link
             data-icon="map"
-            to="/explore"
-            activeClassName="navigation--link-active"
-          >
-            Map
-          </Link>
-        </li>
-        <li>
-          <Link
-            data-icon="report"
             to="/report"
             activeClassName="navigation--link-active"
           >
             Report
+          </Link>
+        </li>
+        <li>
+          <Link
+            data-icon="user"
+            to="/user"
+            activeClassName="navigation--link-active"
+          >
+            User
           </Link>
         </li>
       </ul>
