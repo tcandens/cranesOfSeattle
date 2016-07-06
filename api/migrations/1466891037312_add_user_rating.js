@@ -5,5 +5,5 @@ exports.up = function(pgm) {
 };
 
 exports.down = function(pgm) {
-  pgm.dropColumn('users', ['rating'])
+  pgm.dropColumn('users', ['points'])
 };

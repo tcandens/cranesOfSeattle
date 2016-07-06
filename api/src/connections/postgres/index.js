@@ -2,20 +2,16 @@ import info from './info'
 import options from './options'
 import pgp from 'pg-promise'
 import monitor from 'pg-monitor'
-import {winstonInstance} from '../../middleware/logger';
 
 /* Turn off database logging for tests */
 if (process.env.ENV !== 'TEST') {
   monitor.attach(options);
-  monitor.log = (message, info) => {
-    winstonInstance.info(`
-      POSTGRES
-      --------
-      ${info.time} - ${info.event}
-      ${message}
-      ========
-      `);
-  }
+}
+
+function getConnection() {
+  const pg = pgp(options).pg;
+  const client = new pg.Client(info);
+  return client;
 }
 
 let singleton = null;
@@ -30,5 +26,6 @@ function init() {
 }
 
 export default {
-  init: init
+  init: init,
+  getConnection: getConnection
 }

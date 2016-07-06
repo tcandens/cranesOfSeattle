@@ -14,10 +14,20 @@ craneModel.create = function(crane) {
       $/address/,
       $/expiration_date/
     )
-    RETURNING ID`;
-  const response = this.db.one(query, merge(crane, crane.properties))
-    .finally(this.close());
-  return response;
+    RETURNING
+    'Feature' AS type,
+    ST_AsGeoJSON(location)::json AS geometry,
+    json_build_object(
+      'id', id,
+      'user_id', user_id,
+      'confidence', confidence,
+      'permit', permit,
+      'address', address,
+      'expiration_date',expiration_date,
+      'created_at', created_at
+    ) AS properties
+  `;
+  return this.db.one(query, merge(crane, crane.properties))
 };
 
 craneModel.read = function(id) {
@@ -37,9 +47,7 @@ craneModel.read = function(id) {
     ) AS properties
     FROM ${this.tableName} AS l WHERE l.id = $1
   `;
-  const response = this.db.oneOrNone(query, id)
-    .finally(this.close());
-  return response;
+  return this.db.oneOrNone(query, id)
 };
 
 craneModel.readAll = function() {
@@ -53,9 +61,7 @@ craneModel.readAll = function() {
       FROM ${this.tableName} AS r
     ) AS f
   `;
-  const response = this.db.one(query)
-    .finally(this.close());
-  return response;
+  return this.db.one(query)
 };
 
 craneModel.findWithin = function(querystring) {
@@ -73,8 +79,7 @@ craneModel.findWithin = function(querystring) {
       )
     ) AS f
   `;
-  const response = this.db.one(query, options)
-  return response;
+  return this.db.one(query, options)
 }
 
 export default craneModel

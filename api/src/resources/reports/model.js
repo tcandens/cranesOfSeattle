@@ -15,8 +15,11 @@ reportModel.create = function(report) {
     RETURNING
     'Feature' AS type,
     ST_AsGeoJSON(location)::json AS geometry,
-    json_build_object('id', id, 'user_id', user_id, 'confidence', confidence)
-    AS properties
+    json_build_object(
+      'id', id,
+      'user_id', user_id,
+      'confidence', confidence
+    ) AS properties
     `;
   return this.db.one(query, merge(report, report.properties))
 };
@@ -61,7 +64,7 @@ reportModel.readAll = function() {
 
 reportModel.findWithin = function(querystring) {
   const options = defaults(querystring, {
-    radius: 1,
+    radius: 1
   });
   const query = `
     SELECT 'FeatureCollection' as type,

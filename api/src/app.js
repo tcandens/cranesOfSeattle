@@ -7,13 +7,11 @@ app.proxy = true;
 import packageJSON from '../package.json';
 
 /* Middleware */
-import logger from './middleware/logger';
 import version from './middleware/version';
 import convert from 'koa-convert';
 import session from 'koa-session';
 
 app.use(version(packageJSON.version));
-// app.use(logger());
 
 app.keys = ['SECRET_HERE'];
 app.use(convert(session(app)));
@@ -30,5 +28,8 @@ app
 
 import authDecorator from './resources/auth/decorator';
 authDecorator(app);
+
+import notificationsDecorator from './notifications';
+notificationsDecorator(app);
 
 export default app

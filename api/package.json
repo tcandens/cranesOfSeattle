@@ -26,6 +26,7 @@
     "koa-passport": "^2.1.0",
     "koa-router": "^7.0.1",
     "koa-session": "^3.3.1",
+    "koa-socket": "^4.4.0",
     "lodash": "^4.12.0",
     "node-pg-migrate": "0.0.9",
     "passport-facebook": "^2.1.1",

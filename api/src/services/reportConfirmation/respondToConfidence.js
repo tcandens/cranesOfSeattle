@@ -87,7 +87,7 @@ export async function respondWithReportAndCrane(confidence, report, nearby) {
   return {
     message: `
       Congratulations!
-      You have discovered a new crane gaining ${userPoints} points!
+      You have discovered a new crane gaining ${userPoints.added} points!
     `,
     result: {
       report: createdReport,

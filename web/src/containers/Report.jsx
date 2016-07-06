@@ -9,8 +9,11 @@ import StartReport from 'components/ReportStartButton';
 import Modal from 'components/Modal';
 import ReportResponse from 'components/ReportResponse';
 import LoadingBar from 'components/LoadingBar';
+import socketIO from 'socket.io-client';
+const io = socketIO(window.location.origin, {path: '/api/socket.io'});
 
 import {
+  addReport,
   fetchReports,
   saveReport,
   startReport,
@@ -19,6 +22,7 @@ import {
 } from 'ducks/reports';
 
 import {
+  addCrane,
   fetchCranes,
 } from 'ducks/cranes';
 
@@ -30,6 +34,7 @@ import {
 function selectReporting(state) {
   return {
     reports: state.reports.geojson,
+    cranes: state.cranes.geojson,
     reported: state.reports.reported,
     map: state.map,
     isReporting: state.reports.isReporting,
@@ -37,7 +42,6 @@ function selectReporting(state) {
     latitude: state.map.location.lat,
     isSaveSuccess: state.reports.isSaveSuccess,
     isSaving: state.reports.isSaving,
-    cranes: state.cranes.geojson,
   };
 }
 
@@ -53,6 +57,12 @@ export default class ReportContainer extends Component {
     dispatch(fetchCranes());
     dispatch(fetchReports());
     dispatch(fetchUserLocation());
+    io.on('report/added', data => {
+      dispatch(addReport(data));
+    });
+    io.on('crane/added', data => {
+      dispatch(addCrane(data));
+    });
   }
   componentWillReceiveProps = (nextProps) => {
     this.setState({

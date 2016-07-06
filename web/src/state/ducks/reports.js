@@ -189,7 +189,6 @@ export function resetReportState() {
   };
 }
 
-import {addCrane} from 'ducks/cranes';
 import {errorLogin} from 'ducks/user';
 
 export function saveReport(location, props) {
@@ -210,12 +209,6 @@ export function saveReport(location, props) {
     return axios.post('/api/reports', report, requestConfig)
       .then(response => {
         const {message, result} = response.data;
-        if (result && result.report) {
-          dispatch(addReport(result.report));
-        }
-        if (result && result.crane) {
-          dispatch(addCrane(result.crane));
-        }
         dispatch(successSavingReport(message, result));
         dispatch(finishReport());
       })

@@ -30,7 +30,7 @@ export default function reducer(state = initialState, action) {
         geojson: assign({}, state.geojson, {
           features: [
             ...state.geojson.features,
-            geojson.pointFromLngLat(action.location),
+            action.payload,
           ],
         }),
       });
@@ -68,9 +68,9 @@ export function fetchCranes() {
   };
 }
 
-export function addCrane(location) {
+export function addCrane(payload) {
   return {
     type: ADD_CRANE,
-    location,
+    payload,
   };
 }
