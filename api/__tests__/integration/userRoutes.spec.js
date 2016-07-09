@@ -4,7 +4,7 @@ import app from '../../src/app';
 import database from '../../src/connections/postgres';
 import jwt from 'jsonwebtoken';
 import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
-import userModel from '../../resources/users/model';
+import userModel from '../../src/resources/users/model';
 
 const db = database.init();
 const server = app.listen();
@@ -64,61 +64,48 @@ test.skip.serial('INSERTING A USER', async t => {
 });
 
 test.serial('FETCHING A USER BY ID', async t => {
+  await clearTables();
+
   const user = await userModel.create(testUser);
 
   const res = await request(server)
-    .get('/users/' + test.id)
+    .get('/users/' + user.id)
     .set(t.context.headers)
 
   t.is(
     res.body.id,
-    testUser.id
+    user.id
   );
 
 });
 
 test.serial('UPDATING A USER', async t => {
-  const updatedUser = {
+  await clearTables();
+
+  const toUpdate = {
     key: 'points',
     value: 2
   };
+  const user = await userModel.create(testUser);
 
   const response = await request(server)
-    .put('/users/' + testUser.id)
+    .put('/users/' + user.id)
     .set(t.context.headers)
-    .send(updatedUser)
+    .send(toUpdate)
 
   t.is(
     response.status,
     200
   );
-  t.is(
-    response.body.message,
-    'User updated.',
-    'Should return a message with status.'
-  );
 
   const doubleCheckUser = Object.assign({}, testUser, {
-    [updatedUser.key]: updatedUser.value
+    [toUpdate.key]: toUpdate.value
   })
-  const doubleCheck = await request(server)
-    .get('/users/' + testUser.id)
-    .set(t.context.headers)
+  const doubleCheck = await userModel.read(user.id)
 
   t.is(
     doubleCheckUser.points,
-    doubleCheck.body.points,
+    doubleCheck.points,
     'Should have update row.'
-  );
-});
-
-test('DESTROYING A USER', async t => {
-  const response = await request(server)
-    .del('/users/' + testUser.id)
-    .set(t.context.headers)
-
-  t.is(
-    response.status,
-    204
   );
 });

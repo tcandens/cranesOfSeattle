@@ -46,16 +46,3 @@ export default Router()
         ctx.body = error.toString();
       })
   })
-  .del('/users/:id', async (ctx) => {
-    await userModel.destroy(ctx.params.id)
-      .then(res => {
-        ctx.status = 204;
-        ctx.body = {
-          message: 'User destroyed'
-        }
-      })
-      .catch(error => {
-        ctx.status = 500;
-        ctx.body = error.toString();
-      })
-  })
