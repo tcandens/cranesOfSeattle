@@ -70,11 +70,11 @@ describe('Map reducer', () => {
   it('Should handle error when fetching user location', () => {
     expect(reducer({}, {
       type: ERROR_USER_LOCATION,
-      error: 'Mother Father!',
+      error: {code: 42},
     })).toEqual({
       location: {
         isFetching: false,
-        error: 'Mother Father!',
+        error: 42,
       },
     });
   });
