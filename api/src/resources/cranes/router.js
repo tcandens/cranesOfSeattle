@@ -39,32 +39,10 @@ export default Router()
         ctx.body = error.toString();
       });
   })
-  .post('/cranes', authMiddleware(), async (ctx) => {
-    await craneModel.create(ctx.request.body)
-      .then(data => {
-        ctx.status = 201;
-        ctx.body = data;
-      })
-      .catch(error => {
-        ctx.status = 500;
-        ctx.body = error.toString();
-      });
-  })
   .put('/cranes/:id', authMiddleware(), async (ctx) => {
     let crane = ctx.request.body;
     crane.id = ctx.params.id;
     await craneModel.update(crane)
-      .then(data => {
-        ctx.status = 200;
-        ctx.body = data;
-      })
-      .catch(error => {
-        ctx.status = 500;
-        ctx.body = error.toString();
-      });
-  })
-  .del('/cranes/:id', authMiddleware(), async (ctx) => {
-    await craneModel.destroy(ctx.params.id)
       .then(data => {
         ctx.body = data;
       })

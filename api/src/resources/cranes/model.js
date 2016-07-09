@@ -1,18 +1,19 @@
 import modelFactory from '../../lib/sqlModelFactory';
-import { merge, defaults } from 'lodash'
+import {merge, defaults} from 'lodash'
 
 const craneModel = modelFactory('cranes');
 
 craneModel.create = function(crane) {
   const query = `
     INSERT INTO ${this.tableName}
-    (location, user_id, permit, address, expiration_date)
+    (location, user_id, permit, address, expiration_date, confidence)
     VALUES (
       ST_GeomFromGeoJSON($/geometry/),
       $/user_id/,
       $/permit/,
       $/address/,
-      $/expiration_date/
+      $/expiration_date/,
+      $/confidence/
     )
     RETURNING
     'Feature' AS type,
@@ -27,7 +28,7 @@ craneModel.create = function(crane) {
       'created_at', created_at
     ) AS properties
   `;
-  return this.db.one(query, merge(crane, crane.properties))
+  return this.db.one(query, merge(crane, crane.properties));
 };
 
 craneModel.read = function(id) {
@@ -47,7 +48,7 @@ craneModel.read = function(id) {
     ) AS properties
     FROM ${this.tableName} AS l WHERE l.id = $1
   `;
-  return this.db.oneOrNone(query, id)
+  return this.db.oneOrNone(query, id);
 };
 
 craneModel.readAll = function() {
@@ -61,7 +62,7 @@ craneModel.readAll = function() {
       FROM ${this.tableName} AS r
     ) AS f
   `;
-  return this.db.one(query)
+  return this.db.one(query);
 };
 
 craneModel.findWithin = function(querystring) {
@@ -79,7 +80,7 @@ craneModel.findWithin = function(querystring) {
       )
     ) AS f
   `;
-  return this.db.one(query, options)
+  return this.db.one(query, options);
 }
 
 export default craneModel
