@@ -236,7 +236,7 @@ export default class ReportContainer extends Component {
             />
           </Modal>
         }
-        {this.state.viewing.length && this.renderViewing()}
+        {!!this.state.viewing.length && this.renderViewing()}
         {!toolTips &&
           <Tooltips closeAction={this.handleFinishTooltips} />
         }
