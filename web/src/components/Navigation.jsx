@@ -23,15 +23,6 @@ export default function Navigation() {
             Report
           </Link>
         </li>
-        <li>
-          <Link
-            data-icon="user"
-            to="/user"
-            activeClassName="navigation--link-active"
-          >
-            User
-          </Link>
-        </li>
       </ul>
     </nav>
   );
