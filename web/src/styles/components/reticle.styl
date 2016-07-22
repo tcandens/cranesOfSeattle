@@ -1,21 +1,20 @@
 $width = 5px
 .reticle
-  position absolute
-  left 50%
-  top 50%
+  position relative
   width $width
   height $width
   border-radius floor($width / 2)
   background-color $colors-magenta
-  transition transform 300ms ease
+  transition transform, margin-top 300ms ease
   z-index 1000
   &:after
+    position absolute
     display block
     content ''
     width 70px
     height @width
+    top -(@width / 2)
     margin-left -((@width - $width) / 2)
-    margin-top -((@width - $width) / 2)
     background-color alpha($colors-magenta, 80%)
     border-radius 50%
     animation location_pinging 2000ms ease infinite
