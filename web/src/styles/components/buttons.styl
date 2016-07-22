@@ -8,7 +8,9 @@
   text-decoration none
   text-transform uppercase
   cursor pointer
-  transition all 500ms ease-in-out
+  transition-property background, background-color, border, color
+  transition-timing-function ease-in-out
+  transition-duration 400ms
   &:hover
     background-color alpha($colors-dark, 0.8)
     border 3px solid transparent
