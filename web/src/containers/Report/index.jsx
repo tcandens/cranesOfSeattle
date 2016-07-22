@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
-import Map from 'components/Map';
-import Geolocator from 'components/Geolocator';
+import MapComponent, {Source, Circles, Symbols, query} from 'mapbox-gl-react';
+import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
@@ -14,9 +14,10 @@ import CraneRecord from 'components/CraneRecord';
 import Tooltips from 'components/Tooltips';
 import {Link} from 'react-router';
 import Button from 'components/Button';
-import {createSources, layers} from './mapStyles';
 import socketIO from 'socket.io-client';
+import config from '../../config/colors.json';
 const io = socketIO(window.location.origin, {path: '/api/socket.io'});
+const {$colors} = config;
 
 import {
   addReport,
@@ -124,14 +125,7 @@ export default class ReportContainer extends Component {
     const {dispatch} = this.props;
     function setViewing(map, event) {
       const threshold = 10;
-      const {x, y} = event.point;
-      const features = map.queryRenderedFeatures(
-        [
-          [x - threshold / 2, y - threshold / 2],
-          [x + threshold / 2, y - threshold / 2],
-        ],
-        {layers: ['reports--high', 'reports--low', 'cranes']}
-      );
+      const features = query(map).renderedWithin(threshold, event);
       this.setState({
         viewing: features,
       });
@@ -140,6 +134,12 @@ export default class ReportContainer extends Component {
       dispatch(recordMapLocation(map.getCenter()));
     }
     return {
+      load: (map) => {
+        map.setMaxBounds([
+          [-122.57107, 47.16157],
+          [-122.01602, 47.78269],
+        ]);
+      },
       moveend: (map) => {
         // Pop to the end of the stack for zoom events to avoid loop
         window.setTimeout(() => sendMapCenter(map), 0);
@@ -194,21 +194,35 @@ export default class ReportContainer extends Component {
 
     return (
       <section className="c-report" data-state={containerState}>
-        <Map
+        <MapComponent
           accessToken={MAPBOX_TOKEN}
           style="mapbox://styles/tcandens/cik1mqp0t013490lxkh0kk9b3"
           bearing={45}
           zoom={16}
           pitch={30}
           center={[longitude, latitude]}
-          actions={this.mapActions()}
+          eventHandlers={this.mapActions()}
           maxBounds={[[-122.57107, 47.16157], [-122.01602, 47.78269]]}
-          sources={createSources({reports, cranes})}
-          layers={layers}
         >
-          <Geolocator error={map.location.error} onClick={this.getUserPosition} />
           <Reticle />
-        </Map>
+          <Source name="reports" data={reports}>
+            <Circles
+              blur={0.2}
+              opacity={0.8}
+              color={{
+                property: 'confidence',
+                stops: [
+                [0, $colors.yellow],
+                [1, $colors.salmon],
+                [2, $colors.mint],
+                ],
+              }}
+            />
+          </Source>
+          <Source name="cranes" data={cranes}>
+            <Symbols image="crane" />
+          </Source>
+        </MapComponent>
         <div className="c-report--forms">
           {!isAuthenticated &&
             <Link to="/login"><Button>Login to report</Button></Link>
