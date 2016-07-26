@@ -34,7 +34,7 @@ services:
       file: ./common-services.yml
       service: proxy
     volumes:
-      - /etc/letsencrypt/archive/www.seattlecranes.site:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./proxy:/etc/nginx
     links:
       - api:api
