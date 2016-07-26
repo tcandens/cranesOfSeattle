@@ -1,0 +1,97 @@
+count = 12
+angle = 360deg / count
+maxDistance = 200px
+buildShadows(progress, angleOffset = 0deg)
+  shadows = ''
+  for vector in 1..count
+    $angle = (angleOffset + angle) * vector
+    distance = progress * (maxDistance / 100)
+    $x = sin($angle) * distance
+    $y = cos($angle) * distance
+    if vector % 2 == 0 && vector % 3 == 0
+      $color = rgba($colors-white)
+    else if vector % 2 == 0
+      $color = rgba($colors-yellow)
+    else if vector % 3 == 0
+      $color = rgba($colors-salmon)
+    else
+      $color = rgba($colors-mint)
+    shadow = join(' ', $x, $y, $color)
+    if vector == count
+      shadows += shadow
+    else
+      shadows += shadow + ', '
+  return unquote(shadows)
+
+.response-success--report::after, .response-success--report::before
+  display block
+  content ''
+  position absolute
+  left calc(50% - 5px)
+  top 60px
+  width 5px
+  height 5px
+  background transparent
+.response-success--report::before
+  animation sparklesOne 2000ms
+  animation-timing-function cubic-bezier(0.19, 1, 0.22, 1)
+.response-success--report::after
+  animation sparklesTwo 2000ms
+  animation-delay 100ms
+  animation-timing-function cubic-bezier(0.19, 1, 0.22, 1)
+
+.response-success--report .response-effect
+  position absolute
+  $x = 250px
+  width $x
+  height $x
+  left "calc(50% - %s)" % ($x / 2)
+  top "calc(60px - %s)" % ($x / 2)
+  background transparent
+  border-radius 50%
+  transform-origin 50% 50%
+  animation circleExplode 2000ms
+  animation-name circleExplode
+  animation-duration 600ms
+  animation-timing-function cubic-bezier(0.19, 1, 0.22, 1)
+  animation-fill-mode forwards
+
+@keyframes circleExplode
+  0%
+    transform scale(0)
+    border 50px solid $colors-white
+    opacity 0.8
+    visibility visible
+  70%
+    opacity 0.8
+  99%
+    transform scale(1)
+    border 1px solid $colors-white
+    opacity 0
+  100%
+    visibility hidden
+
+@keyframes sparklesOne
+  0%
+    box-shadow buildShadows(0, 10deg)
+    transform translate3d(0, 0, 0)
+    opacity 1
+  60%
+    transform translate3d(0, 0, 0)
+    opacity 1
+  100%
+    box-shadow buildShadows(100)
+    transform translate3d(0, 10px, 0)
+    opacity 0
+@keyframes sparklesTwo
+  0%
+    box-shadow buildShadows(0, 32deg)
+    transform translate3d(0, 0, 0)
+    opacity 1
+  60%
+    transform translate3d(0, 0, 0)
+    opacity 1
+  100%
+    box-shadow buildShadows(100, 32deg)
+    transform translate3d(0, 10px, 0)
+    opacity 0
