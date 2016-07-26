@@ -32,7 +32,7 @@ export function getPopupSize(provider) {
     case 'google':
       return {width: 452, height: 633};
     case 'facebook':
-      return {width: 580, height: 400};
+      return {width: 590, height: 420};
     default:
       return {width: 1020, height: 618};
   }

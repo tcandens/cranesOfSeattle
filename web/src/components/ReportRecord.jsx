@@ -14,7 +14,6 @@ export default function ReportRecord({record}) {
           <img className="avatar" src={user_image_url} />
         </li>
       }
-      <li><span>ID:</span><em>{id}</em></li>
       <li><span>Confidence:</span><em>{confidence}</em></li>
     </ul>
   );
