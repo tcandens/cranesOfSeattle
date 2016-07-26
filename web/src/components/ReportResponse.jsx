@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import ReportRecord from 'components/ReportRecord';
 import CraneRecord from 'components/CraneRecord';
+import classNames from 'classnames';
 
 export default function ReportResponse({message, result}) {
   let record;
@@ -18,8 +19,14 @@ export default function ReportResponse({message, result}) {
   } else if (result.report && !result.crane) {
     record = <ReportRecord record={result.report} />;
   }
+  const className = classNames({
+    'list--vertical': true,
+    'response-success--crane': result ? !!result.crane : false,
+    'response-success--report': result ? !!result.report : false,
+  });
   return (
-    <ul className="list--vertical">
+    <ul className={className}>
+      <div className="response-effect" />
       <li><h3>{message}</h3></li>
       {record}
     </ul>
