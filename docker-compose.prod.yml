@@ -4,6 +4,8 @@ services:
     extends:
       file: ./common-services.yml
       service: db
+    volumes:
+      - /var/lib/postgresql/data
   api:
     extends:
       file: ./common-services.yml
