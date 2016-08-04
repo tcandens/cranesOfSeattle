@@ -47,6 +47,19 @@ reportModel.read = function(id) {
   return this.db.oneOrNone(query, id);
 }
 
+reportModel.readFromUser = function(userId) {
+  const query = `
+    SELECT
+    id,
+    user_id,
+    created_at,
+    confidence,
+    ST_AsGeoJSON(location)::json AS geometry
+    FROM ${this.tableName} WHERE user_id = $1
+  `;
+  return this.db.any(query, userId);
+}
+
 reportModel.readAll = function() {
   const query = `
     SELECT 'FeatureCollection' as type,

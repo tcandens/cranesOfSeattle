@@ -3,15 +3,17 @@ import modelFactory from '../../lib/sqlModelFactory';
 const userModel = modelFactory('users');
 
 userModel.create = function(user) {
+  user.points = user.points || 0;
   const query = `
     INSERT INTO ${this.tableName}
-    (auth_provider, auth_provider_id, name, email, image_url)
+    (auth_provider, auth_provider_id, name, email, image_url, points)
     VALUES (
       $/auth_provider/,
       $/auth_provider_id/,
       $/name/,
       $/email/,
-      $/image_url/
+      $/image_url/,
+      $/points/
     )
     RETURNING ID
   `;
@@ -50,6 +52,16 @@ userModel.addPoints = function(userId, points) {
     .then(returned => returned.points)
     .catch(error => error)
     .finally(this.close())
+}
+
+userModel.getLeaders = function(offset = 0, limit = 20) {
+  const query = `
+    SELECT * FROM ${this.tableName} WHERE points > 0
+    ORDER BY points DESC
+    LIMIT $1
+    OFFSET $2
+  `;
+  return this.db.many(query, [limit, offset])
 }
 
 export default userModel;
