@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import Button from 'components/Button';
 
 import {
   fetchLeaderboard,
@@ -9,6 +10,7 @@ import {
 function selectLeaderboard(state) {
   return {
     isAuthenticated: state.user.isAuthenticated,
+    profile: state.user.profile,
     leaders: state.leaderboard.data,
     isFetching: state.leaderboard.isFetching,
   };
@@ -23,6 +25,36 @@ export default class UserContainer extends Component {
       dispatch,
     } = this.props;
     dispatch(fetchLeaderboard());
+  }
+  get profile() {
+    const {
+      name,
+      id,
+      image_url,
+      points,
+    } = this.props.profile;
+    return (
+      <section className="c-user--profile">
+        <h1>Your Profile</h1>
+        <table className="table">
+          <tbody>
+            <tr>
+              <td>{points}</td>
+              <td>
+                <img className="avatar" src={image_url} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    );
+  }
+  get login() {
+    return (
+      <Link to="/login">
+        <Button className="button--dark">Login to view profile</Button>
+      </Link>
+    );
   }
   get leaders() {
     const {
@@ -43,20 +75,22 @@ export default class UserContainer extends Component {
   }
   render = () => {
     return (
-      <section className="c-leaderboard">
-        <h1>User leaderboard</h1>
-        <table className="table">
-          <thead>
-            <tr>
-              <td>Name</td>
-              <td>Points</td>
-              <td>Profile</td>
-            </tr>
-          </thead>
-          <tbody>
-            {this.leaders}
-          </tbody>
-        </table>
+      <section className="c-user">
+        <section className="c-leaderboard">
+          <h1 className="header">User leaderboard</h1>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.leaders}
+            </tbody>
+          </table>
+        </section>
+        {this.props.isAuthenticated ? this.profile : this.login}
       </section>
     );
   }
