@@ -8,12 +8,6 @@ if (process.env.ENV !== 'TEST') {
   monitor.attach(options);
 }
 
-function getConnection() {
-  const pg = pgp(options).pg;
-  const client = new pg.Client(info);
-  return client;
-}
-
 let singleton = null;
 
 function init() {
@@ -26,6 +20,5 @@ function init() {
 }
 
 export default {
-  init: init,
-  getConnection: getConnection
+  init: init
 }
