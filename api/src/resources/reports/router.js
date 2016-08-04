@@ -4,13 +4,21 @@ import json from '../../middleware/json_response';
 import jsonBody from 'koa-json-body';
 import authMiddleware from '../../middleware/jwt_auth';
 
-import sockets from '../../sockets';
 import confirmationService from '../../services/reportConfirmation';
 
 export default Router()
   .use(json(), jsonBody())
   .get('/reports', async (ctx) => {
-    await reportModel.readAll()
+    if (ctx.query.user) {
+      await reportModel.readFromUser(ctx.query.user)
+        .then(data => {
+          ctx.body = data;
+        })
+        .catch(error => {
+          ctx.body = error.toString();
+        })
+    } else {
+      await reportModel.readAll()
       .then(data => {
         ctx.body = data;
       })
@@ -18,13 +26,13 @@ export default Router()
         ctx.status = 500;
         ctx.body = error.toString();
       });
+    }
   })
   .get('/reports/:id', async (ctx) => {
     await reportModel.read(ctx.params.id)
       .then(data => {
         ctx.status = 200;
         ctx.body = data;
-        sockets.emit('report/add', data);
       })
       .catch(error => {
         ctx.status = 500;

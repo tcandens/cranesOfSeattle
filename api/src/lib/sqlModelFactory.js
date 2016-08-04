@@ -16,9 +16,7 @@ const prototype = {
     const query = `
       SELECT * FROM ${this.tableName} WHERE id = $1
     `;
-    const response = this.db.one(query, id)
-      .finally(this.close());
-    return response;
+    return this.db.one(query, id)
   },
   readAll() {
     const query = `

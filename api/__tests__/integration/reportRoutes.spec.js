@@ -70,6 +70,7 @@ const testPermits = [
 test.before('Add test user', async t => {
   const user = await userModel.create(testUser);
   testReport.properties.user_id = user.id;
+  testUser.id = user.id;
 })
 
 function mockPermitApi() {
@@ -130,6 +131,18 @@ test.serial('INSERTING A REPORT WITH NO REPORTS FROM USER NEARBY', async t => {
 
   // Stash ID on testReport to test later
   testReport.properties.id = res.body.result.report.properties.id;
+
+});
+
+test.serial('FETCHING REPORTS BY USER', async t => {
+
+  const response = await request(server)
+    .get('/reports')
+    .query({user: testUser.id})
+
+  console.log(response.body)
+  t.is(response.status, 200);
+  t.true(isArray(response.body))
 
 });
 

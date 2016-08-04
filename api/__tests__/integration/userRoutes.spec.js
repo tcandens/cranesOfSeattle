@@ -6,6 +6,8 @@ import database from '../../src/connections/postgres';
 import jwt from 'jsonwebtoken';
 import {TOKEN_SECRET} from '../../src/middleware/jwt_auth';
 import userModel from '../../src/resources/users/model';
+import reportModel from '../../src/resources/reports/model';
+import isArray from 'lodash/isArray';
 
 const db = database.init();
 const server = app.listen();
@@ -13,10 +15,6 @@ const server = app.listen();
 function clearTables() {
   return db.instance.query('TRUNCATE users');
 }
-
-/**
- * Example of user model
- */
 
 function buildFakeUser() {
   return {
@@ -49,9 +47,7 @@ test.serial('FETCHING A USER BY ID', async t => {
   await clearTables();
 
   const testUser = buildFakeUser();
-
   const user = await userModel.create(testUser);
-
   const res = await request(server)
     .get('/users/' + user.id)
     .set(t.context.headers)
@@ -60,7 +56,6 @@ test.serial('FETCHING A USER BY ID', async t => {
     res.body.id,
     user.id
   );
-
 });
 
 test.serial('UPDATING A USER', async t => {
