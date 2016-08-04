@@ -48,8 +48,10 @@ exports.up = function(pgm) {
     END;
     $$ LANGUAGE plpgsql;
 
+    DROP TRIGGER IF EXISTS reports_notify_insert ON reports;
     CREATE TRIGGER reports_notify_insert AFTER INSERT ON reports FOR EACH ROW
     EXECUTE PROCEDURE notify_trigger();
+    DROP TRIGGER IF EXISTS cranes_notify_insert ON cranes;
     CREATE TRIGGER cranes_notify_insert AFTER INSERT ON cranes FOR EACH ROW EXECUTE
     PROCEDURE notify_trigger();
   `);
