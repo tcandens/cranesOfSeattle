@@ -11,7 +11,7 @@ export default function EntryLayout(props) {
         <p>Like many cities, the construction boom in Seattle has taken over
           the skyline with tower cranes. How many cranes and where they are at
         any one time is not public record, but building permits are.</p>
-        <p>This project hopes to gather data from you and other uses to pinpoint
+        <p>This project hopes to gather data from you and other users to pinpoint
         where these cranes are and any other interesting insights.</p>
       </section>
       <Footer />
