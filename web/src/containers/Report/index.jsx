@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import MapComponent, {Source, Circles, Symbols, query} from 'mapbox-gl-react';
-import MapboxGL from 'mapbox-gl/dist/mapbox-gl';
 import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
@@ -183,7 +182,6 @@ export default class ReportContainer extends Component {
       isSaveSuccess,
       isSaving,
       cranes,
-      map,
       toolTips,
     } = this.props;
 
@@ -220,7 +218,7 @@ export default class ReportContainer extends Component {
             />
           </Source>
           <Source name="cranes" data={cranes}>
-            <Symbols image="crane" />
+            <Symbols image="crane" offset={[0, -18]}/>
           </Source>
         </MapComponent>
         <div className="c-report--forms">
