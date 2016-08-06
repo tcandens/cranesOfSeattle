@@ -8,7 +8,9 @@ const MainLayout = ({children, location}) => {
       <ReactCSSTransitionGroup
         component="div"
         className="transition-container"
-        transitionName="layout"
+        transitionName="fade"
+        transitionAppear={true}
+        transitionAppearTimeout={400}
         transitionEnterTimeout={400}
         transitionLeaveTimeout={400}
       >

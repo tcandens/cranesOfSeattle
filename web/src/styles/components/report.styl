@@ -10,6 +10,8 @@
   align-content flex-start
   align-items flex-end
   justify-content space-between
+  transform-origin 50% 100%
+  animation flip-in 300ms ease-out
 .c-report .mapbox-gl-container
   height "calc(100% - %s)" % ($report-start-height)
 .c-report .mapbox-gl-container, .c-report--forms
@@ -24,3 +26,9 @@
 
 .c-report .create-report
   padding 0.5rem
+
+@keyframes flip-in
+  0%
+    transform rotateX(90deg)
+  100%
+    transform rotateX(0deg)

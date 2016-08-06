@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
 import MapComponent, {Source, Circles, Symbols, query} from 'mapbox-gl-react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
@@ -65,6 +66,7 @@ export default class ReportContainer extends Component {
     viewing: [],
     report: {},
     toolTips: true,
+    isRendered: false, // Switch to delay rendering of report forms due to mapbox resizing
   }
   componentDidMount() {
     const {dispatch} = this.props;
@@ -77,6 +79,13 @@ export default class ReportContainer extends Component {
     io.on('crane/added', data => {
       dispatch(addCrane(data));
     });
+    // Delay rendering of forms due to mapbox resizing on didMount
+    setTimeout(() => {
+      this.setState({
+        ...this.state,
+        isRendered: true,
+      });
+    }, 200);
   }
   componentWillReceiveProps = (nextProps) => {
     this.setState({
@@ -221,24 +230,26 @@ export default class ReportContainer extends Component {
             <Symbols image="crane" offset={[0, -18]}/>
           </Source>
         </MapComponent>
-        <div className="c-report--forms">
-          {!isAuthenticated &&
-            <Link to="/login"><Button>Login to report</Button></Link>
-          }
-          {isSaving && <LoadingBar />}
-          {isReporting && isAuthenticated &&
-            <CreateReport
-              onChange={this.handleChangeReport}
-              onSave={this.handleSaveReport}
-              onAbort={this.abortReport}
-            />
-          }
-          {!isReporting && isAuthenticated &&
-            <StartReport
-              onStart={this.handleStartReport}
-            />
-          }
-        </div>
+        {this.state.isRendered &&
+          <div className="c-report--forms">
+            {!isAuthenticated &&
+              <Link to="/login"><Button>Login to report</Button></Link>
+            }
+            {isSaving && <LoadingBar />}
+            {isReporting && isAuthenticated &&
+              <CreateReport
+                onChange={this.handleChangeReport}
+                onSave={this.handleSaveReport}
+                onAbort={this.abortReport}
+              />
+            }
+            {!isReporting && isAuthenticated &&
+              <StartReport
+                onStart={this.handleStartReport}
+              />
+            }
+          </div>
+        }
         {isSaveSuccess &&
           <Modal type="success"
             action={this.handleConfirmSuccess}
@@ -248,7 +259,14 @@ export default class ReportContainer extends Component {
             />
           </Modal>
         }
-        {!!this.state.viewing.length && this.renderViewing()}
+        <ReactCSSTransitionGroup
+          component="div"
+          transitionName="fly-up"
+          transitionEnterTimeout={400}
+          transitionLeaveTimeout={400}
+        >
+          {!!this.state.viewing.length && this.renderViewing()}
+        </ReactCSSTransitionGroup>
         {!toolTips &&
           <Tooltips closeAction={this.handleFinishTooltips} />
         }
