@@ -58,6 +58,11 @@ function selectReporting(state) {
   };
 }
 
+const isSocketListening = {
+  cranes: false,
+  reports: false,
+};
+
 @connect(
   selectReporting
 )
@@ -73,12 +78,18 @@ export default class ReportContainer extends Component {
     dispatch(fetchCranes());
     dispatch(fetchReports());
     dispatch(fetchUserLocation());
-    io.on('report/added', data => {
-      dispatch(addReport(data));
-    });
-    io.on('crane/added', data => {
-      dispatch(addCrane(data));
-    });
+    if (!isSocketListening.cranes) {
+      isSocketListening.cranes = true;
+      io.on('crane/added', data => {
+        dispatch(addCrane(data));
+      });
+    }
+    if (!isSocketListening.reports) {
+      isSocketListening.reports = true;
+      io.on('report/added', data => {
+        dispatch(addReport(data));
+      });
+    }
     // Delay rendering of forms due to mapbox resizing on didMount
     setTimeout(() => {
       this.setState({
