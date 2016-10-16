@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import classNames from 'classnames';
-import MapComponent, {Source, Circles, Symbols, query} from 'mapbox-gl-react';
+import MapComponent, {Source, Circles, Symbols, Reticle, query} from 'mapbox-gl-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import Reticle from 'components/Reticle';
 import CreateReport from 'components/ReportCreateForm';
 import StartReport from 'components/ReportStartButton';
 import Modal from 'components/Modal';
@@ -199,8 +198,8 @@ export default class ReportContainer extends Component {
     } = this.props;
 
     const containerState = classNames({
-      'isAuthenticated': isAuthenticated,
-      'isReporting': isReporting,
+      isAuthenticated,
+      isReporting,
     });
 
     return (
@@ -214,8 +213,9 @@ export default class ReportContainer extends Component {
           center={[longitude, latitude]}
           eventHandlers={this.mapActions()}
           maxBounds={[[-122.57107, 47.16157], [-122.01602, 47.78269]]}
+          containerStyle={{}}
         >
-          <Reticle />
+          <Reticle className="reticle" />
           <Source name="reports" data={reports}>
             <Circles
               blur={0.2}
