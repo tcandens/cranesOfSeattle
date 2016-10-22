@@ -10,7 +10,8 @@ COPY ./.babelrc .babelrc
 COPY ./karma.config.js karma.config.js
 COPY ./server.js server.js
 COPY ./.env .env
-RUN npm install
+
+RUN npm install --production
 
 RUN npm run build
 
