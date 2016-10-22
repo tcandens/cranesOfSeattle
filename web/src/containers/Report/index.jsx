@@ -35,6 +35,7 @@ import {
 import {
   recordMapLocation,
   fetchUserLocation,
+  finishLoading,
 } from 'ducks/map';
 
 import {
@@ -150,6 +151,7 @@ export default class ReportContainer extends Component {
           [-122.57107, 47.16157],
           [-122.01602, 47.78269],
         ]);
+        dispatch(finishLoading());
       },
       moveend: (map) => {
         // Pop to the end of the stack for zoom events to avoid loop

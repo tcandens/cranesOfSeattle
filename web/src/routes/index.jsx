@@ -9,6 +9,10 @@ import {
   resetReportState,
 } from 'ducks/reports';
 
+import {
+  beginLoading,
+} from 'ducks/map';
+
 export default function CreateRoutes(store) {
   function requireAuth(nextState, replace) {
     // Try to wait for rehydration of redux state
@@ -25,12 +29,16 @@ export default function CreateRoutes(store) {
   function resetReportOnExit() {
     store.dispatch(resetReportState());
   }
+  function setIsLoading() {
+    store.dispatch(beginLoading());
+  }
 
   return (
     <Route path="/" component={MainLayout}>
       <IndexRoute component={Entry} />
       <Route path="login" component={LoginContainer}/>
       <Route path="report"
+        onEnter={setIsLoading}
         onLeave={resetReportOnExit}
         getComponent={(next, cb) => {
           require.ensure([], require => {
