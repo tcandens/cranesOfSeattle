@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import Button from 'components/Button';
+import Leaderboard from 'components/Leaderboard';
 
 import {
   fetchLeaderboard,
@@ -37,12 +38,18 @@ export default class UserContainer extends Component {
       <section className="c-user--profile">
         <h1>Your Profile</h1>
         <table className="table">
+          <thead>
+            <tr>
+              <td></td>
+              <td>Points</td>
+            </tr>
+          </thead>
           <tbody>
             <tr>
-              <td>{points}</td>
               <td>
                 <img className="avatar" src={image_url} />
               </td>
+              <td>{points}</td>
             </tr>
           </tbody>
         </table>
@@ -56,40 +63,11 @@ export default class UserContainer extends Component {
       </Link>
     );
   }
-  get leaders() {
-    const {
-      leaders,
-    } = this.props;
-    const features = leaders.map((user, index) => (
-      <tr key={index}>
-        <td>{user.name}</td>
-        <td>{user.points}</td>
-        <td>
-          <Link to={`/user/${user.id}`}>
-            <img className="avatar" src={user.image_url} />
-          </Link>
-        </td>
-      </tr>
-    ));
-    return features;
-  }
   render = () => {
     return (
       <section className="c-user">
-        <section className="c-leaderboard">
-          <h1 className="header">User leaderboard</h1>
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.leaders}
-            </tbody>
-          </table>
-        </section>
+        {this.props.children}
+        <Leaderboard leaders={this.props.leaders} />
         {this.props.isAuthenticated ? this.profile : this.login}
       </section>
     );

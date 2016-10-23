@@ -52,7 +52,16 @@ export default function CreateRoutes(store) {
             cb(null, require('containers/User').default);
           });
         }}
-      />
+      >
+        <Route
+          path="/user/:userId"
+          getComponent={(next, cb) => {
+            require.ensure([], require => {
+              cb(null, require('components/UserProfile').default);
+            });
+          }}
+        />
+      </Route>
     </Route>
   );
 }
