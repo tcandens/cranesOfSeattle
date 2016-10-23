@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router';
+import {Link, browserHistory} from 'react-router';
 
 export default function Leaderboard({leaders}) {
   return (
@@ -14,7 +14,10 @@ export default function Leaderboard({leaders}) {
         </thead>
         <tbody>
           {leaders.map((user, index) => (
-            <tr key={index}>
+            <tr
+              onClick={() => browserHistory.push(`/user/${user.id}`)}
+              key={index}
+            >
               <td>{user.name}</td>
               <td>{user.points}</td>
               <td>
