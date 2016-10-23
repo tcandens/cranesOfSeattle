@@ -46,7 +46,8 @@ craneModel.read = function(id) {
         ) AS l
       )
     ) AS properties
-    FROM ${this.tableName} AS l WHERE l.id = $1
+    FROM ${this.tableName} AS l
+    WHERE l.id = $1
   `;
   return this.db.oneOrNone(query, id);
 };
@@ -59,7 +60,9 @@ craneModel.readAll = function() {
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
       row_to_json((SELECT l FROM (SELECT id, permit) AS l)) AS properties
-      FROM ${this.tableName} AS r
+      FROM ${this.tableName}
+      AS r
+      WHERE r.expiration_date >= DATE(NOW())
     ) AS f
   `;
   return this.db.one(query);
