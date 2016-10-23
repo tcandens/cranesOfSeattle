@@ -6,13 +6,23 @@ export default function CraneRecord({record}) {
     user_id,
   } = record.properties;
   return (
-    <ul className="c-crane-record">
-      <li>
-        <span>Permit:</span>
-        <em><a target="_blank" href={`http://web6.seattle.gov/dpd/PermitStatus/Project.aspx?id=${permit}`}>{permit}</a></em>
-        <span>Reported by:</span>
-        <em>{user_id}</em>
-      </li>
-    </ul>
+    <table className="c-crane-record">
+      <thead>
+        <tr>
+          <th>Permit</th>
+          <th>Reported By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <em><a target="_blank" href={`http://web6.seattle.gov/dpd/PermitStatus/Project.aspx?id=${permit}`}>{permit}</a></em>
+          </td>
+          <td>
+            {user_id}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
