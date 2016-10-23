@@ -47,8 +47,7 @@
     "redux-devtools": "^3.0.2",
     "remap-istanbul": "^0.6.4",
     "setimmediate": "^1.0.4",
-    "sinon": "^2.0.0-pre",
-    "webpack-dev-server": "^1.14.1"
+    "sinon": "^2.0.0-pre"
   },
   "dependencies": {
     "axios": "^0.9.1",
@@ -98,6 +97,7 @@
     "redux-logger": "^2.4.0",
     "redux-persist": "^2.0.1",
     "redux-thunk": "^1.0.3",
-    "socket.io-client": "^1.4.8"
+    "socket.io-client": "^1.4.8",
+    "webpack-dev-server": "^1.14.1"
   }
 }
