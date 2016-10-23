@@ -13,9 +13,7 @@ COPY ./.env .env
 
 RUN npm install --production
 
-RUN npm run build
-
 EXPOSE 9000
 
 # This should run NPM Build to run webpack compiler
-CMD ["npm", "start"]
+CMD ["npm", "build"]
