@@ -59,7 +59,7 @@ craneModel.readAll = function() {
     COALESCE(array_to_json(array_agg(f)), '[]') as features FROM (
       SELECT 'Feature' as type,
       ST_AsGeoJSON(r.location)::json as geometry,
-      row_to_json((SELECT l FROM (SELECT id, permit) AS l)) AS properties
+      row_to_json((SELECT l FROM (SELECT id, permit, user_id) AS l)) AS properties
       FROM ${this.tableName}
       AS r
       WHERE r.expiration_date >= DATE(NOW())
