@@ -14,14 +14,14 @@ const createLoaders = (ROOT, isDeveloping) => {
     },
     {
       test: /\.css$/,
-      loader: (isDeveloping ?
-        'style!css' :
-        ExtractTextPlugin.extract('style', 'css')
-      ),
+      loader: 'style!css',
     },
     {
       test: /\.styl$/,
-      loader: 'style!css!stylus',
+      loader: (isDeveloping ?
+        'style!css!stylus' :
+        ExtractTextPlugin.extract('style-loader', 'css-loader!stylus-loader')
+      ),
       include: path.join(ROOT, 'src'),
     },
     {

@@ -30,6 +30,7 @@ const getPlugins = (isDeveloping) => {
     new webpack.optimize.OccurenceOrderPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(ROOT, 'templates', 'index.jade'),
+      inject: false,
       title: 'Cranes of Seattle',
       filename: 'index.html',
     }),
