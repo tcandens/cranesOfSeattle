@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "./node_modules/.bin/babel-node server.js",
     "test": "NODE_ENV=test ./node_modules/.bin/karma start --single-run --no-autowatch karma.config.js",
     "test:watch": "NODE_ENV=test ./node_modules/.bin/karma start karma.config.js",
     "cover": "./node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.json -t json && node generate-coverage-report.js && rm test.context.js.map",
@@ -16,6 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "babel-eslint": "^6.0.4",
+    "babel-plugin-webpack-alias": "^2.1.1",
     "babel-preset-react-hmre": "^1.0.1",
     "browser-sync": "^2.12.10",
     "enzyme": "^2.3.0",

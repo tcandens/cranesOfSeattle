@@ -1,4 +1,4 @@
-import {getUserPosition} from 'lib/geolocation';
+import {getUserPosition} from '../../lib/geolocation';
 const assign = Object.assign;
 
 export const RECORD_MAP_LOCATION = 'RECORD_MAP_LOCATION';

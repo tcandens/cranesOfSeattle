@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {
   fetchUserById,
-} from 'ducks/leaderboard';
+} from '../state/ducks/leaderboard';
 
 const selectUserViewing = (state) => ({
   isFetching: state.leaderboard.isFetching,

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import geojson from 'lib/geojson';
+import geojson from '../../lib/geojson';
 const assign = Object.assign;
 
 export const REQUEST_CRANES = 'REQUEST_CRANES';

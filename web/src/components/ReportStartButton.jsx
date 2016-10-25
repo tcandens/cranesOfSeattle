@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomButton from 'components/Button';
+import CustomButton from './Button';
 
 export default function ReportStartButton({onStart}) {
   return (

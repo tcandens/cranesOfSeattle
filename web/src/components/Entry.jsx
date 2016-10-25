@@ -1,7 +1,7 @@
 import React from 'react';
-import Hero from 'components/EntryHero';
-import Footer from 'components/Footer';
-import Prefetch from 'components/Prefetch';
+import Hero from './EntryHero.jsx';
+import Footer from './Footer.jsx';
+import Prefetch from './Prefetch.jsx';
 
 export default function EntryLayout(props) {
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import CallToAction from 'components/CallToAction';
+import CallToAction from './CallToAction.jsx';
 
 export default function EntryLayout() {
   const entryClass = classNames({

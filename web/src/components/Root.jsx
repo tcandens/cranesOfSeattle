@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router';
 
-import 'styles/index.styl';
+import '../styles/index.styl';
 
 export default class Root extends Component {
   get content() {

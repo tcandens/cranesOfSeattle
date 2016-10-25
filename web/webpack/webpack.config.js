@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('lodash/merge');
-const createAliasesFrom = require('./helpers').alias;
 const getLoaders = require('./loaders');
 
 require('dotenv').config();
@@ -82,29 +81,13 @@ module.exports = {
     extensions: [
       '', '.js', '.jsx', '.styl',
     ],
-    alias: merge(
-      {
-        'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
-        'mapbox-gl/js': ((isTesting || isDeveloping) ?
-          path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
-          path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
-        ),
-      },
-      createAliasesFrom(path.resolve(ROOT, 'src')).to([
-        'containers',
-        'components',
-        'decorators',
-        'layouts',
-        'lib',
-        'styles',
-      ]),
-      createAliasesFrom(path.resolve(ROOT)).to([
-        'assets',
-      ]),
-      createAliasesFrom(path.resolve(ROOT, 'src', 'state')).to([
-        'ducks',
-      ])
-    ),
+    alias: {
+      'mapbox-gl/css': path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.css'),
+      'mapbox-gl/js': ((isTesting || isDeveloping) ?
+        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl-dev.js') :
+        path.resolve(ROOT, './node_modules/mapbox-gl/dist/mapbox-gl.js')
+      ),
+    },
   },
   module: {
     loaders: getLoaders(ROOT, isDeveloping),

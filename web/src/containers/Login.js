@@ -1,12 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import Button from 'components/Button';
-import Prefetch from 'components/Prefetch';
+import Button from '../components/Button';
+import Prefetch from '../components/Prefetch';
 
 import {
   userLogin,
-} from 'ducks/user';
+} from '../state/ducks/user';
 
 @connect(
   (state) => {

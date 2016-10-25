@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
 const config = require('./webpack/webpack.config');
 const compiler = webpack(config);
 const app = express();
@@ -28,6 +30,22 @@ if (isDeveloping) {
     console.info('== Developing with HMR ==>');
   });
 } else {
+  app.set('views', './templates');
+  app.set('view engine', 'jade');
+  app.get('/', (req, res) => {
+    const Entry = require('./src/components/Entry.jsx').default;
+    const Navigation = require('./src/components/Navigation.jsx').default;
+    const App = () => (
+      <main className="l-main">
+        <Entry />
+        <Navigation />
+      </main>
+    );
+    const appString = ReactDOMServer.renderToString(<App />);
+    res.render('ssr', {
+      content: appString,
+    });
+  });
   // Match all routes except /assets*
   app.get(/^((?!\/assets).)*$/, (req, res) => {
     res.sendFile(path.join(__dirname, 'dist/index.html'));

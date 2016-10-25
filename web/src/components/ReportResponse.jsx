@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
-import ReportRecord from 'components/ReportRecord';
-import CraneRecord from 'components/CraneRecord';
+import ReportRecord from './ReportRecord';
+import CraneRecord from './CraneRecord';
 import classNames from 'classnames';
 
 export default function ReportResponse({message, result}) {

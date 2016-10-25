@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import axios from 'axios';
-import geojson from 'lib/geojson';
+import geojson from '../../lib/geojson';
 const assign = Object.assign;
 
 const REQUEST_REPORTS = 'REQUEST_REPORTS';
@@ -189,7 +189,7 @@ export function resetReportState() {
   };
 }
 
-import {errorLogin} from 'ducks/user';
+import {errorLogin} from './user';
 
 export function saveReport(location, props) {
   return (dispatch, getState) => {

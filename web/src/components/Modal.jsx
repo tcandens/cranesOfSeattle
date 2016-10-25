@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import classNames from 'classnames';
-import Button from 'components/Button';
+import Button from './Button';
 
 export default function Modal(props) {
   const {

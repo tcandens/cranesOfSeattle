@@ -54,7 +54,7 @@ export function errorLogin(error) {
   };
 }
 
-import {loginPopup} from 'lib/oauth';
+import {loginPopup} from '../../lib/oauth';
 import {browserHistory} from 'react-router';
 
 export function userLogin(options) {

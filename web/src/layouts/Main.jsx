@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Navigation from 'components/Navigation';
+import Navigation from '../components/Navigation';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import LoadingSpinner from 'components/LoadingSpinner';
+import LoadingBar from '../components/LoadingBar';
 
 function selectLoading(state) {
   return {
@@ -36,7 +36,7 @@ export default class MainLayout extends Component {
           })}
         </ReactCSSTransitionGroup>
         {isLoading &&
-          <LoadingSpinner />
+          <LoadingBar />
         }
         <Navigation />
       </main>

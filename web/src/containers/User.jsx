@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
-import Button from 'components/Button';
-import Leaderboard from 'components/Leaderboard';
-import Prefetch from 'components/Prefetch';
+import Button from '../components/Button';
+import Leaderboard from '../components/Leaderboard';
+import Prefetch from '../components/Prefetch';
 
 import {
   fetchLeaderboard,
-} from 'ducks/leaderboard';
+} from '../state/ducks/leaderboard';
 
 function selectLeaderboard(state) {
   return {

@@ -3,16 +3,16 @@ import {connect} from 'react-redux';
 import classNames from 'classnames';
 import MapComponent, {Source, Circles, Symbols, Reticle, query} from 'mapbox-gl-react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import CreateReport from 'components/ReportCreateForm';
-import StartReport from 'components/ReportStartButton';
-import Modal from 'components/Modal';
-import LoadingBar from 'components/LoadingBar';
-import ReportResponse from 'components/ReportResponse';
-import ReportRecord from 'components/ReportRecord';
-import CraneRecord from 'components/CraneRecord';
-import Tooltips from 'components/Tooltips';
+import CreateReport from '../../components/ReportCreateForm';
+import StartReport from '../../components/ReportStartButton';
+import Modal from '../../components/Modal';
+import LoadingBar from '../../components/LoadingBar';
+import ReportResponse from '../../components/ReportResponse';
+import ReportRecord from '../../components/ReportRecord';
+import CraneRecord from '../../components/CraneRecord';
+import Tooltips from '../../components/Tooltips';
 import {Link} from 'react-router';
-import Button from 'components/Button';
+import Button from '../../components/Button';
 import socketIO from 'socket.io-client';
 import config from '../../config/colors.json';
 const io = socketIO(window.location.origin, {path: '/api/socket.io'});
@@ -25,22 +25,22 @@ import {
   startReport,
   finishReport,
   confirmSaveSuccess,
-} from 'ducks/reports';
+} from '../../state/ducks/reports';
 
 import {
   addCrane,
   fetchCranes,
-} from 'ducks/cranes';
+} from '../../state/ducks/cranes';
 
 import {
   recordMapLocation,
   fetchUserLocation,
   finishLoading,
-} from 'ducks/map';
+} from '../../state/ducks/map';
 
 import {
   finishTooltips,
-} from 'ducks/tooltips';
+} from '../../state/ducks/tooltips';
 
 function selectReporting(state) {
   return {

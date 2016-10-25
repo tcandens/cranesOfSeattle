@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'components/Button';
+import Button from './Button.jsx';
 import {Link} from 'react-router';
 
 export default function CallToAction() {
