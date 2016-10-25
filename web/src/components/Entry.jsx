@@ -1,6 +1,7 @@
 import React from 'react';
 import Hero from 'components/EntryHero';
 import Footer from 'components/Footer';
+import Prefetch from 'components/Prefetch';
 
 export default function EntryLayout(props) {
   return (
@@ -16,6 +17,7 @@ export default function EntryLayout(props) {
       </section>
       <Footer />
       {props.children}
+      <Prefetch />
     </div>
   );
 }

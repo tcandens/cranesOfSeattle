@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import Button from 'components/Button';
 import Leaderboard from 'components/Leaderboard';
+import Prefetch from 'components/Prefetch';
 
 import {
   fetchLeaderboard,
@@ -69,6 +70,7 @@ export default class UserContainer extends Component {
         {this.props.children}
         <Leaderboard leaders={this.props.leaders} />
         {this.props.isAuthenticated ? this.profile : this.login}
+        <Prefetch />
       </section>
     );
   }
