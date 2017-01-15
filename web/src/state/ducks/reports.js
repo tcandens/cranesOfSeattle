@@ -102,7 +102,7 @@ export function receiveReports(geojsonObject) {
     type: RECEIVE_REPORTS,
     geojson: geojsonObject,
     isFetching: false,
-    receivedAt: Date.now(),
+    receivedAt: performance.now(),
   };
 }
 
@@ -144,7 +144,7 @@ export function beginSavingReport() {
   return {
     type: BEGIN_SAVE_REPORT,
     payload: {
-      time: Date.now(),
+      time: performance.now(),
     },
   };
 }
@@ -155,7 +155,7 @@ export function successSavingReport(message, result) {
     payload: {
       message,
       result,
-      time: Date.now(),
+      time: performance.now(),
     },
   };
 }
@@ -170,7 +170,7 @@ export function errorSavingReport(error, report) {
   return {
     type: ERROR_SAVE_REPORT,
     payload: {
-      time: Date.now(),
+      time: performance.now(),
       error,
       report,
     },

@@ -20,7 +20,7 @@ describe('Cranes Reducer', () => {
   });
 
   it('should return with geoJSON object, timestamp, and fetching state', () => {
-    const now = Date.now();
+    const now = performance.now();
     const geojson = {
       type: 'FeatureCollection',
       features: [
@@ -37,5 +37,4 @@ describe('Cranes Reducer', () => {
       lastUpdated: now,
     });
   });
-
 });

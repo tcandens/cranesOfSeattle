@@ -68,7 +68,7 @@ export function recordMapLocation(location) {
   return {
     type: RECORD_MAP_LOCATION,
     location,
-    recordedAt: Date.now(),
+    recordedAt: performance.now(),
   };
 }
 

@@ -51,7 +51,7 @@ export function receiveCranes(geojsonObject) {
     type: RECEIVE_CRANES,
     geojson: geojsonObject,
     isFetching: false,
-    receivedAt: Date.now(),
+    receivedAt: performance.now(),
   };
 }
 

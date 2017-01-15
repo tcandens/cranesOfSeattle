@@ -59,7 +59,7 @@ export function receiveLeaderboard(leaderboard) {
   return {
     type: RECEIVE_LEADERBOARD,
     payload: {
-      receivedAt: Date.now(),
+      receivedAt: performance.now(),
       data: leaderboard,
     },
   };
