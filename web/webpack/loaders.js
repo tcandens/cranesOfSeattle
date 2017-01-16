@@ -29,7 +29,7 @@ const createLoaders = (ROOT, isDeveloping) => {
       loaders: ['json'],
     },
     {
-      test: /\.(jpe?g)$/,
+      test: /\.(jpe?g|ico|png)$/,
       loader: 'file?name=assets/[name].[ext]',
     },
     {

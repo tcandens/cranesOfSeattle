@@ -54,7 +54,7 @@ if (isDeveloping) {
   app.use('/assets', express.static(distPath));
   app.listen(9000, '0.0.0.0', error => {
     if (error) {
-      console.log(err);
+      console.log(error);
       return;
     }
     console.info('== Production with Express Static ==>');

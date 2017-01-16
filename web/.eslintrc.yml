@@ -9,6 +9,8 @@ env:
 rules:
   import/no-unresolved: 0
   react/prop-types: 0
+  react/jsx-uses-react: [2]
+  react/jsx-uses-vars: [2]
   object-curly-spacing: [1, "never"]
   arrow-body-style: 0
   no-return-assign: 0

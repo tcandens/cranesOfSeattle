@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('lodash/merge');
 const getLoaders = require('./loaders');
@@ -27,6 +28,7 @@ const getEntry = (isDeveloping) => {
 const getPlugins = (isDeveloping) => {
   const plugins = [
     new webpack.optimize.OccurenceOrderPlugin(),
+    new FaviconsWebpackPlugin('./assets/favicon.png'),
     new HtmlWebpackPlugin({
       template: path.resolve(ROOT, 'templates', 'index.jade'),
       inject: false,
