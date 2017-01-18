@@ -26,7 +26,6 @@
     "eslint-plugin-import": "^1.8.0",
     "eslint-plugin-react": "^5.1.1",
     "expect": "^1.20.1",
-    "favicons-webpack-plugin": "0.0.7",
     "istanbul": "^0.4.3",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
@@ -49,8 +48,7 @@
     "redux-devtools": "^3.0.2",
     "remap-istanbul": "^0.6.4",
     "setimmediate": "^1.0.4",
-    "sinon": "^2.0.0-pre",
-    "sw-precache-webpack-plugin": "^0.7.1"
+    "sinon": "^2.0.0-pre"
   },
   "dependencies": {
     "autoprefixer": "^6.3.6",
@@ -59,6 +57,8 @@
     "babel-core": "^6.3.26",
     "babel-loader": "^6.2.0",
     "babel-plugin-lodash": "^2.3.0",
+    "favicons-webpack-plugin": "0.0.7",
+    "sw-precache-webpack-plugin": "^0.7.1",
     "babel-plugin-syntax-decorators": "^6.5.0",
     "babel-plugin-transform-decorators": "^6.5.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
