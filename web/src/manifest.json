@@ -1,0 +1,20 @@
+{
+  "name": "Cranes of Seattle",
+  "description": "A real-time crowdsourced map of all the construction cranes in Seattle.",
+  "lang": "en-US",
+  "orientation": "portrait",
+  "theme_color": "#62CB62",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "assets/favicons/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicons/favicon-230x230.png",
+      "sizes": "230x230",
+      "type": "image/png"
+    }
+  ]
+}
